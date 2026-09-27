@@ -898,8 +898,7 @@ public class SetupActivity extends Activity {
     // this engine source tree, so a real in-game control can't be added from
     // here. Expose the same "ResolutionFontAdjustment" percentage here
     // instead, writing straight into the Options.ini this Android build
-    // actually reads (see SDL3Main.cpp: HOME=<internal storage>, so the file
-    // is <filesDir>/.local/share/GeneralsX/GeneralsZH/Options.ini) -- no need
+    // actually reads (the shared user-data dir, see optionsIniFile()) -- no need
     // to wait for the game to visit its own Options menu first.
     private Slider uiScaleSlider;
     private TextView uiScaleLabel;
@@ -1885,8 +1884,12 @@ public class SetupActivity extends Activity {
             : getString(R.string.setup_online_signed_out));
     }
 
+    // GeneralsX @bugfix Android port 27/09/2026 The Options.ini the game reads lives in the shared
+    // user-data dir (SDL3Main.cpp, GENERALSX_USERDATA_DIR) since issue #9 moved it there on
+    // 18/07/2026. This still pointed at the old internal <filesDir>/.local/share/... copy, so the
+    // text size was saved where the game never looks and every value looked the same in game.
     private File optionsIniFile() {
-        return new File(getFilesDir(), ".local/share/GeneralsX/GeneralsZH/Options.ini");
+        return new File(DataPackInstaller.userDataDir(), "Options.ini");
     }
 
     private File defaultOptionsIniFile() {

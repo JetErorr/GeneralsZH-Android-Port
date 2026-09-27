@@ -997,10 +997,16 @@ int main(int argc, char* argv[])
 		// Seed default settings on first run (full detail instead of the 2003
 		// GPU auto-detect, which drops unknown GPUs — "Adreno 830" included —
 		// to Low LOD with quarter-res textures).
-		if (internalPath != nullptr && access("DefaultOptions.ini", R_OK) == 0) {
+		//
+		// GeneralsX @bugfix Android port 27/09/2026 Seed the Options.ini the engine actually reads.
+		// Since the user-data dir moved to shared storage (GENERALSX_USERDATA_DIR, issue #9, 18/07)
+		// this still wrote <internal>/.local/share/GeneralsX/GeneralsZH/Options.ini, which nothing
+		// reads any more: new installs lost these defaults, and the launcher's "Menu text size",
+		// written to the same stale file, did nothing at all.
+		const char *seedUserDataDir = getenv("GENERALSX_USERDATA_DIR");
+		if (seedUserDataDir != nullptr && access("DefaultOptions.ini", R_OK) == 0) {
 			char userDataDir[1024], optionsPath[1024];
-			snprintf(userDataDir, sizeof(userDataDir),
-			         "%s/.local/share/GeneralsX/GeneralsZH", internalPath);
+			snprintf(userDataDir, sizeof(userDataDir), "%s", seedUserDataDir);
 			snprintf(optionsPath, sizeof(optionsPath), "%s/Options.ini", userDataDir);
 			if (access(optionsPath, F_OK) != 0) {
 				std::error_code fsError;
