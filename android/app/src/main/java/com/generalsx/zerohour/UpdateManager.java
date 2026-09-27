@@ -74,6 +74,7 @@ final class UpdateManager {
     private static final String KEY_AUTO = "auto_check";
     private static final String KEY_LAST_CHECK = "last_check";
     private static final String KEY_DEPS_OK_FOR = "deps_ok_for";
+    private static final String KEY_DATAPACK_LATEST = "datapack_latest";
 
     private UpdateManager() {
     }
@@ -262,7 +263,7 @@ final class UpdateManager {
                 applyEngine(ctx, engine, r);
             }
 
-            checkDatapack(ctx, r, installDatapack);
+            checkDatapack(ctx, r, installDatapack, SILENT_PROGRESS);
 
             writeBytes(new File(dir, "manifest.json"), manifestBytes);
             prefs(ctx).edit()
@@ -288,32 +289,80 @@ final class UpdateManager {
      * GeneralsX @feature Android port 27/09/2026 The community data patch comes straight from
      * the GeneralsOnline CDN, verified by the SHA-256 in its own manifest (DataPackInstaller).
      * Only a player who installed it is kept current -- nothing is pushed on anyone else.
+     *
+     * This is the one place that decides whether the patch needs updating: the Updates card runs
+     * it inside check(), the GeneralsOnline screen's data card runs it alone
+     * (checkDatapackOnly) and both show what it recorded (datapackLatestSeen).
      */
-    private static void checkDatapack(Context ctx, Result r, boolean install) {
-        String installed = DataPackInstaller.installedVersion(ctx);
-        if (installed == null) {
+    private static void checkDatapack(Context ctx, Result r, boolean install,
+                                      DataPackInstaller.Progress progress) {
+        if (DataPackInstaller.installedVersion(ctx) == null) {
             return;
         }
         String latest = DataPackInstaller.latestVersion(ctx);
-        // An install from before the launcher computed the PC checksum is fetched once more,
-        // so cross-play gets the number of the PC release it actually has.
-        if (latest == null || (latest.equals(installed) && DataPackInstaller.hasPcExeCrcSeed(ctx))) {
+        if (latest == null) {
+            return;
+        }
+        noteDatapackLatest(ctx, latest);
+        if (!datapackUpdateWanted(ctx)) {
             return;
         }
         if (!install) {
             r.datapackAvailable = latest;
             return;
         }
-        DataPackInstaller.Result result = DataPackInstaller.install(ctx, new DataPackInstaller.Progress() {
-            @Override public void onChecking() { }
-            @Override public void onDownloading(long bytes, long total) { }
-            @Override public void onInstalling() { }
-        });
-        if (result.ok) {
-            r.datapackInstalled = result.version;
-        } else {
-            r.datapackAvailable = latest;
+        // The Updates card and the data card can both get here at once; the second one waits
+        // for the first and then finds nothing left to do instead of downloading it again.
+        synchronized (DataPackInstaller.INSTALL_LOCK) {
+            if (!datapackUpdateWanted(ctx)) {
+                return;
+            }
+            DataPackInstaller.Result result = DataPackInstaller.install(ctx, progress);
+            if (result.ok) {
+                r.datapackInstalled = result.version;
+            } else {
+                r.datapackAvailable = latest;
+            }
         }
+    }
+
+    private static final DataPackInstaller.Progress SILENT_PROGRESS = new DataPackInstaller.Progress() {
+        @Override public void onChecking() { }
+        @Override public void onDownloading(long bytes, long total) { }
+        @Override public void onInstalling() { }
+    };
+
+    /** The data patch part of check() alone. Blocking; call off the UI thread. */
+    static Result checkDatapackOnly(Context ctx, boolean install, DataPackInstaller.Progress progress) {
+        Result r = new Result();
+        checkDatapack(ctx, r, install, progress);
+        r.ok = true;
+        return r;
+    }
+
+    static void noteDatapackLatest(Context ctx, String version) {
+        if (version != null && !version.isEmpty()) {
+            prefs(ctx).edit().putString(KEY_DATAPACK_LATEST, version).apply();
+        }
+    }
+
+    /** The newest patch version the CDN reported at the last check, or null. */
+    static String datapackLatestSeen(Context ctx) {
+        return prefs(ctx).getString(KEY_DATAPACK_LATEST, null);
+    }
+
+    /**
+     * An installed patch is out of date when the CDN has another version, or when it was
+     * installed before the launcher computed the PC checksum from it -- then it is fetched once
+     * more, so cross-play claims the number of the PC release this device actually has.
+     */
+    static boolean datapackUpdateWanted(Context ctx) {
+        String installed = DataPackInstaller.installedVersion(ctx);
+        if (installed == null) {
+            return false;
+        }
+        String latest = datapackLatestSeen(ctx);
+        return (latest != null && !latest.equals(installed)) || !DataPackInstaller.hasPcExeCrcSeed(ctx);
     }
 
     static boolean isUnmeteredNetwork(Context ctx) {

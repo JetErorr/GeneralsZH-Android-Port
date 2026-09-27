@@ -315,4 +315,11 @@
     <string name="setup_updates_offline">Sem conexão com a internet. O launcher e o jogo funcionam offline; as atualizações serão verificadas na próxima vez.</string>
     <string name="setup_updates_datapack_installed">Patch de dados da comunidade atualizado para a versão %1$s.</string>
     <string name="setup_updates_datapack_available">Saiu um novo patch de dados da comunidade (%1$s). Toque em “Procurar atualizações” para baixá-lo (cerca de 35 MB).</string>
+    <string name="setup_updates_datapack_none">Patch de dados: não instalado</string>
+    <string name="setup_updates_datapack_line">Patch de dados: %1$s</string>
+    <string name="setup_updates_datapack_line_new">Patch de dados: %1$s, nova %2$s</string>
+    <string name="online_datapacks_update_available">Instalada: versão %1$s. Saiu uma nova versão: %2$s.</string>
+    <string name="online_datapacks_update_for_crc">Instalada: versão %1$s. Atualize uma vez para o aparelho calcular com ele o checksum do cliente de PC.</string>
+    <string name="online_datapacks_up_to_date">Instalada: versão %1$s, a mais recente.</string>
+    <string name="online_datapacks_chip_update">Atualização disponível</string>
 </resources>

@@ -486,8 +486,21 @@ public class SetupActivity extends Activity {
             ? android.text.format.DateFormat.getDateFormat(this).format(new java.util.Date(last)) + " "
               + android.text.format.DateFormat.getTimeFormat(this).format(new java.util.Date(last))
             : getString(R.string.setup_updates_never);
+        // The community data patch is part of the same check, so its state is shown here too;
+        // the GeneralsOnline screen's data card shows the same state and installs it.
+        String patch = DataPackInstaller.installedVersion(this);
+        String patchLine;
+        if (patch == null) {
+            patchLine = getString(R.string.setup_updates_datapack_none);
+        } else if (UpdateManager.datapackUpdateWanted(this)) {
+            String latest = UpdateManager.datapackLatestSeen(this);
+            patchLine = getString(R.string.setup_updates_datapack_line_new, patch,
+                latest != null ? latest : patch);
+        } else {
+            patchLine = getString(R.string.setup_updates_datapack_line, patch);
+        }
         updatesStatusView.setText(getString(R.string.setup_updates_status,
-            engine, UpdateManager.acceptedSerial(this), when));
+            engine, UpdateManager.acceptedSerial(this), when) + " · " + patchLine);
     }
 
     /** @param userAsked true for the button (always report), false for the silent start-up check. */

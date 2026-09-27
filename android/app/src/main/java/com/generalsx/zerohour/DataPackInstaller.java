@@ -279,7 +279,16 @@ final class DataPackInstaller {
      * main thread. Never throws: every failure comes back as Result.failure so
      * the caller has one thing to render.
      */
+    /** Held for a whole install: two at once would extract over each other. */
+    static final Object INSTALL_LOCK = new Object();
+
     static Result install(Context ctx, Progress progress) {
+        synchronized (INSTALL_LOCK) {
+            return installLocked(ctx, progress);
+        }
+    }
+
+    private static Result installLocked(Context ctx, Progress progress) {
         File tempZip = null;
         try {
             progress.onChecking();
@@ -323,6 +332,7 @@ final class DataPackInstaller {
 
             ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .edit().putString(PREF_INSTALLED_VERSION, version).apply();
+            UpdateManager.noteDatapackLatest(ctx, version);
 
             return Result.success(version, written.size());
         } catch (Exception e) {
