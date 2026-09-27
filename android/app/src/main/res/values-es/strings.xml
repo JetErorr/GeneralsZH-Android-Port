@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">No se pudo comprobar: %1$s</string>
     <string name="setup_updates_not_published">Aún no se han publicado actualizaciones.</string>
     <string name="setup_updates_offline">Sin conexión a Internet. El lanzador y el juego funcionan sin conexión; las actualizaciones se comprobarán la próxima vez.</string>
+    <string name="setup_updates_datapack_installed">Parche de datos de la comunidad actualizado a la versión %1$s.</string>
+    <string name="setup_updates_datapack_available">Hay un nuevo parche de datos de la comunidad (%1$s). Toca «Buscar actualizaciones» para descargarlo (unos 35 MB).</string>
 </resources>

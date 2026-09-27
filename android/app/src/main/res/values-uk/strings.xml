@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">Не вдалося перевірити оновлення: %1$s</string>
     <string name="setup_updates_not_published">Оновлення ще не публікувалися.</string>
     <string name="setup_updates_offline">Немає підключення до інтернету. Лаунчер і гра працюють і без нього; оновлення перевіряться наступного разу.</string>
+    <string name="setup_updates_datapack_installed">Патч даних спільноти оновлено до версії %1$s.</string>
+    <string name="setup_updates_datapack_available">Вийшла нова версія патча даних спільноти (%1$s). Натисніть «Перевірити оновлення», щоб завантажити її (близько 35 МБ).</string>
 </resources>

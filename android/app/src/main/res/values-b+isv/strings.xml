@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">Prověrka ne udala se: %1$s</string>
     <string name="setup_updates_not_published">Aktualizacije jesče ne byli publikovane.</string>
     <string name="setup_updates_offline">Nema svezi s internetom. Launcher i igra rabotajut i bez njego; aktualizacije budut prověrjene slědujuči raz.</string>
+    <string name="setup_updates_datapack_installed">Obnova danyh obščiny aktualizovana do versije %1$s.</string>
+    <string name="setup_updates_datapack_available">Jest nova versija obnovy danyh obščiny (%1$s). Tapnite „Prověriti aktualizacije“, da by ju skačati (okolo 35 MB).</string>
 </resources>

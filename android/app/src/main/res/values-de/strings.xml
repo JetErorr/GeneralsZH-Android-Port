@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">Update-Prüfung fehlgeschlagen: %1$s</string>
     <string name="setup_updates_not_published">Es wurden noch keine Updates veröffentlicht.</string>
     <string name="setup_updates_offline">Keine Internetverbindung. Launcher und Spiel funktionieren auch offline; Updates werden beim nächsten Mal geprüft.</string>
+    <string name="setup_updates_datapack_installed">Community-Datenpatch auf Version %1$s aktualisiert.</string>
+    <string name="setup_updates_datapack_available">Ein neuer Community-Datenpatch ist da (%1$s). Tippen Sie auf „Nach Updates suchen“, um ihn zu laden (etwa 35 MB).</string>
 </resources>

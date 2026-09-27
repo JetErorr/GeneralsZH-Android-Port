@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">بررسی به‌روزرسانی ناموفق بود: %1$s</string>
     <string name="setup_updates_not_published">هنوز به‌روزرسانی‌ای منتشر نشده است.</string>
     <string name="setup_updates_offline">اتصال اینترنت وجود ندارد. لانچر و بازی بدون اینترنت هم کار می‌کنند؛ به‌روزرسانی‌ها دفعه بعد بررسی می‌شوند.</string>
+    <string name="setup_updates_datapack_installed">وصله داده‌های جامعه به نسخه %1$s به‌روز شد.</string>
+    <string name="setup_updates_datapack_available">نسخه جدید وصله داده‌های جامعه منتشر شده (%1$s). برای دانلود «بررسی به‌روزرسانی» را بزنید (حدود ۳۵ مگابایت).</string>
 </resources>

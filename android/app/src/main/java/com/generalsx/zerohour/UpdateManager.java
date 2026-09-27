@@ -205,10 +205,32 @@ final class UpdateManager {
         boolean engineDownloaded;   // newly downloaded and ready for the next start
         boolean engineIncompatible; // offered but built against other libraries -- needs a new APK
         boolean offline;            // no network: nothing changed, the last good update stays in use
+        String datapackAvailable;   // newer community data on the GeneralsOnline CDN, not yet installed
+        String datapackInstalled;   // community data updated by this check
     }
 
-    /** Blocking; call off the UI thread. */
-    static Result check(Context ctx) {
+    /** A value from the verified settings (files/update/remote_config.ini), or fallback. */
+    static String remoteConfig(Context ctx, String key, String fallback) {
+        File file = new File(updateDir(ctx), "remote_config.ini");
+        if (file.isFile()) {
+            for (String line : readText(file).split("\n")) {
+                int eq = line.indexOf('=');
+                if (!line.startsWith("#") && eq > 0 && line.substring(0, eq).equals(key)) {
+                    String value = line.substring(eq + 1).trim();
+                    return value.isEmpty() ? fallback : value;
+                }
+            }
+        }
+        return fallback;
+    }
+
+    /**
+     * Blocking; call off the UI thread.
+     * @param installDatapack also download newer community data when there is some (it is
+     *        tens of megabytes: the silent start-up check passes true only on an unmetered
+     *        network, the button always).
+     */
+    static Result check(Context ctx, boolean installDatapack) {
         Result r = new Result();
         try {
             byte[] manifestBytes = download(BASE_URL + "manifest.json", 256 * 1024);
@@ -240,6 +262,8 @@ final class UpdateManager {
                 applyEngine(ctx, engine, r);
             }
 
+            checkDatapack(ctx, r, installDatapack);
+
             writeBytes(new File(dir, "manifest.json"), manifestBytes);
             prefs(ctx).edit()
                 .putInt(KEY_SERIAL, r.serial)
@@ -258,6 +282,42 @@ final class UpdateManager {
             r.error = (msg == null || msg.isEmpty()) ? e.getClass().getSimpleName() : msg;
         }
         return r;
+    }
+
+    /**
+     * GeneralsX @feature Android port 27/09/2026 The community data patch comes straight from
+     * the GeneralsOnline CDN, verified by the SHA-256 in its own manifest (DataPackInstaller).
+     * Only a player who installed it is kept current -- nothing is pushed on anyone else.
+     */
+    private static void checkDatapack(Context ctx, Result r, boolean install) {
+        String installed = DataPackInstaller.installedVersion(ctx);
+        if (installed == null) {
+            return;
+        }
+        String latest = DataPackInstaller.latestVersion(ctx);
+        if (latest == null || latest.equals(installed)) {
+            return;
+        }
+        if (!install) {
+            r.datapackAvailable = latest;
+            return;
+        }
+        DataPackInstaller.Result result = DataPackInstaller.install(ctx, new DataPackInstaller.Progress() {
+            @Override public void onChecking() { }
+            @Override public void onDownloading(long bytes, long total) { }
+            @Override public void onInstalling() { }
+        });
+        if (result.ok) {
+            r.datapackInstalled = result.version;
+        } else {
+            r.datapackAvailable = latest;
+        }
+    }
+
+    static boolean isUnmeteredNetwork(Context ctx) {
+        android.net.ConnectivityManager cm =
+            (android.net.ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm != null && !cm.isActiveNetworkMetered();
     }
 
     private static boolean writeRemoteConfig(Context ctx, JSONObject config) throws IOException {

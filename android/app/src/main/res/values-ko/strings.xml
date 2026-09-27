@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">업데이트 확인 실패: %1$s</string>
     <string name="setup_updates_not_published">아직 게시된 업데이트가 없습니다.</string>
     <string name="setup_updates_offline">인터넷에 연결되어 있지 않습니다. 런처와 게임은 오프라인에서도 작동하며, 업데이트는 다음에 확인합니다.</string>
+    <string name="setup_updates_datapack_installed">커뮤니티 데이터 패치가 %1$s 버전으로 업데이트되었습니다.</string>
+    <string name="setup_updates_datapack_available">새 커뮤니티 데이터 패치(%1$s)가 나왔습니다. \'업데이트 확인\'을 눌러 받으세요(약 35MB).</string>
 </resources>

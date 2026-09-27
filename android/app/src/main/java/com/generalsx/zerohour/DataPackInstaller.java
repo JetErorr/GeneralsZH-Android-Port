@@ -71,6 +71,26 @@ final class DataPackInstaller {
 
     private static final String MANIFEST_URL = "https://cdn.playgenerals.online/manifest.json";
 
+    /**
+     * GeneralsX @feature Android port 27/09/2026 The package's own manifest address can be
+     * changed from the signed update settings (datapack_manifest_url), so a move of the
+     * GeneralsOnline CDN does not need a new APK. Only an https address is taken.
+     */
+    static String manifestUrl(Context ctx) {
+        String url = UpdateManager.remoteConfig(ctx, "datapack_manifest_url", MANIFEST_URL);
+        return url.startsWith("https://") ? url : MANIFEST_URL;
+    }
+
+    /** The version the GeneralsOnline CDN offers now, or null if it cannot be reached. */
+    static String latestVersion(Context ctx) {
+        try {
+            String version = new JSONObject(fetchText(manifestUrl(ctx))).optString("version", "");
+            return version.isEmpty() ? null : version;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     /** The only two directories in the package that mean anything here. */
     private static final String[] WANTED_PREFIXES = {
         "GeneralsOnlineGameData/",
@@ -263,7 +283,7 @@ final class DataPackInstaller {
         File tempZip = null;
         try {
             progress.onChecking();
-            JSONObject manifest = new JSONObject(fetchText(MANIFEST_URL));
+            JSONObject manifest = new JSONObject(fetchText(manifestUrl(ctx)));
             String version = manifest.optString("version", "");
             String downloadUrl = manifest.optString("download_url", "");
             long expectedSize = manifest.optLong("size", -1);

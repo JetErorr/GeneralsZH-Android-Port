@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">Falha ao verificar: %1$s</string>
     <string name="setup_updates_not_published">Nenhuma atualização foi publicada ainda.</string>
     <string name="setup_updates_offline">Sem conexão com a internet. O launcher e o jogo funcionam offline; as atualizações serão verificadas na próxima vez.</string>
+    <string name="setup_updates_datapack_installed">Patch de dados da comunidade atualizado para a versão %1$s.</string>
+    <string name="setup_updates_datapack_available">Saiu um novo patch de dados da comunidade (%1$s). Toque em “Procurar atualizações” para baixá-lo (cerca de 35 MB).</string>
 </resources>

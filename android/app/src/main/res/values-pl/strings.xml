@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">Nie udało się sprawdzić: %1$s</string>
     <string name="setup_updates_not_published">Nie opublikowano jeszcze żadnych aktualizacji.</string>
     <string name="setup_updates_offline">Brak połączenia z internetem. Launcher i gra działają offline; aktualizacje zostaną sprawdzone następnym razem.</string>
+    <string name="setup_updates_datapack_installed">Łatka danych społeczności zaktualizowana do wersji %1$s.</string>
+    <string name="setup_updates_datapack_available">Jest nowa łatka danych społeczności (%1$s). Dotknij „Sprawdź aktualizacje”, aby ją pobrać (około 35 MB).</string>
 </resources>

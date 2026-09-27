@@ -4,8 +4,11 @@ The launcher checks the repository's `updates` branch (on start, and from **Home
 Check for updates**) and takes two kinds of update from it:
 
 - **Settings** (`update/config.json` in the main tree): values the engine reads at startup. Today
-  the STUN and TURN server lists (`stun_servers`, `turn_servers`). A missing key keeps the value
-  built into the engine.
+  the STUN and TURN server lists (`stun_servers`, `turn_servers`), the PC client checksum for
+  cross-play (`pc_exe_crc`, computed with `scripts/update/pc-exe-crc.py`) and the community data
+  patch manifest address (`datapack_manifest_url`). A missing key keeps the value built in.
+  The community data patch itself comes from that manifest: the launcher compares versions on
+  every check and updates an installed patch by itself on Wi-Fi.
 - **Engine**: a newer `libmain.so` / `libmain60.so`. It is downloaded into the app's private
   storage and used from the next game start, instead of the engine inside the APK.
 

@@ -313,4 +313,6 @@
     <string name="setup_updates_failed">تعذّر البحث عن تحديثات: %1$s</string>
     <string name="setup_updates_not_published">لم يُنشر أي تحديث بعد.</string>
     <string name="setup_updates_offline">لا يوجد اتصال بالإنترنت. يعمل المشغّل واللعبة دون اتصال، وسيتم البحث عن التحديثات في المرة القادمة.</string>
+    <string name="setup_updates_datapack_installed">تم تحديث رقعة بيانات المجتمع إلى الإصدار %1$s.</string>
+    <string name="setup_updates_datapack_available">صدر إصدار جديد من رقعة بيانات المجتمع (%1$s). اضغط «البحث عن تحديثات» لتنزيله (نحو 35 ميغابايت).</string>
 </resources>

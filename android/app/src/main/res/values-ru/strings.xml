@@ -315,4 +315,6 @@
     <string name="setup_updates_failed">Не удалось проверить обновления: %1$s</string>
     <string name="setup_updates_not_published">Обновления ещё не публиковались.</string>
     <string name="setup_updates_offline">Нет подключения к интернету. Лаунчер и игра работают и без него; обновления проверятся в следующий раз.</string>
+    <string name="setup_updates_datapack_installed">Патч данных сообщества обновлён до версии %1$s.</string>
+    <string name="setup_updates_datapack_available">Вышла новая версия патча данных сообщества (%1$s). Нажмите «Проверить обновления», чтобы скачать её (около 35 МБ).</string>
 </resources>

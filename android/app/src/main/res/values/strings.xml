@@ -320,4 +320,6 @@
     <string name="setup_updates_failed">Update check failed: %1$s</string>
     <string name="setup_updates_not_published">No updates have been published yet.</string>
     <string name="setup_updates_offline">No internet connection. The launcher and the game work offline; updates will be checked next time.</string>
+    <string name="setup_updates_datapack_installed">Community data patch updated to version %1$s.</string>
+    <string name="setup_updates_datapack_available">A new community data patch is out (%1$s). Tap Check for updates to download it (about 35 MB).</string>
 </resources>

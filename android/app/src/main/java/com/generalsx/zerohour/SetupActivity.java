@@ -500,7 +500,9 @@ public class SetupActivity extends Activity {
             toast(getString(R.string.setup_updates_checking));
         }
         new Thread(() -> {
-            final UpdateManager.Result r = UpdateManager.check(getApplicationContext());
+            final android.content.Context app = getApplicationContext();
+            final UpdateManager.Result r = UpdateManager.check(app,
+                userAsked || UpdateManager.isUnmeteredNetwork(app));
             runOnUiThread(() -> {
                 updateCheckRunning = false;
                 refreshUpdatesStatus();
@@ -513,6 +515,11 @@ public class SetupActivity extends Activity {
                             : getString(R.string.setup_updates_failed, r.error));
                     }
                     return;
+                }
+                if (r.datapackInstalled != null) {
+                    toast(getString(R.string.setup_updates_datapack_installed, r.datapackInstalled));
+                } else if (r.datapackAvailable != null) {
+                    toast(getString(R.string.setup_updates_datapack_available, r.datapackAvailable));
                 }
                 if (r.engineDownloaded) {
                     toast(getString(R.string.setup_updates_engine_ready, r.engineSeq));
