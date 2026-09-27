@@ -2779,14 +2779,20 @@ void ControlBar::initTouchModeButtons()
 	}
 
 	// GeneralsX @feature Android port 27/09/2026 The page arrows on a builder's bar
-	// (addBuilderPageButtons). SUFakeToggle is the arrow the GLA worker already uses to flip
-	// between its real and fake buildings, so the same picture means "other page" here too.
+	// (addBuilderPageButtons): a cyan down arrow for "more orders", an up arrow for "back".
+	// Both pictures are drawn by the display at startup (W3DDisplay.cpp,
+	// registerBuilderPageImages); should that ever fail, SUFakeToggle -- the GLA worker's own
+	// "other page" arrow -- stands in for both.
+	const char *moreImage = TheMappedImageCollection && TheMappedImageCollection->findImageByName( "GXBuilderPageMore" )
+		? "GXBuilderPageMore" : "SUFakeToggle";
+	const char *backImage = TheMappedImageCollection && TheMappedImageCollection->findImageByName( "GXBuilderPageBack" )
+		? "GXBuilderPageBack" : "SUFakeToggle";
 	CommandButton *builderMore = newCommandButton( "GX_Command_TouchBuilderPageMore" );
 	builderMore->initTouchModeButton( GUI_COMMAND_GX_BUILDER_PAGE,
-																	 "GX:BuilderPageMore", "GX:ToolTipBuilderPageMore", "SUFakeToggle" );
+																	 "GX:BuilderPageMore", "GX:ToolTipBuilderPageMore", moreImage );
 	CommandButton *builderBack = newCommandButton( "GX_Command_TouchBuilderPageBack" );
 	builderBack->initTouchModeButton( GUI_COMMAND_GX_BUILDER_PAGE,
-																	 "GX:BuilderPageBack", "GX:ToolTipBuilderPageBack", "SUFakeToggle" );
+																	 "GX:BuilderPageBack", "GX:ToolTipBuilderPageBack", backImage );
 	if( builderMore->getButtonImage() != nullptr && builderBack->getButtonImage() != nullptr )
 	{
 		m_touchBuilderMoreButton = builderMore;
@@ -2794,7 +2800,7 @@ void ControlBar::initTouchModeButtons()
 	}
 	else
 	{
-		fprintf(stderr, "[touchmodes] SUFakeToggle image missing; no builder page arrow\n");
+		fprintf(stderr, "[touchmodes] builder page arrow images missing; no builder pages\n");
 	}
 #endif
 }
