@@ -177,9 +177,12 @@ English. Tooltips read "强于：… / 弱于：…", "所需电力：", "冷却
 names stay in English. Jokes are localised ("小兔子乖乖，把门儿开开" for the test rhyme, "滴滴香浓，
 意犹未尽" for "Good to the last drop", "一号货架有东西洒了！").
 
-The text needs a font with CJK glyphs. The APK only bundles Latin fonts (`fonts/arial.ttf` and
-friends), and on Android `Locate_Font_FontConfig` resolves every unknown face name to
-`fonts/arial.ttf`, so until a CJK font is resolved the pack renders as empty boxes on Android.
+The text needs a font with CJK glyphs. The APK only bundles Latin/Cyrillic fonts, so the
+engine takes any glyph the game font lacks from a fallback face: first `fonts/fallback.ttf`
+(or `.otf`/`.ttc`) in the game-data folder if the player put one there, then the system CJK font
+from `/system/fonts` (Noto Sans CJK on current Android, Droid Sans Fallback on old devices), or
+on desktop Linux the "Noto Sans CJK SC"/"WenQuanYi Zen Hei" families via fontconfig. A device
+with none of these shows empty boxes; copying any CJK `.ttf` to `fonts/fallback.ttf` fixes it.
 
 ## Korean
 
@@ -192,5 +195,6 @@ become "꼬마" and "애송이". Hotkeys follow "이름(&K)". Tooltips read "강
 "필요 전력:", "재사용 대기시간:", "사용 위치:". Multiplayer map names stay in English. Jokes are
 localised ("산토끼 토끼야" for the test rhyme, "소리 없이 강하다" for "Silent but deadly").
 
-Like the Chinese pack, it needs a font with Hangul glyphs; see the note under Simplified Chinese.
+Like the Chinese pack, it takes its Hangul glyphs from the fallback face; see the note under
+Simplified Chinese.
 

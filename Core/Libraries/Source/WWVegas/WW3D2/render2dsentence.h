@@ -135,6 +135,9 @@ private:
 	void							Free_Freetype_Font( void );
 	const FontCharsClassCharDataStruct *	Store_Freetype_Char( WCHAR ch );
 	const char *					Locate_Font_FontConfig( const char *font_name );
+	// GeneralsX @bugfix Android port 27/09/2026 Per-glyph fallback for scripts the base face lacks (CJK, Hangul, Arabic)
+	void							Load_Freetype_Fallback_Faces( void );
+	FT_Face							Find_Freetype_Fallback_Face( WCHAR ch, FT_UInt *glyph_index );
 #endif
 	
 	void							Update_Current_Buffer( int char_width );
@@ -170,6 +173,10 @@ private:
 	FT_Library							FTLibrary;
 	FT_Face								FTFace;
 	StringClass							FreetypeFontPath;
+	enum { MAX_FT_FALLBACK_FACES = 8 };
+	FT_Face								FTFallbackFaces[MAX_FT_FALLBACK_FACES];
+	int									FTFallbackFaceCount;
+	bool									FTFallbackFacesLoaded;
 #endif
 	
 	FontCharsClassCharDataStruct *					ASCIICharArray[256];

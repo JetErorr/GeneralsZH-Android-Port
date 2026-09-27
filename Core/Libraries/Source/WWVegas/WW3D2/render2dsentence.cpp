@@ -1465,6 +1465,8 @@ FontCharsClass::FontCharsClass () :
 #if defined(SAGE_USE_FREETYPE) && !defined(_WIN32)
 	FTLibrary( nullptr ),
 	FTFace( nullptr ),
+	FTFallbackFaceCount( 0 ),
+	FTFallbackFacesLoaded( false ),
 #endif
 	CurrPixelOffset( 0 ),
 	PointSize( 0 ),
@@ -1476,6 +1478,9 @@ FontCharsClass::FontCharsClass () :
 {
 	AlternateUnicodeFont = nullptr;
 	::memset( ASCIICharArray, 0, sizeof (ASCIICharArray) );
+#if defined(SAGE_USE_FREETYPE) && !defined(_WIN32)
+	::memset( FTFallbackFaces, 0, sizeof (FTFallbackFaces) );
+#endif
 }
 
 
@@ -1972,6 +1977,8 @@ FontCharsClass::Update_Current_Buffer (int char_width)
 }
 
 #if defined(SAGE_USE_FREETYPE) && !defined(_WIN32)
+#include <strings.h>
+#include <unistd.h>
 
 #if (defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) || defined(__ANDROID__)
 
@@ -2210,6 +2217,20 @@ FontCharsClass::Store_Freetype_Char (WCHAR ch)
 	FT_UInt glyph_index = FT_Get_Char_Index( FTFace, ch );
 	GX_TRACE("Store_Freetype_Char: FT_Get_Char_Index returned glyph_index=%u\n", (unsigned int)glyph_index);
 
+	// GeneralsX @bugfix Android port 27/09/2026 A code point the face has no glyph for used to be
+	// rendered as glyph 0 (an empty box). The game text for zh/ko/ar/fa is almost entirely such
+	// code points, because the bundled faces are Latin/Cyrillic only, so look the glyph up in the
+	// fallback faces (system CJK/Arabic fonts) and render it from whichever face has it.
+	FT_Face face = FTFace;
+	if ( glyph_index == 0 && ch >= 0x80 ) {
+		FT_UInt fallback_index = 0;
+		FT_Face fallback = Find_Freetype_Fallback_Face( ch, &fallback_index );
+		if ( fallback != nullptr ) {
+			face = fallback;
+			glyph_index = fallback_index;
+		}
+	}
+
 	// GeneralsX @bugfix fbraz 03/06/2026 Log ALL Cyrillic character rendering attempts
 	if (ch >= 0x0400 && ch <= 0x04FF) {
 		GX_TRACE("[GX-ISSUE144] Store_Freetype_Char U+%04X glyph_idx=%u font=%s\n",
@@ -2221,7 +2242,7 @@ FontCharsClass::Store_Freetype_Char (WCHAR ch)
 	//
 	//	Load the glyph (without rendering yet)
 	//
-	FT_Error error = FT_Load_Glyph( FTFace, glyph_index, FT_LOAD_DEFAULT );
+	FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_DEFAULT );
 	GX_TRACE("Store_Freetype_Char: FT_Load_Glyph returned error=%d\n", (int)error);
 	if ( error != 0 ) {
 		return nullptr;
@@ -2230,13 +2251,13 @@ FontCharsClass::Store_Freetype_Char (WCHAR ch)
 	//
 	//	Convert to an anti-aliased bitmap
 	//
-	error = FT_Render_Glyph( FTFace->glyph, FT_RENDER_MODE_NORMAL );
+	error = FT_Render_Glyph( face->glyph, FT_RENDER_MODE_NORMAL );
 	GX_TRACE("Store_Freetype_Char: FT_Render_Glyph returned error=%d\n", (int)error);
 	if ( error != 0 ) {
 		return nullptr;
 	}
 
-	FT_GlyphSlot glyph = FTFace->glyph;
+	FT_GlyphSlot glyph = face->glyph;
 	GX_TRACE("Store_Freetype_Char: glyph slot=%p bitmap.width=%u bitmap.rows=%u advance.x=%ld\n",
 		(void*)glyph, glyph ? glyph->bitmap.width : 0u, glyph ? glyph->bitmap.rows : 0u, glyph ? (long)glyph->advance.x : 0L);
 
@@ -2365,6 +2386,157 @@ FontCharsClass::Store_Freetype_Char (WCHAR ch)
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
+//	Freetype fallback font files
+//
+// GeneralsX @bugfix Android port 27/09/2026 Candidate faces for glyphs the base face lacks.
+// Android ships its CJK/Arabic fonts in /system/fonts under stable file names; the Pan-CJK
+// collection's face 2 is Simplified Chinese, whose glyph set also covers Hangul and kana. A
+// fonts/fallback.* file in the game-data folder is tried first so a player can supply a face.
+// On fontconfig platforms the same families are resolved by name, and a candidate is only
+// accepted when fontconfig returns that family rather than its generic substitute.
+////////////////////////////////////////////////////////////////////////////////////
+namespace
+{
+struct FallbackFontFile
+{
+	const char *	path;
+	int				face_index;
+};
+
+static const FallbackFontFile kBundledFallbackFiles[] = {
+	{ "fonts/fallback.ttf", 0 },
+	{ "fonts/fallback.otf", 0 },
+	{ "fonts/fallback.ttc", 0 },
+};
+
+#if defined(__ANDROID__)
+static const FallbackFontFile kSystemFallbackFiles[] = {
+	{ "/system/fonts/NotoSansCJK-Regular.ttc", 2 },
+	{ "/system/fonts/NotoSansSC-Regular.otf", 0 },
+	{ "/system/fonts/NotoSansKR-Regular.otf", 0 },
+	{ "/system/fonts/DroidSansFallbackFull.ttf", 0 },
+	{ "/system/fonts/DroidSansFallback.ttf", 0 },
+	{ "/system/fonts/NotoNaskhArabic-Regular.ttf", 0 },
+	{ "/system/fonts/NotoNaskhArabicUI-Regular.ttf", 0 },
+	{ "/system/fonts/NotoSansArabic-Regular.ttf", 0 },
+};
+#endif
+
+#if !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE) && !defined(__ANDROID__)
+static const char *kFontconfigFallbackFamilies[] = {
+	"Noto Sans CJK SC",
+	"Noto Sans CJK KR",
+	"WenQuanYi Zen Hei",
+	"Droid Sans Fallback",
+	"Noto Naskh Arabic",
+	"Noto Sans Arabic",
+};
+#endif
+}
+
+void
+FontCharsClass::Load_Freetype_Fallback_Faces (void)
+{
+	FTFallbackFacesLoaded = true;
+	if ( FTLibrary == nullptr ) {
+		return;
+	}
+
+	const int font_height = FT_MulDiv( PointSize, 96, 72 );
+
+	auto add_face = [&]( const char *path, int face_index ) {
+		if ( FTFallbackFaceCount >= MAX_FT_FALLBACK_FACES ) {
+			return;
+		}
+		if ( FreetypeFontPath.Get_Length() > 0 && strcmp( path, FreetypeFontPath.Peek_Buffer() ) == 0 ) {
+			return;
+		}
+		FT_Face face = nullptr;
+		FT_Error error = FT_New_Face( FTLibrary, path, face_index, &face );
+		if ( error != 0 && face_index != 0 ) {
+			error = FT_New_Face( FTLibrary, path, 0, &face );
+		}
+		if ( error != 0 ) {
+			return;
+		}
+		if ( !FT_IS_SCALABLE( face ) || FT_Set_Pixel_Sizes( face, 0, font_height ) != 0 ) {
+			FT_Done_Face( face );
+			return;
+		}
+		GX_TRACE("[fontfallback] %s face %d family=%s glyphs=%ld for font=%s\n",
+			path, face_index, face->family_name ? face->family_name : "<null>", face->num_glyphs, GDIFontName.str());
+		FTFallbackFaces[FTFallbackFaceCount++] = face;
+	};
+
+	for ( const FallbackFontFile &file : kBundledFallbackFiles ) {
+		if ( access( file.path, R_OK ) == 0 ) {
+			add_face( file.path, file.face_index );
+		}
+	}
+
+#if defined(__ANDROID__)
+	for ( const FallbackFontFile &file : kSystemFallbackFiles ) {
+		if ( access( file.path, R_OK ) == 0 ) {
+			add_face( file.path, file.face_index );
+		}
+	}
+#elif !(defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
+	FcConfig *config = FcInitLoadConfigAndFonts();
+	if ( config != nullptr ) {
+		for ( const char *family : kFontconfigFallbackFamilies ) {
+			FcPattern *pattern = FcNameParse( (const FcChar8*)family );
+			if ( pattern == nullptr ) {
+				continue;
+			}
+			FcConfigSubstitute( config, pattern, FcMatchPattern );
+			FcDefaultSubstitute( pattern );
+			FcResult result = FcResultNoMatch;
+			FcPattern *match = FcFontMatch( config, pattern, &result );
+			if ( match != nullptr && result == FcResultMatch ) {
+				FcChar8 *matched_family = nullptr;
+				FcChar8 *file_path = nullptr;
+				int face_index = 0;
+				FcPatternGetInteger( match, FC_INDEX, 0, &face_index );
+				if ( FcPatternGetString( match, FC_FAMILY, 0, &matched_family ) == FcResultMatch
+					&& strcasecmp( (const char*)matched_family, family ) == 0
+					&& FcPatternGetString( match, FC_FILE, 0, &file_path ) == FcResultMatch ) {
+					add_face( (const char*)file_path, face_index );
+				}
+			}
+			if ( match != nullptr ) {
+				FcPatternDestroy( match );
+			}
+			FcPatternDestroy( pattern );
+		}
+		FcConfigDestroy( config );
+	}
+#endif
+
+	if ( FTFallbackFaceCount == 0 ) {
+		GX_TRACE("[fontfallback] no fallback face found for font=%s; glyphs outside it render empty\n", GDIFontName.str());
+	}
+}
+
+FT_Face
+FontCharsClass::Find_Freetype_Fallback_Face (WCHAR ch, FT_UInt *glyph_index)
+{
+	if ( !FTFallbackFacesLoaded ) {
+		Load_Freetype_Fallback_Faces();
+	}
+
+	for ( int i = 0; i < FTFallbackFaceCount; i++ ) {
+		FT_UInt index = FT_Get_Char_Index( FTFallbackFaces[i], ch );
+		if ( index != 0 ) {
+			*glyph_index = index;
+			return FTFallbackFaces[i];
+		}
+	}
+	return nullptr;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+//
 //	Free_Freetype_Font
 //
 // GeneralsX @build fbraz 11/02/2026 BenderAI - Cleanup FreeType resources
@@ -2379,6 +2551,13 @@ FontCharsClass::Free_Freetype_Font (void)
 		FT_Done_Face( FTFace );
 		FTFace = nullptr;
 	}
+
+	for ( int i = 0; i < FTFallbackFaceCount; i++ ) {
+		FT_Done_Face( FTFallbackFaces[i] );
+		FTFallbackFaces[i] = nullptr;
+	}
+	FTFallbackFaceCount = 0;
+	FTFallbackFacesLoaded = false;
 
 	//
 	//	Free the FreeType library
