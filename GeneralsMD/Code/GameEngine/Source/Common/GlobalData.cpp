@@ -1178,6 +1178,48 @@ GlobalData *GlobalData::newOverride()
 
 }
 
+// GeneralsX @feature Android port 27/09/2026 The second half of the PC branch of
+// generateExeCRC(): the launcher leaves the CRC state after the PC executable and the version
+// number in files/update/pc_exe_crc_seed.txt, and the two multiplayer scripts are added here from
+// this engine's own file system, byte for byte as generateExeCRC() adds them.
+static void feedExeCrc(UnsignedInt &crc, const char *path)
+{
+	File *fp = TheFileSystem->openFile(path, File::READ | File::BINARY);
+	if (fp == nullptr)
+		return;
+	unsigned char block[65536];
+	Int amtRead;
+	while ((amtRead = fp->read(block, sizeof(block))) > 0)
+	{
+		for (Int i = 0; i < amtRead; ++i)
+			crc = ((crc << 1) | (crc >> 31)) + block[i];
+	}
+	fp->close();
+}
+
+static Bool pcExeCrcFromDataPack(UnsignedInt &out)
+{
+	const std::string dir = GXRemoteConfig::updateDirPath();
+	if (dir.empty() || TheFileSystem == nullptr)
+		return FALSE;
+	FILE *f = fopen((dir + "/pc_exe_crc_seed.txt").c_str(), "r");
+	if (f == nullptr)
+		return FALSE;
+	char buf[64] = { 0 };
+	const Bool read = fgets(buf, sizeof(buf), f) != nullptr;
+	fclose(f);
+	char *end = nullptr;
+	const unsigned long seed = read ? strtoul(buf, &end, 10) : 0;
+	if (!read || end == buf)
+		return FALSE;
+	UnsignedInt crc = (UnsignedInt)seed;
+	feedExeCrc(crc, "Data\\Scripts\\SkirmishScripts.scb");
+	feedExeCrc(crc, "Data\\Scripts\\MultiplayerScripts.scb");
+	fprintf(stderr, "[GX-CRC] PC exe checksum from the installed data package: %u\n", (unsigned)crc);
+	out = crc;
+	return TRUE;
+}
+
 //-------------------------------------------------------------------------------------------------
 void GlobalData::init()
 {
@@ -1219,6 +1261,15 @@ void GlobalData::init()
 		if (claimed == 0)
 		{
 			claimed = 524577083UL;
+		}
+		// GeneralsX @feature Android port 27/09/2026 Better still, the number of the PC release
+		// this install actually has: the launcher hashes the PC executable inside the community
+		// data package when it installs it (DataPackInstaller.PC_EXE_NAME), so a new PC release
+		// needs neither an APK nor anyone to publish its number.
+		UnsignedInt fromDataPack = 0;
+		if (pcExeCrcFromDataPack(fromDataPack))
+		{
+			claimed = fromDataPack;
 		}
 		if (fgets(buf, sizeof(buf), marker) != nullptr)
 		{

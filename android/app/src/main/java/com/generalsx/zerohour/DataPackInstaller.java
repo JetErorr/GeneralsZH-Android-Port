@@ -314,8 +314,10 @@ final class DataPackInstaller {
 
             progress.onInstalling();
             File target = userDataDir();
-            List<String> written = extract(tempZip, target);
+            long[] pcExeCrc = new long[] { -1 };
+            List<String> written = extract(tempZip, target, pcExeCrc);
             writeInstalledList(ctx, written);
+            writePcExeCrcSeed(ctx, pcExeCrc[0], version);
             NetworkTrace.write(ctx, "[datapack] installed " + written.size()
                 + " file(s) into " + target.getAbsolutePath());
 
@@ -407,8 +409,70 @@ final class DataPackInstaller {
         }
     }
 
+    /**
+     * GeneralsX @feature Android port 27/09/2026 The PC client's EXE checksum, from the PC
+     * executable in this very package. PC lobbies refuse a client whose checksum differs from
+     * the host's, and "Play with PC players" claims the PC number -- which every PC release
+     * changes. The package is the PC release, so the executable is right here: this runs the
+     * first half of GlobalData::generateExeCRC() (rotate left by one, add the byte, over the
+     * executable, then the 1.4 version number) and leaves the state in files/update, where the
+     * engine adds the two .scb scripts from its own file system and claims the result
+     * (GlobalData.cpp). scripts/update/pc-exe-crc.py is the same computation on a PC.
+     */
+    static final String PC_EXE_NAME = "GeneralsOnlineZH_60.exe";
+    static final String PC_EXE_SEED_FILE = "pc_exe_crc_seed.txt";
+    // generateExeCRC() stops after 1001 blocks of 64 KiB; the same limit keeps the two equal.
+    private static final long PC_EXE_CRC_LIMIT = 1001L * 65536L;
+    private static final int PC_VERSION_NUMBER = (1 << 16) | 4;
+
+    private static long crcFeed(long crc, int b) {
+        long rotated = ((crc << 1) | (crc >>> 31)) & 0xFFFFFFFFL;
+        return (rotated + (b & 0xFF)) & 0xFFFFFFFFL;
+    }
+
+    private static long pcExeCrcState(InputStream exe) throws IOException {
+        long crc = 0;
+        long done = 0;
+        byte[] buffer = new byte[64 * 1024];
+        int read;
+        while (done < PC_EXE_CRC_LIMIT && (read = exe.read(buffer)) > 0) {
+            int use = (int) Math.min(read, PC_EXE_CRC_LIMIT - done);
+            for (int i = 0; i < use; i++) {
+                crc = crcFeed(crc, buffer[i]);
+            }
+            done += use;
+        }
+        for (int i = 0; i < 4; i++) {
+            crc = crcFeed(crc, PC_VERSION_NUMBER >>> (8 * i));
+        }
+        return crc;
+    }
+
+    private static void writePcExeCrcSeed(Context ctx, long seed, String version) throws IOException {
+        File dir = new File(ctx.getFilesDir(), "update");
+        File file = new File(dir, PC_EXE_SEED_FILE);
+        if (seed < 0) {
+            // A package without the PC executable: the settings' number is the better guess.
+            file.delete();
+            return;
+        }
+        if (!dir.isDirectory() && !dir.mkdirs()) {
+            throw new IOException("could not create " + dir.getAbsolutePath());
+        }
+        try (FileWriter out = new FileWriter(file)) {
+            out.write(seed + "\n" + version + "\n");
+        }
+        NetworkTrace.write(ctx, "[datapack] PC exe checksum state " + seed + " from " + PC_EXE_NAME);
+    }
+
+    /** Whether the installed package's PC checksum has been computed (see PC_EXE_NAME). */
+    static boolean hasPcExeCrcSeed(Context ctx) {
+        return new File(new File(ctx.getFilesDir(), "update"), PC_EXE_SEED_FILE).isFile();
+    }
+
     /** Extracts the wanted prefixes into targetRoot, listing what it wrote. */
-    private static List<String> extract(File zipFile, File targetRoot) throws IOException {
+    private static List<String> extract(File zipFile, File targetRoot, long[] pcExeCrc)
+            throws IOException {
         String rootPath = targetRoot.getCanonicalPath() + File.separator;
         List<String> written = new ArrayList<>();
 
@@ -417,6 +481,10 @@ final class DataPackInstaller {
             ZipEntry entry;
             while ((entry = zip.getNextEntry()) != null) {
                 String name = entry.getName().replace('\\', '/');
+                if (name.equalsIgnoreCase(PC_EXE_NAME)) {
+                    pcExeCrc[0] = pcExeCrcState(zip);
+                    continue;
+                }
                 if (!isWanted(name)) {
                     continue;
                 }

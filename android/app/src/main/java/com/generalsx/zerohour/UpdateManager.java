@@ -295,7 +295,9 @@ final class UpdateManager {
             return;
         }
         String latest = DataPackInstaller.latestVersion(ctx);
-        if (latest == null || latest.equals(installed)) {
+        // An install from before the launcher computed the PC checksum is fetched once more,
+        // so cross-play gets the number of the PC release it actually has.
+        if (latest == null || (latest.equals(installed) && DataPackInstaller.hasPcExeCrcSeed(ctx))) {
             return;
         }
         if (!install) {
