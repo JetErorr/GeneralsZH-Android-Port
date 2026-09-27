@@ -5,9 +5,9 @@ GeneralsX is a cross-platform port of Command & Conquer: Generals Zero Hour, por
 legacy Windows DirectX 8 + Miles Sound code to a modern stack (SDL3 + DXVK + OpenAL +
 64-bit). This fork's active focus is **Android** — including GeneralsOnline, a
 from-scratch NGMP-based online multiplayer backend replacing the long-dead GameSpy
-servers (lobby, custom match, quickmatch, persona/stats, social) — with macOS and
-iOS/iPadOS also fully working but not currently receiving the same volume of new
-work. This is a **massive C++ game engine** (~500k LOC) preserving retail gameplay
+servers (lobby, custom match, quickmatch, persona/stats, social). The macOS and
+iOS/iPadOS builds are inherited from the project this repository was forked from and
+are **not maintained here** (see `docs/port/APPLE_PLATFORMS.md`). This is a **massive C++ game engine** (~500k LOC) preserving retail gameplay
 while modernizing the platform layer.
 
 ## Must-Load Context
@@ -29,8 +29,10 @@ Before starting work, read:
 - `GeneralsMD/Code/GameEngineDevice/Source/SDL3Device/GameClient/TouchInput.cpp` – what a gesture means, resolved by the engine's own rules
 
 ## Platform Focus
-- **Active**: Android (`android-vulkan`) — primary target, most real-device testing
-- **Also maintained**: macOS (`macos-vulkan`), iOS/iPadOS (`ios-vulkan`), Linux (`linux64-deploy`)
+- **Active**: Android (`android-vulkan`) — the only target this fork develops and tests
+- **Inherited, not maintained**: macOS (`macos-vulkan`), iOS/iPadOS (`ios-vulkan`) — kept
+  building where shared code allows, but no work is spent on them; Linux (`linux64-deploy`)
+  is used only as a host for tooling
 - **Future/Exploratory**: Windows (MinGW path, issue #29)
 - **Legacy**: VC6 + DirectX 8 + Miles (reference only)
 

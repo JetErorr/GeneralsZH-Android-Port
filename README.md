@@ -257,14 +257,16 @@ work that this repo inherits everywhere:
   [GeneralsOnline](https://www.playgenerals.online), the online service and PC client
   whose client this port brings to Android, and whose community data patch and
   maps the launcher downloads
-- **[tarek369/GeneralsZH-Android](https://github.com/tarek369/GeneralsZH-Android)** —
-  an independent, parallel Android port of the same lineage; several real bugs in
-  this port (a duplicate-symbol build break, an INI-parsing gap) were cross-checked
-  and traced faster thanks to its published engineering log
 - **This fork** — the Android port (the GeneralsOnline client on Android and
   cross-play with PC, touch controls, in-app launcher, language packs, device
   bring-up), plus engine fixes throughout, offered upstream
 - **DXVK, SDL, OpenAL Soft, FFmpeg, GameNetworkingSockets, Liberation Fonts** — the load-bearing walls
+
+Not part of that chain: **[tarek369/GeneralsZH-Android](https://github.com/tarek369/GeneralsZH-Android)**
+is a separate, independent Android port — this one is not built on it. Problems its users
+report are checked against this port too, and fixed here when they turn out to exist here as
+well; a couple of bugs (a duplicate-symbol build break, an INI-parsing gap) were traced faster
+thanks to its published engineering log.
 
 Engine code **GPL v3** (EA's source release → the chain above → this fork). Game
 assets: not included, not licensed here.
