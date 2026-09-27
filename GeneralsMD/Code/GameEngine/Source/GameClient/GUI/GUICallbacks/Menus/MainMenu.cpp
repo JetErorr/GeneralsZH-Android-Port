@@ -465,9 +465,20 @@ static void fitCreditLabel( GameWindow *label, const UnicodeString &text )
 	height = max( height, textHeight + marginY + 2 );
 
 	const Int left = GXSafeArea::leftPx();
-	const Int bottom = TheDisplay->getHeight() - GXSafeArea::bottomPx();
 	const Int newX = max( x, left );
-	const Int newY = min( y, bottom - height );
+	Int newY = min( y, (Int)TheDisplay->getHeight() - GXSafeArea::bottomPx() - height );
+#if defined(__ANDROID__) || (defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
+	// Under the frame, not on it: the menu backdrop (MainMenuRuler, 800x600 art stretched over
+	// the whole screen) draws its bottom frame line at rows 559-560 of 600 -- measured on a
+	// device screenshot at 1077-1079 of 1156. Centre the watermark in the strip between that
+	// line and the bottom edge. The strip lies below the bottom safe inset, which is there for
+	// the rounded corners; the label starts at the left inset, clear of the corner's curve.
+	const Int displayHeight = (Int)TheDisplay->getHeight();
+	const Int lineBottom = ( displayHeight * 561 ) / 600;
+	const Int strip = displayHeight - lineBottom;
+	if( strip >= height )
+		newY = lineBottom + ( strip - height ) / 2;
+#endif
 
 	Int parentX = 0, parentY = 0;
 	if (GameWindow *parent = label->winGetParent())
@@ -482,7 +493,11 @@ static void initLabelVersion()
 	NameKeyType versionID = TheNameKeyGenerator->nameToKey( "MainMenu.wnd:LabelVersion" );
 	GameWindow *labelVersion = TheWindowManager->winGetWindowFromId( nullptr, versionID );
 	UnicodeString creditText;
+#if defined(__ANDROID__)
+	creditText.translate("GeneralsX for Android - C&C Generals Zero Hour");
+#else
 	creditText.translate("GeneralsX - Multiplatform C&C Generals");
+#endif
 
 	if (labelVersion)
 	{

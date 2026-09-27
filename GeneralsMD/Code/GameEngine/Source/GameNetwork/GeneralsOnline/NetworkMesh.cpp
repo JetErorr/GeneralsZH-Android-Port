@@ -660,7 +660,11 @@ NetworkMesh::NetworkMesh()
 	fflush(stderr);
 
 	// TODO_STEAM: Dont hardcode, get everything from service
-	SteamNetworkingUtils()->SetGlobalConfigValueString(k_ESteamNetworkingConfig_P2P_STUN_ServerList, "stun:stun.playgenerals.online:53,stun:stun.playgenerals.online:3478,stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302,stun3.l.google.com:19302,stun4.l.google.com:19302");
+	// GeneralsX @bugfix Android port 27/09/2026 Upstream d22ef3439 (GeneralsOnline, 24/09/2026):
+	// every entry must resolve to distinct addresses. stun1-4.l.google.com resolve to the same
+	// IPs as stun.l.google.com, and duplicate addresses make the native ICE client -- the one
+	// this port has always used, and the PC client's since that commit -- retry STUN forever.
+	SteamNetworkingUtils()->SetGlobalConfigValueString(k_ESteamNetworkingConfig_P2P_STUN_ServerList, "stun:stun.playgenerals.online:53,stun:stun.playgenerals.online:3478,stun:stun.l.google.com:19302");
 	fprintf(stderr, "DEBUG-P2P: NetworkMesh ctor STUN server list set\n");
 	fflush(stderr);
 

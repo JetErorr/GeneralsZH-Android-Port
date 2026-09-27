@@ -103,6 +103,11 @@ extern void GadgetListBoxSetTopVisibleEntry( GameWindow *window, Int newPos );
 
 extern void GadgetListBoxSetAudioFeedback( GameWindow *listbox, Bool enable );
 
+// GeneralsX @feature Android port 27/09/2026 Finger drag scrolling, driven by the touch layer.
+extern void GadgetListBoxTouchScrollBegin( GameWindow *listbox, Int y );
+extern void GadgetListBoxTouchScrollMove( GameWindow *listbox, Int y );
+extern void GadgetListBoxTouchScrollEnd();
+
 //
 // you can use this to set the colors for the list box all at once, note that
 // it will also automatically change the colors for any attached slider

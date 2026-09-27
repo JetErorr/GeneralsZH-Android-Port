@@ -542,87 +542,60 @@ static Int addEntry( UnicodeString *string, Int color, Int row, Int column, Game
 // PUBLIC FUNCTIONS ///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// Touch drag scrolling ========================================================
+// GadgetListBoxTouchScroll ===================================================
 /** GeneralsX @feature Android port 27/09/2026 Scroll a list box by dragging a finger through
-	it. A mouse player has the wheel; on a phone the only way to scroll was the small arrows or
-	the thumb of the scroll bar at the list's edge. The list already receives the finger as
-	GWM_LEFT_DOWN / GWM_LEFT_DRAG / GWM_LEFT_UP (it grabs the down event), so the gesture is
-	handled here: once the finger has moved far enough vertically, the list follows it pixel by
-	pixel, and the release that ends a scroll does not select the row under the finger. A tap
-	that never moved still selects exactly as before. Only on touch platforms: a mouse drag in
-	a list keeps its stock meaning. */
+	it. A mouse player has the wheel; on a phone the only way was the small arrows or the thumb
+	at the list's edge. The touch layer (SDL3GameEngine.cpp) recognises a drag that started on a
+	list and calls these directly -- a finger on a list is not a mouse, and the window manager's
+	drag messages never reach a list for a touch that has not yet been classified as a press.
+	The list follows the finger pixel by pixel, clamped to the bound the scroll bar's own
+	tracking uses (GSM_SLIDER_TRACK), and the thumb moves with it. */
 //=============================================================================
-#if defined(__ANDROID__) || (defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
-#define GX_LISTBOX_TOUCH_SCROLL 1
-static struct
-{
-	GameWindow *window;
-	Int anchorY;
-	Int anchorPos;
-	Bool scrolling;
-} s_touchScroll = { nullptr, 0, 0, FALSE };
+static GameWindow *s_touchScrollWindow = nullptr;
+static Int s_touchScrollAnchorY = 0;
+static Int s_touchScrollAnchorPos = 0;
 
-static void touchScrollBegin( GameWindow *window, WindowMsgData mData1 )
+void GadgetListBoxTouchScrollBegin( GameWindow *listbox, Int y )
 {
-	ListboxData *list = (ListboxData *)window->winGetUserData();
-	s_touchScroll.window = window;
-	s_touchScroll.anchorY = (Int)( mData1 >> 16 );
-	s_touchScroll.anchorPos = list ? list->displayPos : 0;
-	s_touchScroll.scrolling = FALSE;
+	ListboxData *list = listbox ? (ListboxData *)listbox->winGetUserData() : nullptr;
+	s_touchScrollWindow = list ? listbox : nullptr;
+	s_touchScrollAnchorY = y;
+	s_touchScrollAnchorPos = list ? list->displayPos : 0;
 }
 
-// Returns TRUE while the gesture is a scroll.
-static Bool touchScrollDrag( GameWindow *window, WindowMsgData mData1 )
+void GadgetListBoxTouchScrollMove( GameWindow *listbox, Int y )
 {
-	if( s_touchScroll.window != window )
-		return FALSE;
-	ListboxData *list = (ListboxData *)window->winGetUserData();
+	if( listbox == nullptr || listbox != s_touchScrollWindow )
+		return;
+	ListboxData *list = (ListboxData *)listbox->winGetUserData();
 	if( list == nullptr || list->endPos <= 0 )
-		return FALSE;
+		return;
 
-	const Int dy = (Int)( mData1 >> 16 ) - s_touchScroll.anchorY;
-	if( !s_touchScroll.scrolling )
-	{
-		// About a third of a row, and never less than 1% of the screen, so a tap that wobbles
-		// is still a tap.
-		Int threshold = 8;
-		if( TheDisplay )
-			threshold = max( threshold, (Int)TheDisplay->getHeight() / 100 );
-		if( abs( dy ) < threshold )
-			return FALSE;
-		s_touchScroll.scrolling = TRUE;
-	}
-
-	// Same bound the scroll bar's own tracking applies (GSM_SLIDER_TRACK below).
 	Int maxPos = list->totalHeight - list->displayHeight + 1;
 	if( maxPos < 0 )
 		maxPos = 0;
-	Int pos = s_touchScroll.anchorPos - dy;
+	Int pos = s_touchScrollAnchorPos - ( y - s_touchScrollAnchorY );
 	if( pos < 0 )
 		pos = 0;
 	if( pos > maxPos )
 		pos = maxPos;
+	if( pos == list->displayPos )
+		return;
 	list->displayPos = pos;
 
 	// Refresh the scroll bar's range, then move its thumb to the new position.
-	adjustDisplay( window, 0, FALSE );
+	adjustDisplay( listbox, 0, FALSE );
 	if( list->slider != nullptr )
 	{
 		SliderData *sData = (SliderData *)list->slider->winGetUserData();
 		TheWindowManager->winSendSystemMsg( list->slider, GSM_SET_SLIDER, ( sData->maxVal - list->displayPos ), 0 );
 	}
-	return TRUE;
 }
 
-// Returns TRUE when the release ends a scroll, so it must not select anything.
-static Bool touchScrollEnd( GameWindow *window )
+void GadgetListBoxTouchScrollEnd()
 {
-	const Bool wasScroll = ( s_touchScroll.window == window ) && s_touchScroll.scrolling;
-	s_touchScroll.window = nullptr;
-	s_touchScroll.scrolling = FALSE;
-	return wasScroll;
+	s_touchScrollWindow = nullptr;
 }
-#endif
 
 // GadgetListBoxInput =========================================================
 /** Handle input for list box */
@@ -868,10 +841,6 @@ WindowMsgHandledType GadgetListBoxInput( GameWindow *window, UnsignedInt msg,
 		// ------------------------------------------------------------------------
 		case GWM_LEFT_UP:
 		{
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			if( touchScrollEnd( window ) )
-				break;
-#endif
 			TheWindowManager->winSetFocus( window );
 //			Int mousex = mData1 & 0xFFFF;
 			Int mousey = mData1 >> 16;
@@ -1043,10 +1012,6 @@ WindowMsgHandledType GadgetListBoxInput( GameWindow *window, UnsignedInt msg,
 		// ------------------------------------------------------------------------
 		case GWM_LEFT_DRAG:
 
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			if( touchScrollDrag( window, mData1 ) )
-				break;
-#endif
 			if (BitIsSet( instData->getStyle(), GWS_MOUSE_TRACK ) )
 				TheWindowManager->winSendSystemMsg( window->winGetOwner(),
 																						GGM_LEFT_DRAG,
@@ -1057,9 +1022,6 @@ WindowMsgHandledType GadgetListBoxInput( GameWindow *window, UnsignedInt msg,
 		// ------------------------------------------------------------------------
 		case GWM_LEFT_DOWN:
 			doAudioFeedback(window);
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			touchScrollBegin( window, mData1 );
-#endif
 			// we want to eat the down... so we may receive the up.
 			return MSG_HANDLED;
 
@@ -1109,10 +1071,6 @@ WindowMsgHandledType GadgetListBoxMultiInput( GameWindow *window, UnsignedInt ms
 		case GWM_LEFT_UP:
 		//case GWM_LEFT_CLICK:
 		{
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			if( touchScrollEnd( window ) )
-				break;
-#endif
 			TheWindowManager->winSetFocus( window );
 //			Int *selections = list->selections;
 			Int selectPos = -2;
@@ -1332,10 +1290,6 @@ WindowMsgHandledType GadgetListBoxMultiInput( GameWindow *window, UnsignedInt ms
 		// ------------------------------------------------------------------------
 		case GWM_LEFT_DRAG:
 
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			if( touchScrollDrag( window, mData1 ) )
-				break;
-#endif
 			if (BitIsSet( instData->getStyle(), GWS_MOUSE_TRACK ) )
 				TheWindowManager->winSendSystemMsg( window->winGetOwner(),
 																						GGM_LEFT_DRAG,
@@ -1346,9 +1300,6 @@ WindowMsgHandledType GadgetListBoxMultiInput( GameWindow *window, UnsignedInt ms
 		// ------------------------------------------------------------------------
 		case GWM_LEFT_DOWN:
 			doAudioFeedback(window);
-#ifdef GX_LISTBOX_TOUCH_SCROLL
-			touchScrollBegin( window, mData1 );
-#endif
 			// we want to eat the down... so we may receive the up.
 			return MSG_HANDLED;
 

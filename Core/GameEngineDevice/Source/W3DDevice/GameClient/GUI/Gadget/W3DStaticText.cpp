@@ -108,6 +108,31 @@ static void drawStaticTextText( GameWindow *window, WinInstanceData *instData,
 	// how much space will this text take up
 	text->getSize( &textWidth, &textHeight );
 
+	// GeneralsX @bugfix Android port 27/09/2026 A one-line label whose translation is longer
+	// than the English it was sized for wraps onto a second line the box cannot show, and the
+	// lower line is clipped away -- "Начальные финансы" in the skirmish menu showed as half of
+	// two lines. Step the font down until the text fits on the line the box has, then keep that
+	// font on the window so this runs once, not every frame. Only boxes shorter than two lines
+	// qualify, so a multi-line text area is never shrunk, and never below 60% of the original.
+	GameFont *currentFont = text->getFont();
+	if( wordWrap > 0 && currentFont && TheFontLibrary &&
+			textHeight > size.y && size.y < 2 * currentFont->height )
+	{
+		const Int minSize = max( 6, ( currentFont->pointSize * 6 ) / 10 );
+		for( Int pt = currentFont->pointSize - 1; pt >= minSize; --pt )
+		{
+			GameFont *smaller = TheFontLibrary->getFont( currentFont->nameString, pt, currentFont->bold );
+			if( smaller == nullptr || smaller == currentFont )
+				continue;
+			text->setFont( smaller );
+			text->getSize( &textWidth, &textHeight );
+			if( textHeight <= size.y )
+				break;
+		}
+		if( text->getFont() != currentFont )
+			window->winSetFont( text->getFont() );
+	}
+
 	//Init the clip region
 	clipRegion.lo.x = origin.x ;
 	clipRegion.lo.y = origin.y ;
