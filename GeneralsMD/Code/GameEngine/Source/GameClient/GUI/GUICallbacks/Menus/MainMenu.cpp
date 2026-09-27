@@ -434,6 +434,48 @@ GameWindow *win = nullptr;
 
 }
 
+// GeneralsX @bugfix Android port 27/09/2026 Both watermark boxes -- the stock LabelVersion,
+// sized for the 800x600 version string, and the fallback made below with a fixed 28px height
+// -- draw their text wrapped at the box width and clipped to the box. With the scaled-up font
+// the watermark wrapped after "C&C" and the second line, plus the lower half of the first,
+// fell outside the box, right at the phone's rounded bottom corner (seen on a 2510x1156
+// phone). Grow the box to the unwrapped text and keep it inside the screen's safe area; the
+// box never shrinks, so a desktop layout that already fits is unchanged.
+static void fitCreditLabel( GameWindow *label, const UnicodeString &text )
+{
+	GameFont *font = label ? label->winGetFont() : nullptr;
+	if (!font || !TheDisplay || !TheDisplayStringManager)
+		return;
+
+	DisplayString *measure = TheDisplayStringManager->newDisplayString();
+	measure->setFont( font );
+	measure->setText( text );
+	Int textWidth = 0, textHeight = 0;
+	measure->getSize( &textWidth, &textHeight );
+	TheDisplayStringManager->freeDisplayString( measure );
+
+	// drawStaticTextText wraps at width - 10 and draws at the left/top margins.
+	TextData *textData = (TextData *)label->winGetUserData();
+	const Int marginX = textData ? textData->leftMargin : 0;
+	const Int marginY = textData ? textData->topMargin : 0;
+	Int width = 0, height = 0, x = 0, y = 0;
+	label->winGetSize( &width, &height );
+	label->winGetScreenPosition( &x, &y );
+	width = max( width, textWidth + marginX + 12 );
+	height = max( height, textHeight + marginY + 2 );
+
+	const Int left = GXSafeArea::leftPx();
+	const Int bottom = TheDisplay->getHeight() - GXSafeArea::bottomPx();
+	const Int newX = max( x, left );
+	const Int newY = min( y, bottom - height );
+
+	Int parentX = 0, parentY = 0;
+	if (GameWindow *parent = label->winGetParent())
+		parent->winGetScreenPosition( &parentX, &parentY );
+	label->winSetSize( width, height );
+	label->winSetPosition( newX - parentX, newY - parentY );
+}
+
 // GeneralsX @tweak BenderAI 31/03/2026 Print fixed project watermark in optional main-menu LabelVersion widget.
 static void initLabelVersion()
 {
@@ -446,43 +488,7 @@ static void initLabelVersion()
 	{
 		GadgetStaticTextSetText( labelVersion, creditText );
 
-		// GeneralsX @bugfix Android port 27/09/2026 The stock LabelVersion box is sized for the
-		// 800x600 version string, and the text in it is drawn wrapped at the box width and
-		// clipped to the box. With the scaled-up font the watermark wrapped after "C&C" and the
-		// second line, plus the lower half of the first, fell outside the box (seen on a
-		// 2510x1156 phone). Grow the box to the unwrapped text and keep it inside the screen's
-		// safe area; the box never shrinks, so a desktop layout that already fits is unchanged.
-		GameFont *font = labelVersion->winGetFont();
-		if (font && TheDisplay && TheDisplayStringManager)
-		{
-			DisplayString *measure = TheDisplayStringManager->newDisplayString();
-			measure->setFont( font );
-			measure->setText( creditText );
-			Int textWidth = 0, textHeight = 0;
-			measure->getSize( &textWidth, &textHeight );
-			TheDisplayStringManager->freeDisplayString( measure );
-
-			// drawStaticTextText wraps at width - 10 and draws at the left/top margins.
-			TextData *textData = (TextData *)labelVersion->winGetUserData();
-			const Int marginX = textData ? textData->leftMargin : 0;
-			const Int marginY = textData ? textData->topMargin : 0;
-			Int width = 0, height = 0, x = 0, y = 0;
-			labelVersion->winGetSize( &width, &height );
-			labelVersion->winGetScreenPosition( &x, &y );
-			width = max( width, textWidth + marginX + 12 );
-			height = max( height, textHeight + marginY + 2 );
-
-			const Int left = GXSafeArea::leftPx();
-			const Int bottom = TheDisplay->getHeight() - GXSafeArea::bottomPx();
-			Int newX = max( x, left );
-			Int newY = min( y, bottom - height );
-
-			Int parentX = 0, parentY = 0;
-			if (GameWindow *parent = labelVersion->winGetParent())
-				parent->winGetScreenPosition( &parentX, &parentY );
-			labelVersion->winSetSize( width, height );
-			labelVersion->winSetPosition( newX - parentX, newY - parentY );
-		}
+		fitCreditLabel( labelVersion, creditText );
 		return;
 	}
 
@@ -522,6 +528,7 @@ static void initLabelVersion()
 				fallbackCreditLabel->winSetFont(TheWindowManager->winFindFont("Arial", creditFontSize, FALSE));
 				fallbackCreditLabel->winSetEnabledTextColors(GameMakeColor(255, 220, 60, 255), GameMakeColor(0, 0, 0, 0));
 				GadgetStaticTextSetText(fallbackCreditLabel, creditText);
+				fitCreditLabel(fallbackCreditLabel, creditText);
 			}
 		}
 	}

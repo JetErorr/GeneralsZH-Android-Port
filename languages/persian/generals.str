@@ -11,6 +11,10 @@
 // follow "نام (&K)". Multiplayer map names stay in English. Checked with
 // scripts/language/translate_kit.py. See languages/README.md before editing.
 
+GX:LanguageName
+"فارسی"
+END
+
 GUI:GameOptions
 "گزینه‌های بازی"
 END

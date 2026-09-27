@@ -538,7 +538,7 @@ public class SetupActivity extends Activity {
             gameLanguageStatusView.setText(R.string.setup_game_text_status_default);
         } else {
             gameLanguageStatusView.setText(getString(R.string.setup_game_text_status,
-                LocaleHelper.gameTextDisplayName(token)));
+                gameTextName(token)));
         }
     }
 
@@ -548,6 +548,42 @@ public class SetupActivity extends Activity {
     // player's game folder right now, loose or inside a .big, as text or as the compiled
     // table. That is the list worth offering, and it is the one that answers "how do I get
     // back to English" -- English is simply one of the entries.
+    // GeneralsX @feature Android port 27/09/2026 A language names itself. A pack carries its
+    // name, in its own language, as the label GX:LanguageName near the top of generals.str, so
+    // a pack contributed to the repository shows up as "العربية" or "فارسی" rather than as its
+    // folder name, with nothing in this app to update. Packs without the label (older ones,
+    // the game's own .csf) fall back to LocaleHelper's list and then to the folder name.
+    private String gameTextName(String token) {
+        String gamePath = getSavedGamePath();
+        if (gamePath != null && token != null && !token.isEmpty()) {
+            File pack = new File(new File(new File(gamePath, "data"), token), "generals.str");
+            if (pack.isFile()) {
+                try (java.io.BufferedReader r = new java.io.BufferedReader(
+                         new java.io.InputStreamReader(new java.io.FileInputStream(pack), "UTF-8"))) {
+                    boolean wanted = false;
+                    String line;
+                    // The label sits right after the header comment; do not read 6000 entries.
+                    for (int i = 0; i < 200 && (line = r.readLine()) != null; i++) {
+                        line = line.trim();
+                        if (wanted) {
+                            if (line.length() >= 2 && line.startsWith("\"") && line.endsWith("\"")) {
+                                String name = line.substring(1, line.length() - 1).trim();
+                                if (!name.isEmpty()) {
+                                    return name;
+                                }
+                            }
+                            break;
+                        }
+                        wanted = line.equalsIgnoreCase("GX:LanguageName");
+                    }
+                } catch (java.io.IOException e) {
+                    // Unreadable pack: the fallback name below is still right.
+                }
+            }
+        }
+        return LocaleHelper.gameTextDisplayName(token);
+    }
+
     private java.util.List<String> installedGameTextTokens() {
         java.util.TreeSet<String> found = new java.util.TreeSet<>();
         String gamePath = getSavedGamePath();
@@ -618,7 +654,7 @@ public class SetupActivity extends Activity {
         final String[] labels = new String[tokens.size() + 1];
         labels[0] = getString(R.string.setup_game_text_default);
         for (int i = 0; i < tokens.size(); i++) {
-            labels[i + 1] = LocaleHelper.gameTextDisplayName(tokens.get(i));
+            labels[i + 1] = gameTextName(tokens.get(i));
         }
         String current = LocaleHelper.getGameTextToken(this);
         int checked = 0;
@@ -2076,7 +2112,7 @@ public class SetupActivity extends Activity {
                     if (names.length() > 0) {
                         names.append(", ");
                     }
-                    names.append(LocaleHelper.gameTextDisplayName(token));
+                    names.append(gameTextName(token));
                 }
                 toast(getString(R.string.setup_langpack_done_n, installed.size(), names.toString()));
             });

@@ -9,6 +9,10 @@
 // to left (render2dsentence.cpp). Hotkeys follow "الاسم (&K)". Multiplayer map names stay in
 // English. Checked with scripts/language/translate_kit.py. See languages/README.md before editing.
 
+GX:LanguageName
+"العربية"
+END
+
 GUI:GameOptions
 "خيارات اللعبة"
 END

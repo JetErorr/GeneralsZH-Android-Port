@@ -8,6 +8,10 @@
 // labels for older game data. Checked with scripts/language/translate_kit.py.
 // See languages/README.md before editing.
 
+GX:LanguageName
+"Deutsch"
+END
+
 GUI:GameOptions
 "SPIELOPTIONEN"
 END

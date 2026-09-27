@@ -4262,6 +4262,34 @@ void InGameUI::postDraw()
 
 		x = m_messagePosition.x;
 		y = m_messagePosition.y;
+
+		// GeneralsX @bugfix Android port 27/09/2026 Start the message list inside the safe area
+		// and below the corner HUD row (FPS, clock, latency -- postWindowDraw), like the HUD
+		// itself (issue #20). At (10,10) the list sat under a rounded screen corner and on top
+		// of the FPS counter, so the start of each line and the counter were unreadable.
+		x += GXSafeArea::leftPx();
+		y += GXSafeArea::topPx();
+		{
+			Int hudRowHeight = 0;
+			DisplayString *hudStrings[ 3 ] = { nullptr, nullptr, nullptr };
+			if( m_renderFpsPointSize > 0 && isAtHudAnchorPos( m_renderFpsPosition ) )
+				hudStrings[ 0 ] = m_renderFpsString;
+			if( m_systemTimePointSize > 0 && isAtHudAnchorPos( m_systemTimePosition ) )
+				hudStrings[ 1 ] = m_systemTimeString;
+			if( m_networkLatencyPointSize > 0 && isAtHudAnchorPos( m_networkLatencyPosition ) && TheGameLogic->isInMultiplayerGame() )
+				hudStrings[ 2 ] = m_networkLatencyString;
+			for( Int h = 0; h < 3; ++h )
+			{
+				if( hudStrings[ h ] == nullptr )
+					continue;
+				Int w = 0, hgt = 0;
+				hudStrings[ h ]->getSize( &w, &hgt );
+				hudRowHeight = max( hudRowHeight, hgt );
+			}
+			if( hudRowHeight > 0 )
+				y = max( y, GXSafeArea::topPx() + kHudAnchorY + hudRowHeight + 2 );
+		}
+
 		for( i = MAX_UI_MESSAGES - 1; i >= 0; i-- )
 		{
 

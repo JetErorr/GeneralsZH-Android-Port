@@ -9,6 +9,10 @@
 // Multiplayer map names stay in English. Includes legacy labels for older game data.
 // Checked with scripts/language/translate_kit.py. See languages/README.md before editing.
 
+GX:LanguageName
+"Polski"
+END
+
 GUI:GameOptions
 "OPCJE GRY"
 END

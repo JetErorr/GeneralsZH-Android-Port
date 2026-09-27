@@ -29,6 +29,13 @@ in the pack like everything else -- see the end of `russian/generals.str`. Their
 text is built into the engine, so a game without a pack, or a pack that does not have them
 yet, shows English there rather than `MISSING`. Still one file per language.
 
+## The language's own name
+
+Every pack starts with a `GX:LanguageName` entry holding the language's name in that language
+("Русский", "العربية", "فارسی"). The launcher shows that name in its language picker, so a new
+pack needs nothing more than its folder: `languages/<folder>/generals.str` with this entry at the
+top. A pack without it is listed under its folder name with a capital letter.
+
 ## Why a .str and not a .csf
 
 The engine has always read both: a compiled binary `.csf`, and this plain-text
@@ -90,7 +97,7 @@ English set plus 22 legacy labels from older game data (`GUI:GroupRoom15-22`,
 works with both. Work files: `tools/translation-work/`.
 
 Unit and faction names follow the original community translation, never player slang,
-with a few picks by the repository owner: GLA (not "МАО"), Хеликс, Крестоносец, Техничка,
+with a few picks by the repository owner: ГЛА (not "МАО", and in Cyrillic like США), Хеликс, Крестоносец, Техничка,
 Залповая установка Скад (the SCUD Launcher stays "Эльбрус").
 
 ## Ukrainian
@@ -99,7 +106,7 @@ with a few picks by the repository owner: GLA (not "МАО"), Хеликс, Кр
 On 25/09/2026 it was checked against the same English original: lines left in English and
 the mission subtitles it was missing (campaign dialogue, general taunts, unit descriptions)
 were translated with the pack's own unit names, and the 22 legacy labels were added, so it
-has the same 6447 labels as the Russian pack. The faction is "GLA" throughout (the pack had
+has the same 6447 labels as the Russian pack. The faction is "ГЛА" throughout (the pack had
 "ГВА" in some places), matching the Russian pack.
 
 ## German

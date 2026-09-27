@@ -8,6 +8,10 @@
 // Includes legacy labels for older game data. Checked with scripts/language/translate_kit.py.
 // See languages/README.md before editing.
 
+GX:LanguageName
+"Français"
+END
+
 GUI:GameOptions
 "OPTIONS DE JEU"
 END
