@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">Los clientes móviles no tienen antitrampas. Para jugar juntos, el jugador de PC debe desactivar el antitrampas (GeneralsOnline AntiCheat o Easy Anti-Cheat) en el lanzador de GeneralsOnline: no se puede entrar desde un móvil a una sala con otro antitrampas, ni al revés.</string>
     <string name="setup_switch_logging">Recopilar registros</string>
     <string name="setup_switch_logging_desc">Guardar en el dispositivo los registros del juego, de fallos y de red. Desactívalo para no guardar nada en segundo plano hasta que lo vuelvas a activar. Necesario para informar de errores.</string>
+    <string name="setup_card_updates">Actualizaciones</string>
+    <string name="setup_updates_help">Los ajustes de servidor y las nuevas versiones del motor llegan directamente del GitHub del proyecto, sin reinstalar el APK. Cada actualización está firmada; lo que no tenga una firma válida se ignora.</string>
+    <string name="setup_updates_status">Motor: %1$s · Ajustes: n.º %2$d · Última comprobación: %3$s</string>
+    <string name="setup_updates_engine_bundled">integrado, versión %1$d</string>
+    <string name="setup_updates_engine_updated">actualizado, versión %1$d</string>
+    <string name="setup_updates_never">nunca</string>
+    <string name="setup_button_check_updates">Buscar actualizaciones</string>
+    <string name="setup_switch_auto_updates">Comprobar automáticamente</string>
+    <string name="setup_switch_auto_updates_desc">Al abrir el lanzador.</string>
+    <string name="setup_updates_checking">Buscando actualizaciones…</string>
+    <string name="setup_updates_none">Todo está al día.</string>
+    <string name="setup_updates_engine_ready">Se ha descargado un motor más reciente (versión %1$d). Se usará la próxima vez que inicies el juego.</string>
+    <string name="setup_updates_engine_needs_apk">Un motor más reciente (versión %1$d) necesita un APK nuevo. Descárgalo de la página del proyecto.</string>
+    <string name="setup_updates_config_updated">Ajustes de servidor actualizados.</string>
+    <string name="setup_updates_failed">No se pudo comprobar: %1$s</string>
+    <string name="setup_updates_not_published">Aún no se han publicado actualizaciones.</string>
 </resources>

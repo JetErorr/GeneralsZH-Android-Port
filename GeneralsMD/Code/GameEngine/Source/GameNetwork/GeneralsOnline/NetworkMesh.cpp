@@ -1,5 +1,6 @@
 #include "GameNetwork/GeneralsOnline/NetworkMesh.h"
 #include "GXTrace.h"
+#include "Common/GXRemoteConfig.h"
 #include "GameNetwork/GeneralsOnline/NGMP_include.h"
 #include "GameNetwork/GeneralsOnline/NGMP_interfaces.h"
 
@@ -664,7 +665,10 @@ NetworkMesh::NetworkMesh()
 	// every entry must resolve to distinct addresses. stun1-4.l.google.com resolve to the same
 	// IPs as stun.l.google.com, and duplicate addresses make the native ICE client -- the one
 	// this port has always used, and the PC client's since that commit -- retry STUN forever.
-	SteamNetworkingUtils()->SetGlobalConfigValueString(k_ESteamNetworkingConfig_P2P_STUN_ServerList, "stun:stun.playgenerals.online:53,stun:stun.playgenerals.online:3478,stun:stun.l.google.com:19302");
+	// GeneralsX @feature Android port 27/09/2026 ...and overridable from the signed update
+	// manifest (GXRemoteConfig.h), so a server change does not need a new build.
+	const std::string stunList = GXRemoteConfig::get("stun_servers", "stun:stun.playgenerals.online:53,stun:stun.playgenerals.online:3478,stun:stun.l.google.com:19302");
+	SteamNetworkingUtils()->SetGlobalConfigValueString(k_ESteamNetworkingConfig_P2P_STUN_ServerList, stunList.c_str());
 	fprintf(stderr, "DEBUG-P2P: NetworkMesh ctor STUN server list set\n");
 	fflush(stderr);
 
@@ -689,7 +693,8 @@ NetworkMesh::NetworkMesh()
 	// The result on two devices was a lobby where neither player could reach the
 	// other: credentials present, relays silently absent, and a mesh with
 	// nothing to fall back on when the direct path did not come up.
-	const char* turnList = "turn:turn.playgenerals.online:53,turn:turn.playgenerals.online:3478";
+	const std::string turnListValue = GXRemoteConfig::get("turn_servers", "turn:turn.playgenerals.online:53,turn:turn.playgenerals.online:3478");
+	const char* turnList = turnListValue.c_str();
 
 	m_strTurnUsername = pLobbyInterface->GetLobbyTurnUsername();
 	m_strTurnToken = pLobbyInterface->GetLobbyTurnToken();

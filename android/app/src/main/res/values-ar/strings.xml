@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">لا يحتوي العميل على الهاتف على مانع غش. للعب معًا يجب على لاعب الحاسوب إيقاف مانع الغش (GeneralsOnline AntiCheat أو Easy Anti-Cheat) في مشغّل GeneralsOnline: لا يمكن الانضمام من الهاتف إلى ردهة بمانع غش مختلف، والعكس كذلك.</string>
     <string name="setup_switch_logging">جمع السجلات</string>
     <string name="setup_switch_logging_desc">تسجيل سجلات اللعبة والأعطال والشبكة على الجهاز. أوقفه كي لا يُحفظ شيء في الخلفية حتى تعيد تشغيله. مطلوب للإبلاغ عن الأخطاء.</string>
+    <string name="setup_card_updates">التحديثات</string>
+    <string name="setup_updates_help">تصل إعدادات الخوادم وإصدارات المحرك الأحدث مباشرة من GitHub الخاص بالمشروع دون إعادة تثبيت APK. كل تحديث موقّع؛ ويُتجاهل كل ما ليس له توقيع صحيح.</string>
+    <string name="setup_updates_status">المحرك: %1$s · الإعدادات: رقم %2$d · آخر فحص: %3$s</string>
+    <string name="setup_updates_engine_bundled">مدمج، إصدار %1$d</string>
+    <string name="setup_updates_engine_updated">محدَّث، إصدار %1$d</string>
+    <string name="setup_updates_never">لم يحدث بعد</string>
+    <string name="setup_button_check_updates">البحث عن تحديثات</string>
+    <string name="setup_switch_auto_updates">التحقق تلقائيًا</string>
+    <string name="setup_switch_auto_updates_desc">عند فتح المشغّل.</string>
+    <string name="setup_updates_checking">جارٍ البحث عن تحديثات…</string>
+    <string name="setup_updates_none">كل شيء محدَّث.</string>
+    <string name="setup_updates_engine_ready">تم تنزيل محرك أحدث (إصدار %1$d). سيُستخدم عند تشغيل اللعبة في المرة القادمة.</string>
+    <string name="setup_updates_engine_needs_apk">المحرك الأحدث (إصدار %1$d) يحتاج إلى APK جديد. نزّله من صفحة المشروع.</string>
+    <string name="setup_updates_config_updated">تم تحديث إعدادات الخوادم.</string>
+    <string name="setup_updates_failed">تعذّر البحث عن تحديثات: %1$s</string>
+    <string name="setup_updates_not_published">لم يُنشر أي تحديث بعد.</string>
 </resources>

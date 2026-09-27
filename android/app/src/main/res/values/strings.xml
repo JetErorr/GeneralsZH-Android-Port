@@ -303,4 +303,20 @@
     <string name="setup_online_anticheat_note">Mobile clients have no anti-cheat. To play together, the PC player has to turn anti-cheat off (GeneralsOnline AntiCheat or Easy Anti-Cheat) in the GeneralsOnline launcher: lobbies with a different anti-cheat cannot be joined from a phone, and a phone lobby cannot be joined from them.</string>
     <string name="setup_switch_logging">Collect logs</string>
     <string name="setup_switch_logging_desc">Write game, crash and network logs to the device. Turn off to keep nothing in the background; the logs stay off until you turn this back on. Needed for bug reports.</string>
+    <string name="setup_card_updates">Updates</string>
+    <string name="setup_updates_help">Server settings and newer engine builds come straight from the project\'s GitHub, without reinstalling the APK. Every update is signed; anything without a valid signature is ignored.</string>
+    <string name="setup_updates_status">Engine: %1$s · Settings: #%2$d · Last check: %3$s</string>
+    <string name="setup_updates_engine_bundled">built-in, build %1$d</string>
+    <string name="setup_updates_engine_updated">updated, build %1$d</string>
+    <string name="setup_updates_never">never</string>
+    <string name="setup_button_check_updates">Check for updates</string>
+    <string name="setup_switch_auto_updates">Check automatically</string>
+    <string name="setup_switch_auto_updates_desc">When the launcher opens.</string>
+    <string name="setup_updates_checking">Checking for updates…</string>
+    <string name="setup_updates_none">Everything is up to date.</string>
+    <string name="setup_updates_engine_ready">A newer engine (build %1$d) has been downloaded. It will be used the next time you start the game.</string>
+    <string name="setup_updates_engine_needs_apk">A newer engine (build %1$d) needs a new APK. Download it from the project page.</string>
+    <string name="setup_updates_config_updated">Server settings updated.</string>
+    <string name="setup_updates_failed">Update check failed: %1$s</string>
+    <string name="setup_updates_not_published">No updates have been published yet.</string>
 </resources>

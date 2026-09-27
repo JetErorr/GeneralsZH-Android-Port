@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">У мобільному клієнті немає античиту. Щоб грати разом, гравець на ПК має вимкнути античит (GeneralsOnline AntiCheat або Easy Anti-Cheat) у лаунчері GeneralsOnline: до лобі з іншим античитом з телефона не зайти, і до лобі з телефона не зайти з ним.</string>
     <string name="setup_switch_logging">Збирати логи</string>
     <string name="setup_switch_logging_desc">Записувати на пристрій логи гри, збоїв і мережі. Вимкніть, щоб у фоні нічого не зберігалося; логи не пишуться, доки ви знову не ввімкнете. Потрібно для звітів про помилки.</string>
+    <string name="setup_card_updates">Оновлення</string>
+    <string name="setup_updates_help">Налаштування серверів і нові збірки рушія надходять просто з GitHub проєкту, без перевстановлення APK. Кожне оновлення підписане; усе без правильного підпису ігнорується.</string>
+    <string name="setup_updates_status">Рушій: %1$s · Налаштування: №%2$d · Остання перевірка: %3$s</string>
+    <string name="setup_updates_engine_bundled">вбудований, збірка %1$d</string>
+    <string name="setup_updates_engine_updated">оновлений, збірка %1$d</string>
+    <string name="setup_updates_never">ще не було</string>
+    <string name="setup_button_check_updates">Перевірити оновлення</string>
+    <string name="setup_switch_auto_updates">Перевіряти автоматично</string>
+    <string name="setup_switch_auto_updates_desc">Під час відкриття лаунчера.</string>
+    <string name="setup_updates_checking">Перевіряю оновлення…</string>
+    <string name="setup_updates_none">Усе актуально.</string>
+    <string name="setup_updates_engine_ready">Завантажено новий рушій (збірка %1$d). Його буде використано під час наступного запуску гри.</string>
+    <string name="setup_updates_engine_needs_apk">Новому рушію (збірка %1$d) потрібен новий APK. Завантажте його зі сторінки проєкту.</string>
+    <string name="setup_updates_config_updated">Налаштування серверів оновлено.</string>
+    <string name="setup_updates_failed">Не вдалося перевірити оновлення: %1$s</string>
+    <string name="setup_updates_not_published">Оновлення ще не публікувалися.</string>
 </resources>

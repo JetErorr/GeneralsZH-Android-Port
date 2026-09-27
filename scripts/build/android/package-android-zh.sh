@@ -302,6 +302,14 @@ echo "==> Staged APK assets:"
 find "${ASSETS}" -type f | sed "s|${ASSETS}/|    |"
 find "${DEFAULT_DRIVER_ASSETS}" -type f | sed "s|${DEFAULT_DRIVER_ASSETS}/|    default_driver/|"
 
+# --- 3b. engine build number ---------------------------------------------------
+# GeneralsX @feature Android port 27/09/2026 The launcher's update check (UpdateManager.java)
+# only runs a downloaded engine whose build number is higher than the APK's own. The number is
+# the commit count of the tree the engine was built from, so later builds always sort higher.
+ENGINE_BUILD="$(git -C "${PROJECT_ROOT}" rev-list --count HEAD 2>/dev/null || echo 0)"
+echo "${ENGINE_BUILD}" > "${ANDROID_DIR}/app/src/main/assets/engine_build.txt"
+echo "==> Engine build number: ${ENGINE_BUILD}"
+
 # --- 4. gradle ---------------------------------------------------------------
 cd "${ANDROID_DIR}"
 GRADLE_CMD=""

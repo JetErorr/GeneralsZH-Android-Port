@@ -202,6 +202,41 @@ public class GeneralsZHActivity extends SDLActivity {
         };
     }
 
+    // GeneralsX @feature Android port 27/09/2026 An engine delivered by UpdateManager (signed
+    // manifest, SHA-256 checked, built against this APK's own libraries) runs instead of the
+    // APK's. Only the engine library is replaced; SDL3 and everything the engine links against
+    // or dlopen()s by name still come from the APK, which is why the manifest has to name the
+    // exact libraries it was built with. Null means the APK's own engine.
+    private String mEngineOverridePath;
+
+    @Override
+    public void loadLibraries() {
+        for (String lib : getLibraries()) {
+            if ("main".equals(lib) || "main60".equals(lib)) {
+                int seq = UpdateManager.activeEngineSeq(this);
+                if (seq > 0 && UpdateManager.noteEngineBoot(this, seq)) {
+                    String path = UpdateManager.activeEngineLibrary(this, "lib" + lib + ".so");
+                    if (path != null) {
+                        try {
+                            System.load(path);
+                            mEngineOverridePath = path;
+                            Log.i(TAG, "Loaded updated engine " + seq + ": " + path);
+                            continue;
+                        } catch (UnsatisfiedLinkError e) {
+                            Log.e(TAG, "updated engine " + seq + " failed to load; using the APK's", e);
+                        }
+                    }
+                }
+            }
+            System.loadLibrary(lib);
+        }
+    }
+
+    @Override
+    protected String getMainSharedObject() {
+        return mEngineOverridePath != null ? mEngineOverridePath : super.getMainSharedObject();
+    }
+
     // TheSuperHackers @bugfix Android port 08/07/2026 THE reason the game kept
     // rotating despite the manifest's screenOrientation="landscape" AND the
     // setRequestedOrientation() call in onCreate(): SDL3's native window

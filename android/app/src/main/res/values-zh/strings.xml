@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">移动端没有反作弊。想一起玩，PC 玩家需要在 GeneralsOnline 启动器中关闭反作弊（GeneralsOnline AntiCheat 或 Easy Anti-Cheat）：手机无法加入使用其他反作弊的房间，反之亦然。</string>
     <string name="setup_switch_logging">收集日志</string>
     <string name="setup_switch_logging_desc">在设备上记录游戏、崩溃和网络日志。关闭后后台不保存任何日志，直到你再次开启。报告问题时需要。</string>
+    <string name="setup_card_updates">更新</string>
+    <string name="setup_updates_help">服务器设置和新版引擎直接来自项目的 GitHub，无需重新安装 APK。每个更新都经过签名；没有有效签名的内容会被忽略。</string>
+    <string name="setup_updates_status">引擎：%1$s · 设置：#%2$d · 上次检查：%3$s</string>
+    <string name="setup_updates_engine_bundled">内置，构建 %1$d</string>
+    <string name="setup_updates_engine_updated">已更新，构建 %1$d</string>
+    <string name="setup_updates_never">从未</string>
+    <string name="setup_button_check_updates">检查更新</string>
+    <string name="setup_switch_auto_updates">自动检查</string>
+    <string name="setup_switch_auto_updates_desc">打开启动器时。</string>
+    <string name="setup_updates_checking">正在检查更新…</string>
+    <string name="setup_updates_none">已是最新。</string>
+    <string name="setup_updates_engine_ready">已下载新版引擎（构建 %1$d）。下次启动游戏时生效。</string>
+    <string name="setup_updates_engine_needs_apk">新版引擎（构建 %1$d）需要新的 APK。请到项目页面下载。</string>
+    <string name="setup_updates_config_updated">服务器设置已更新。</string>
+    <string name="setup_updates_failed">检查更新失败：%1$s</string>
+    <string name="setup_updates_not_published">尚未发布任何更新。</string>
 </resources>

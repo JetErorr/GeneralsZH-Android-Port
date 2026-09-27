@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">کلاینت موبایل ضدتقلب ندارد. برای بازی با هم، بازیکن رایانه باید ضدتقلب (GeneralsOnline AntiCheat یا Easy Anti-Cheat) را در لانچر GeneralsOnline خاموش کند: از گوشی نمی‌توان به لابی با ضدتقلب دیگر پیوست و برعکس.</string>
     <string name="setup_switch_logging">جمع‌آوری گزارش‌ها</string>
     <string name="setup_switch_logging_desc">گزارش‌های بازی، خرابی و شبکه روی دستگاه ذخیره شود. خاموش کنید تا تا روشن‌کردن دوباره هیچ چیز در پس‌زمینه ذخیره نشود. برای گزارش اشکال لازم است.</string>
+    <string name="setup_card_updates">به‌روزرسانی‌ها</string>
+    <string name="setup_updates_help">تنظیمات سرورها و نسخه‌های جدیدتر موتور مستقیم از گیت‌هاب پروژه می‌آیند، بدون نصب دوباره APK. هر به‌روزرسانی امضا شده است؛ هر چیزی بدون امضای معتبر نادیده گرفته می‌شود.</string>
+    <string name="setup_updates_status">موتور: %1$s · تنظیمات: شماره %2$d · آخرین بررسی: %3$s</string>
+    <string name="setup_updates_engine_bundled">داخلی، نسخه %1$d</string>
+    <string name="setup_updates_engine_updated">به‌روزشده، نسخه %1$d</string>
+    <string name="setup_updates_never">هنوز نه</string>
+    <string name="setup_button_check_updates">بررسی به‌روزرسانی</string>
+    <string name="setup_switch_auto_updates">بررسی خودکار</string>
+    <string name="setup_switch_auto_updates_desc">هنگام باز شدن لانچر.</string>
+    <string name="setup_updates_checking">در حال بررسی به‌روزرسانی…</string>
+    <string name="setup_updates_none">همه‌چیز به‌روز است.</string>
+    <string name="setup_updates_engine_ready">موتور جدیدتر (نسخه %1$d) دانلود شد. بار بعد که بازی را اجرا کنید استفاده می‌شود.</string>
+    <string name="setup_updates_engine_needs_apk">موتور جدیدتر (نسخه %1$d) به APK جدید نیاز دارد. آن را از صفحه پروژه دانلود کنید.</string>
+    <string name="setup_updates_config_updated">تنظیمات سرورها به‌روز شد.</string>
+    <string name="setup_updates_failed">بررسی به‌روزرسانی ناموفق بود: %1$s</string>
+    <string name="setup_updates_not_published">هنوز به‌روزرسانی‌ای منتشر نشده است.</string>
 </resources>

@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">Mobilny klient ne imaje anti-čita. Za igru vměsto igrač na PC musi izključiti anti-čit (GeneralsOnline AntiCheat ili Easy Anti-Cheat) v launcheru GeneralsOnline: v lobi s drugym anti-čitom ne jest možno vstupiti s telefona i obratno.</string>
     <string name="setup_switch_logging">Sbirati logy</string>
     <string name="setup_switch_logging_desc">Zapisyvati na ustrojstvo logy igry, padov i mreže. Izključite, da by ničto ne bylo hranjeno v fonu, dokolě ne vključite znova. Trěbuje se za otčety o grěškah.</string>
+    <string name="setup_card_updates">Aktualizacije</string>
+    <string name="setup_updates_help">Nastavjenja serverov i novějše versije motora prihodet pramo s GitHuba projekta, bez ponovnoj instalacije APK. Vsaka aktualizacija jest podpisana; vse bez pravilnogo podpisa jest ignorovano.</string>
+    <string name="setup_updates_status">Motor: %1$s · Nastavjenja: č. %2$d · Poslědnja prověrka: %3$s</string>
+    <string name="setup_updates_engine_bundled">vstrojeny, versija %1$d</string>
+    <string name="setup_updates_engine_updated">aktualizovany, versija %1$d</string>
+    <string name="setup_updates_never">nikogda</string>
+    <string name="setup_button_check_updates">Prověriti aktualizacije</string>
+    <string name="setup_switch_auto_updates">Prověrjati avtomatično</string>
+    <string name="setup_switch_auto_updates_desc">Pri otvorjenju launchera.</string>
+    <string name="setup_updates_checking">Prověrjam aktualizacije…</string>
+    <string name="setup_updates_none">Vse jest aktualno.</string>
+    <string name="setup_updates_engine_ready">Novějši motor (versija %1$d) jest skačany. Bude uživany pri slědujučem zapusku igry.</string>
+    <string name="setup_updates_engine_needs_apk">Novějši motor (versija %1$d) trěbuje novy APK. Skačajte ga so stranice projekta.</string>
+    <string name="setup_updates_config_updated">Nastavjenja serverov aktualizovane.</string>
+    <string name="setup_updates_failed">Prověrka ne udala se: %1$s</string>
+    <string name="setup_updates_not_published">Aktualizacije jesče ne byli publikovane.</string>
 </resources>

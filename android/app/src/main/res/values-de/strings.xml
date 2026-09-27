@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">Mobile Clients haben keinen Anti-Cheat. Zum gemeinsamen Spielen muss der PC-Spieler den Anti-Cheat (GeneralsOnline AntiCheat oder Easy Anti-Cheat) im GeneralsOnline-Launcher ausschalten: Lobbys mit anderem Anti-Cheat sind vom Handy aus nicht beitretbar und umgekehrt.</string>
     <string name="setup_switch_logging">Logs sammeln</string>
     <string name="setup_switch_logging_desc">Spiel-, Absturz- und Netzwerklogs auf dem Gerät speichern. Ausschalten, damit im Hintergrund nichts gespeichert wird; bleibt aus, bis Sie es wieder einschalten. Für Fehlerberichte nötig.</string>
+    <string name="setup_card_updates">Updates</string>
+    <string name="setup_updates_help">Servereinstellungen und neuere Engine-Builds kommen direkt vom GitHub des Projekts, ohne das APK neu zu installieren. Jedes Update ist signiert; alles ohne gültige Signatur wird ignoriert.</string>
+    <string name="setup_updates_status">Engine: %1$s · Einstellungen: #%2$d · Letzte Prüfung: %3$s</string>
+    <string name="setup_updates_engine_bundled">integriert, Build %1$d</string>
+    <string name="setup_updates_engine_updated">aktualisiert, Build %1$d</string>
+    <string name="setup_updates_never">noch nie</string>
+    <string name="setup_button_check_updates">Nach Updates suchen</string>
+    <string name="setup_switch_auto_updates">Automatisch prüfen</string>
+    <string name="setup_switch_auto_updates_desc">Beim Öffnen des Launchers.</string>
+    <string name="setup_updates_checking">Suche nach Updates…</string>
+    <string name="setup_updates_none">Alles ist aktuell.</string>
+    <string name="setup_updates_engine_ready">Eine neuere Engine (Build %1$d) wurde geladen. Sie wird beim nächsten Spielstart verwendet.</string>
+    <string name="setup_updates_engine_needs_apk">Eine neuere Engine (Build %1$d) braucht ein neues APK. Laden Sie es von der Projektseite.</string>
+    <string name="setup_updates_config_updated">Servereinstellungen aktualisiert.</string>
+    <string name="setup_updates_failed">Update-Prüfung fehlgeschlagen: %1$s</string>
+    <string name="setup_updates_not_published">Es wurden noch keine Updates veröffentlicht.</string>
 </resources>

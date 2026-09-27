@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">Clientes móveis não têm anti-cheat. Para jogar juntos, o jogador de PC precisa desativar o anti-cheat (GeneralsOnline AntiCheat ou Easy Anti-Cheat) no launcher do GeneralsOnline: não dá para entrar pelo celular em uma sala com outro anti-cheat, nem o contrário.</string>
     <string name="setup_switch_logging">Coletar registros</string>
     <string name="setup_switch_logging_desc">Gravar no aparelho os registros do jogo, de falhas e de rede. Desative para não guardar nada em segundo plano até ativar de novo. Necessário para relatar erros.</string>
+    <string name="setup_card_updates">Atualizações</string>
+    <string name="setup_updates_help">Configurações de servidor e novas versões do motor vêm direto do GitHub do projeto, sem reinstalar o APK. Toda atualização é assinada; o que não tiver assinatura válida é ignorado.</string>
+    <string name="setup_updates_status">Motor: %1$s · Configurações: nº %2$d · Última verificação: %3$s</string>
+    <string name="setup_updates_engine_bundled">embutido, build %1$d</string>
+    <string name="setup_updates_engine_updated">atualizado, build %1$d</string>
+    <string name="setup_updates_never">nunca</string>
+    <string name="setup_button_check_updates">Procurar atualizações</string>
+    <string name="setup_switch_auto_updates">Verificar automaticamente</string>
+    <string name="setup_switch_auto_updates_desc">Ao abrir o launcher.</string>
+    <string name="setup_updates_checking">Procurando atualizações…</string>
+    <string name="setup_updates_none">Tudo em dia.</string>
+    <string name="setup_updates_engine_ready">Um motor mais novo (build %1$d) foi baixado. Ele será usado na próxima vez que você iniciar o jogo.</string>
+    <string name="setup_updates_engine_needs_apk">Um motor mais novo (build %1$d) precisa de um novo APK. Baixe-o na página do projeto.</string>
+    <string name="setup_updates_config_updated">Configurações de servidor atualizadas.</string>
+    <string name="setup_updates_failed">Falha ao verificar: %1$s</string>
+    <string name="setup_updates_not_published">Nenhuma atualização foi publicada ainda.</string>
 </resources>

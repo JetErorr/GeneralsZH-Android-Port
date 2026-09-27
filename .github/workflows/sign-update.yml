@@ -1,0 +1,37 @@
+# GeneralsX @feature Android port 27/09/2026 Sign the manifest on the `updates` branch with the
+# key kept in the repository secret UPDATE_SIGNING_KEY (PEM, ECDSA P-256), so the key never has
+# to be in a clone. Manual only, and it only signs: a run takes seconds. See
+# docs/HOWTO/PUBLISH_UPDATE.md.
+name: Sign update
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: updates
+          fetch-depth: 1
+      - name: Sign manifest.json
+        env:
+          UPDATE_SIGNING_KEY: ${{ secrets.UPDATE_SIGNING_KEY }}
+        run: |
+          test -n "$UPDATE_SIGNING_KEY" || { echo "UPDATE_SIGNING_KEY secret is not set"; exit 1; }
+          umask 077
+          printf '%s\n' "$UPDATE_SIGNING_KEY" > "$RUNNER_TEMP/key.pem"
+          openssl dgst -sha256 -sign "$RUNNER_TEMP/key.pem" manifest.json | base64 -w0 > manifest.json.sig
+          echo >> manifest.json.sig
+          rm -f "$RUNNER_TEMP/key.pem"
+      - name: Replace the branch's single commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json.sig
+          git commit --amend --no-edit
+          git push --force origin HEAD:updates

@@ -296,4 +296,20 @@
     <string name="setup_online_anticheat_note">모바일 클라이언트에는 안티치트가 없습니다. 함께 플레이하려면 PC 플레이어가 GeneralsOnline 런처에서 안티치트(GeneralsOnline AntiCheat 또는 Easy Anti-Cheat)를 꺼야 합니다. 다른 안티치트를 쓰는 로비에는 휴대폰에서 참가할 수 없고, 그 반대도 마찬가지입니다.</string>
     <string name="setup_switch_logging">로그 수집</string>
     <string name="setup_switch_logging_desc">게임, 충돌, 네트워크 로그를 기기에 기록합니다. 끄면 다시 켤 때까지 백그라운드에서 아무것도 저장하지 않습니다. 버그 보고에 필요합니다.</string>
+    <string name="setup_card_updates">업데이트</string>
+    <string name="setup_updates_help">서버 설정과 새 엔진 빌드를 APK 재설치 없이 프로젝트 GitHub에서 바로 받습니다. 모든 업데이트는 서명되어 있으며, 올바른 서명이 없는 것은 무시됩니다.</string>
+    <string name="setup_updates_status">엔진: %1$s · 설정: #%2$d · 마지막 확인: %3$s</string>
+    <string name="setup_updates_engine_bundled">내장, 빌드 %1$d</string>
+    <string name="setup_updates_engine_updated">업데이트됨, 빌드 %1$d</string>
+    <string name="setup_updates_never">없음</string>
+    <string name="setup_button_check_updates">업데이트 확인</string>
+    <string name="setup_switch_auto_updates">자동으로 확인</string>
+    <string name="setup_switch_auto_updates_desc">런처를 열 때.</string>
+    <string name="setup_updates_checking">업데이트 확인 중…</string>
+    <string name="setup_updates_none">최신 상태입니다.</string>
+    <string name="setup_updates_engine_ready">새 엔진(빌드 %1$d)을 받았습니다. 다음에 게임을 시작할 때 사용됩니다.</string>
+    <string name="setup_updates_engine_needs_apk">새 엔진(빌드 %1$d)에는 새 APK가 필요합니다. 프로젝트 페이지에서 받으세요.</string>
+    <string name="setup_updates_config_updated">서버 설정이 업데이트되었습니다.</string>
+    <string name="setup_updates_failed">업데이트 확인 실패: %1$s</string>
+    <string name="setup_updates_not_published">아직 게시된 업데이트가 없습니다.</string>
 </resources>

@@ -298,4 +298,20 @@
     <string name="setup_online_anticheat_note">В мобильном клиенте нет античита. Чтобы играть вместе, игрок на ПК должен выключить античит (GeneralsOnline AntiCheat или Easy Anti-Cheat) в лаунчере GeneralsOnline: в лобби с другим античитом с телефона не зайти, и в лобби с телефона не зайти с ним.</string>
     <string name="setup_switch_logging">Собирать логи</string>
     <string name="setup_switch_logging_desc">Записывать на устройство логи игры, сбоев и сети. Выключите, чтобы в фоне ничего не сохранялось; логи не пишутся, пока вы снова не включите. Нужно для отчётов об ошибках.</string>
+    <string name="setup_card_updates">Обновления</string>
+    <string name="setup_updates_help">Настройки серверов и новые сборки движка приходят прямо с GitHub проекта, без переустановки APK. Каждое обновление подписано; всё без верной подписи игнорируется.</string>
+    <string name="setup_updates_status">Движок: %1$s · Настройки: №%2$d · Последняя проверка: %3$s</string>
+    <string name="setup_updates_engine_bundled">встроенный, сборка %1$d</string>
+    <string name="setup_updates_engine_updated">обновлённый, сборка %1$d</string>
+    <string name="setup_updates_never">ещё не было</string>
+    <string name="setup_button_check_updates">Проверить обновления</string>
+    <string name="setup_switch_auto_updates">Проверять автоматически</string>
+    <string name="setup_switch_auto_updates_desc">При открытии лаунчера.</string>
+    <string name="setup_updates_checking">Проверяю обновления…</string>
+    <string name="setup_updates_none">Всё актуально.</string>
+    <string name="setup_updates_engine_ready">Загружен новый движок (сборка %1$d). Он будет использован при следующем запуске игры.</string>
+    <string name="setup_updates_engine_needs_apk">Новому движку (сборка %1$d) нужен новый APK. Скачайте его со страницы проекта.</string>
+    <string name="setup_updates_config_updated">Настройки серверов обновлены.</string>
+    <string name="setup_updates_failed">Не удалось проверить обновления: %1$s</string>
+    <string name="setup_updates_not_published">Обновления ещё не публиковались.</string>
 </resources>

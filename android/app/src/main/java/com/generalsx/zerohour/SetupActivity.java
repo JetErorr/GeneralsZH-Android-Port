@@ -233,6 +233,12 @@ public class SetupActivity extends Activity {
         refreshGeneralsOnlineStatus();
         loadDxvkConfigIntoEditor();
         refreshDiagnosticsSwitches();
+        refreshUpdatesStatus();
+        // Once per process, not on every return to this screen.
+        if (!sAutoUpdateCheckedThisProcess && UpdateManager.isAutoCheckEnabled(this)) {
+            sAutoUpdateCheckedThisProcess = true;
+            runUpdateCheck(false);
+        }
     }
 
     // GeneralsX @feature Android port launcher-ui-2026 08/09/2026 The launcher
@@ -393,12 +399,14 @@ public class SetupActivity extends Activity {
         refreshGeneralsOnlineStatus();
         loadDxvkConfigIntoEditor();
         refreshDiagnosticsSwitches();
+        refreshUpdatesStatus();
     }
 
     /** Forgets every page-scoped view so a stale one is never written to. */
     private void clearPageReferences() {
         statusText = null;
         onlineStatusView = null;
+        updatesStatusView = null;
         gameLanguageStatusView = null;
         renderBackendStatusView = null;
         customDriverStatusView = null;
@@ -439,6 +447,82 @@ public class SetupActivity extends Activity {
         // people want right after picking their game folder, not something to
         // bury under settings most players never touch.
         buildGeneralsOnlineSection(page);
+        buildUpdatesSection(page);
+    }
+
+    // ------------------------------------------------------------ Updates
+
+    // GeneralsX @feature Android port 27/09/2026 Signed updates from the repository without a new
+    // APK: server settings and, when one is published, a newer engine. See UpdateManager.
+    private TextView updatesStatusView;
+    private boolean updateCheckRunning;
+    private static boolean sAutoUpdateCheckedThisProcess;
+
+    private void buildUpdatesSection(LinearLayout root) {
+        LinearLayout content = UiKit.card(root);
+        UiKit.sectionHeader(content, R.drawable.ic_gzh_refresh,
+            getString(R.string.setup_card_updates), false);
+        UiKit.supporting(content, getString(R.string.setup_updates_help));
+        updatesStatusView = UiKit.body(content, null);
+        UiKit.button(content, UiKit.BTN_TONAL, R.drawable.ic_gzh_download,
+            getString(R.string.setup_button_check_updates), () -> runUpdateCheck(true));
+        SwitchCompat auto = UiKit.switchRow(content,
+            getString(R.string.setup_switch_auto_updates), getString(R.string.setup_switch_auto_updates_desc));
+        auto.setChecked(UpdateManager.isAutoCheckEnabled(this));
+        auto.setOnCheckedChangeListener((button, checked) -> UpdateManager.setAutoCheckEnabled(this, checked));
+        refreshUpdatesStatus();
+    }
+
+    private void refreshUpdatesStatus() {
+        if (updatesStatusView == null) {
+            return;
+        }
+        int active = UpdateManager.activeEngineSeq(this);
+        String engine = active > 0
+            ? getString(R.string.setup_updates_engine_updated, active)
+            : getString(R.string.setup_updates_engine_bundled, UpdateManager.bundledEngineSeq(this));
+        long last = UpdateManager.lastCheckMillis(this);
+        String when = last > 0
+            ? android.text.format.DateFormat.getDateFormat(this).format(new java.util.Date(last)) + " "
+              + android.text.format.DateFormat.getTimeFormat(this).format(new java.util.Date(last))
+            : getString(R.string.setup_updates_never);
+        updatesStatusView.setText(getString(R.string.setup_updates_status,
+            engine, UpdateManager.acceptedSerial(this), when));
+    }
+
+    /** @param userAsked true for the button (always report), false for the silent start-up check. */
+    private void runUpdateCheck(boolean userAsked) {
+        if (updateCheckRunning) {
+            return;
+        }
+        updateCheckRunning = true;
+        if (userAsked) {
+            toast(getString(R.string.setup_updates_checking));
+        }
+        new Thread(() -> {
+            final UpdateManager.Result r = UpdateManager.check(getApplicationContext());
+            runOnUiThread(() -> {
+                updateCheckRunning = false;
+                refreshUpdatesStatus();
+                if (!r.ok) {
+                    if (userAsked) {
+                        toast(r.error != null && r.error.startsWith("HTTP 404")
+                            ? getString(R.string.setup_updates_not_published)
+                            : getString(R.string.setup_updates_failed, r.error));
+                    }
+                    return;
+                }
+                if (r.engineDownloaded) {
+                    toast(getString(R.string.setup_updates_engine_ready, r.engineSeq));
+                } else if (r.engineIncompatible) {
+                    toast(getString(R.string.setup_updates_engine_needs_apk, r.engineSeq));
+                } else if (r.configUpdated) {
+                    toast(getString(R.string.setup_updates_config_updated));
+                } else if (userAsked) {
+                    toast(getString(R.string.setup_updates_none));
+                }
+            });
+        }, "gx-update-check").start();
     }
 
     // ------------------------------------------------------------ Help page

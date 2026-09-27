@@ -58,6 +58,7 @@
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/DisplayStringManager.h"
 #include "Common/GXSafeArea.h"
+#include "Common/GXRemoteConfig.h"
 #include "GameClient/GlobalLanguage.h"
 #include "GameClient/Mouse.h"
 #include "GameClient/WindowVideoManager.h"
@@ -554,6 +555,10 @@ static void initLabelVersion()
 //-------------------------------------------------------------------------------------------------
 void MainMenuInit( WindowLayout *layout, void *userData )
 {
+	// GeneralsX @feature Android port 27/09/2026 The engine got this far: an updated engine that
+	// the launcher is watching (UpdateManager.noteEngineBoot) is good. See GXRemoteConfig.h.
+	GXRemoteConfig::markEngineBootComplete();
+
 	TheWritableGlobalData->m_breakTheMovie = FALSE;
 
 	// GeneralsX @bugfix Android port 08/09/2026 This call used to run unconditionally.
