@@ -90,7 +90,39 @@ enum class ELobbyUpdateField
 	JOINABILITY = 18
 };
 
-void NGMP_OnlineServices_LobbyInterface::UpdateCurrentLobby_Map(AsciiString strMap, AsciiString strMapPath, bool bIsOfficial, int newMaxPlayers)
+// GeneralsX @bugfix Android port 27/09/2026 The map name a lobby shows to everyone. The game hands
+// over the map's *localized* display name, and the lobby service takes it through an 8-bit
+// AsciiString: a Russian install hosting "Турнир" listed its game on every PC as `"C@=8@`, each
+// letter with its high byte cut off. The PC clients in the lobby are overwhelmingly English and
+// send the English name; a name this install cannot send as ASCII becomes the map's file name,
+// which is the same on every install ("Tournament Desert" rather than a translation).
+static AsciiString LobbyMapNameForService(const AsciiString &strMapNameIn, const UnicodeString &strDisplayName, const AsciiString &strMapPath)
+{
+	Bool isAscii = TRUE;
+	for (Int i = 0; i < strDisplayName.getLength(); ++i)
+	{
+		if (strDisplayName.getCharAt(i) > 0x7F)
+		{
+			isAscii = FALSE;
+			break;
+		}
+	}
+	if (isAscii)
+		return strMapNameIn;
+
+	AsciiString fileName = strMapPath;
+	const char *slash = fileName.reverseFind('\\');
+	if (slash == nullptr)
+		slash = fileName.reverseFind('/');
+	if (slash != nullptr)
+		fileName = slash + 1;
+	const char *dot = fileName.reverseFind('.');
+	if (dot != nullptr)
+		fileName.truncateTo((Int)(dot - fileName.str()));
+	return fileName.isEmpty() ? strMapNameIn : fileName;
+}
+
+void NGMP_OnlineServices_LobbyInterface::UpdateCurrentLobby_Map(UnicodeString strMap, AsciiString strMapPath, bool bIsOfficial, int newMaxPlayers)
 {
 	// reset autostart if host changes anything (because ready flag will reset too)
 	ClearAutoReadyCountdown();
@@ -109,9 +141,11 @@ void NGMP_OnlineServices_LobbyInterface::UpdateCurrentLobby_Map(AsciiString strM
 		sanitizedMapPath = sanitizedMapPath.reverseFind('\\') + 1;
 	}
 
+	AsciiString strMapAscii;
+	strMapAscii.translate(strMap);
 	nlohmann::json j;
 	j["field"] = ELobbyUpdateField::LOBBY_MAP;
-	j["map"] = strMap.str();
+	j["map"] = LobbyMapNameForService(strMapAscii, strMap, strMapPath).str();
 	j["map_path"] = sanitizedMapPath.str();
 	j["map_official"] = bIsOfficial;
 	j["max_players"] = newMaxPlayers;
@@ -1386,6 +1420,7 @@ void NGMP_OnlineServices_LobbyInterface::CreateLobby(UnicodeString strLobbyName,
 			// convert
 			AsciiString strMapName = AsciiString();
 			strMapName.translate(strInitialMapName);
+			strMapName = LobbyMapNameForService(strMapName, strInitialMapName, strInitialMapPath);
 
 			// sanitize map path
 			// we need to parse out the map name for custom maps... its an absolute path

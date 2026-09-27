@@ -2296,6 +2296,22 @@ void SDL3GameEngine::pollSDL3Events(void)
 
 			case SDL_EVENT_KEY_DOWN:
 			case SDL_EVENT_KEY_UP:
+				// GeneralsX @bugfix Android port 27/09/2026 Enter never finished a text entry under
+				// SDL. On Windows the Return key reaches a focused entry as the character VK_RETURN
+				// (WM_CHAR), and that is the only thing GadgetTextEntryInput takes as "done" -- its
+				// KEY_ENTER case has been commented out since the original code. SDL delivers Return
+				// as a key only (text input carries no control characters), so an entry without a
+				// button of its own could not be submitted: the join-game password popup sat with
+				// "213" typed and nothing happening. Hand the focused entry the same character.
+				if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat &&
+						(event.key.scancode == SDL_SCANCODE_RETURN || event.key.scancode == SDL_SCANCODE_KP_ENTER) &&
+						m_TextInputFocusWindow != nullptr && TheWindowManager != nullptr &&
+						TheWindowManager->winGetFocus() == m_TextInputFocusWindow &&
+						BitIsSet(m_TextInputFocusWindow->winGetStyle(), GWS_ENTRY_FIELD)) {
+					const WideChar returnCharacter = 0x0D; // VK_RETURN, which GadgetTextEntryInput compares against
+					TheWindowManager->winSendInputMsg(m_TextInputFocusWindow, GWM_IME_CHAR,
+						static_cast<WindowMsgData>(returnCharacter), 0);
+				}
 				// Fighter19 pattern: direct addSDLEvent() call
 				// GeneralsX @refactor felipebraz 16/02/2026 Simplified event routing
 				if (TheKeyboard) {
@@ -2488,6 +2504,13 @@ void SDL3GameEngine::forwardTextInputEvent(const char* utf8Text)
 		}
 
 		if (codepoint > 0xFFFFU) {
+			continue;
+		}
+
+		// Return is delivered from the key event (see SDL_EVENT_KEY_DOWN); a line break that
+		// also arrives as text (some Android keyboards commit "\n") must not submit twice or be
+		// typed into the field.
+		if (codepoint == '\n' || codepoint == '\r') {
 			continue;
 		}
 
