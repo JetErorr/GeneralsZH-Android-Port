@@ -233,6 +233,12 @@ static void Shape_Arabic( const WCHAR *text, std::vector<WCHAR> &out )
 			continue;
 		}
 		const JoiningType type = Get_Joining_Type( ch );
+		// Harakat (fatha, shadda, tanween, ...) are dropped: the layout gives every code point its
+		// own cell and advance, so a mark would open a gap in the middle of the word instead of
+		// sitting on its letter. Arabic reads correctly without them.
+		if ( type == JOIN_TRANSPARENT ) {
+			continue;
+		}
 		if ( type != JOIN_RIGHT && type != JOIN_DUAL ) {
 			out.push_back( ch );
 			continue;

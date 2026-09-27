@@ -198,3 +198,22 @@ localised ("산토끼 토끼야" for the test rhyme, "소리 없이 강하다" f
 Like the Chinese pack, it takes its Hangul glyphs from the fallback face; see the note under
 Simplified Chinese.
 
+
+## Arabic
+
+`languages/arabic/generals.str` is a new translation from the English original into Modern
+Standard Arabic, with a colloquial touch where a joke needs one. The GLA is "جيش التحرير
+العالمي", and unit names follow the usual Arabic renderings: "مركز القيادة", "مصنع الحرب",
+"عاصفة سكود", "مدفع الجسيمات", "اللوتس الأسود", "أوفرلورد", and "الإمبراطور" for the Emperor.
+The USA boss's "Boy/Kid/Punk" become "يا ولد" and "يا صعلوك". Hotkeys follow "الاسم (&K)".
+Tooltips read "قوي ضد: … / ضعيف ضد: …", "الطاقة المطلوبة:", "مؤقت العد التنازلي:" and
+"يُطلق من:". Multiplayer map names stay in English. Jokes are localised: "ماما زمانها جاية"
+for the test rhyme, "انسكاب في الممر رقم واحد!", "على قد لحافك مد رجليك" for "you don't
+start the dance if you can't pay the bill", and "ما أطيب رائحة أم القنابل في الصباح الباكر".
+
+The text is stored as ordinary Arabic, in logical order and with base letters. The engine
+shapes it into joined forms and lays it out right to left (`render2dsentence.cpp`, see the
+diary entry of 27/09/2026). Harakat such as shadda and tanween stay in the file, but the engine
+drops them when drawing, because the glyph-per-cell layout cannot stack a mark on its letter.
+The glyphs come from the system Arabic font (Noto Naskh Arabic on Android), which covers every
+presentation form the shaper produces.
