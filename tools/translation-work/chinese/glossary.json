@@ -189,15 +189,15 @@
  },
  {
   "label": "UPGRADE:OverlordGattlingCannon",
-  "text": "天启加特林机炮"
+  "text": "霸王加特林机炮"
  },
  {
   "label": "UPGRADE:OverlordPropagandaTower",
-  "text": "天启宣传塔"
+  "text": "霸王宣传塔"
  },
  {
   "label": "UPGRADE:OverlordBattleBunker",
-  "text": "天启战斗碉堡"
+  "text": "霸王战斗碉堡"
  },
  {
   "label": "UPGRADE:ControlRods",
@@ -733,11 +733,11 @@
  },
  {
   "label": "OBJECT:FruitStand",
-  "text": "石像鬼"
+  "text": "水果摊"
  },
  {
   "label": "OBJECT:Gargoyle",
-  "text": "水果摊"
+  "text": "石像鬼"
  },
  {
   "label": "OBJECT:GasStation",
@@ -769,7 +769,7 @@
  },
  {
   "label": "OBJECT:Rebel",
-  "text": "反抗军"
+  "text": "叛军"
  },
  {
   "label": "OBJECT:JarmenKell",
@@ -925,7 +925,7 @@
  },
  {
   "label": "OBJECT:Overlord",
-  "text": "天启坦克"
+  "text": "霸王坦克"
  },
  {
   "label": "OBJECT:Palace",
@@ -1753,7 +1753,7 @@
  },
  {
   "label": "SCIENCE:ChinaOverlordTraining",
-  "text": "天启坦克训练"
+  "text": "霸王坦克训练"
  },
  {
   "label": "SCIENCE:ChinaGattlingTankTraining",
@@ -2129,7 +2129,7 @@
  },
  {
   "label": "OBJECT:Chem_Rebel",
-  "text": "毒素反抗军"
+  "text": "毒素叛军"
  },
  {
   "label": "OBJECT:Chem_Terrorist",
