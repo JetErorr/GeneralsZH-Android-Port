@@ -2742,7 +2742,16 @@ FontCharsClass::Store_Freetype_Char (WCHAR ch)
 		if ( fallback != nullptr ) {
 			face = fallback;
 			glyph_index = fallback_index;
-		} else if ( Arabic_Presentation_Base( ch ) != 0 ) {
+		} else if ( Arabic_Presentation_Base( ch ) == 0 ) {
+			// Said once per code point, so a box on screen can be traced to the character a
+			// fallback font is still missing for.
+			static uint8 s_reported[0x10000 / 8];
+			const unsigned int code = (unsigned int)ch & 0xFFFFu;
+			if ( ( s_reported[code >> 3] & ( 1u << ( code & 7 ) ) ) == 0 ) {
+				s_reported[code >> 3] |= (uint8)( 1u << ( code & 7 ) );
+				fprintf( stderr, "[font] no glyph for U+%04X in %s or any fallback face\n", code, GDIFontName.str() );
+			}
+		} else {
 			// GeneralsX @feature Android port 27/09/2026 A face with Arabic letters but without
 			// the presentation-forms block: draw the unjoined letter rather than a box.
 			const WCHAR base = Arabic_Presentation_Base( ch );
@@ -2945,6 +2954,13 @@ static const FallbackFontFile kSystemFallbackFiles[] = {
 	{ "/system/fonts/NotoNaskhArabic-Regular.ttf", 0 },
 	{ "/system/fonts/NotoNaskhArabicUI-Regular.ttf", 0 },
 	{ "/system/fonts/NotoSansArabic-Regular.ttf", 0 },
+	// GeneralsX @bugfix Android port 27/09/2026 Symbols. The GeneralsOnline lobby prefixes every
+	// room name with "[region][shield]", and the shield drew as an empty box here while the PC
+	// shows it: Windows' GDI links a missing glyph to its symbol fonts, and this list had none.
+	{ "/system/fonts/NotoSansSymbols-Regular-Subsetted.ttf", 0 },
+	{ "/system/fonts/NotoSansSymbols-Regular-Subsetted2.ttf", 0 },
+	{ "/system/fonts/NotoSansSymbols2-Regular.ttf", 0 },
+	{ "/system/fonts/DroidSans.ttf", 0 },
 };
 #endif
 
@@ -2956,6 +2972,9 @@ static const char *kFontconfigFallbackFamilies[] = {
 	"Droid Sans Fallback",
 	"Noto Naskh Arabic",
 	"Noto Sans Arabic",
+	"Noto Sans Symbols",
+	"Noto Sans Symbols2",
+	"DejaVu Sans",
 };
 #endif
 }

@@ -173,7 +173,7 @@ private:
 	FT_Library							FTLibrary;
 	FT_Face								FTFace;
 	StringClass							FreetypeFontPath;
-	enum { MAX_FT_FALLBACK_FACES = 8 };
+	enum { MAX_FT_FALLBACK_FACES = 12 };
 	FT_Face								FTFallbackFaces[MAX_FT_FALLBACK_FACES];
 	int									FTFallbackFaceCount;
 	bool									FTFallbackFacesLoaded;
