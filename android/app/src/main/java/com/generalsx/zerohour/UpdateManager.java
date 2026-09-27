@@ -226,12 +226,11 @@ final class UpdateManager {
     }
 
     /**
-     * Blocking; call off the UI thread.
-     * @param installDatapack also download newer community data when there is some (it is
-     *        tens of megabytes: the silent start-up check passes true only on an unmetered
-     *        network, the button always).
+     * Blocking; call off the UI thread. Engine and settings only: the community data patch is
+     * the multiplayer screen's business (checkDatapackOnly), and this merely notices a newer one
+     * so the Updates card can point there.
      */
-    static Result check(Context ctx, boolean installDatapack) {
+    static Result check(Context ctx) {
         Result r = new Result();
         try {
             byte[] manifestBytes = download(BASE_URL + "manifest.json", 256 * 1024);
@@ -263,7 +262,7 @@ final class UpdateManager {
                 applyEngine(ctx, engine, r);
             }
 
-            checkDatapack(ctx, r, installDatapack, SILENT_PROGRESS);
+            noticeNewerDatapack(ctx, r);
 
             writeBytes(new File(dir, "manifest.json"), manifestBytes);
             prefs(ctx).edit()
@@ -290,9 +289,9 @@ final class UpdateManager {
      * the GeneralsOnline CDN, verified by the SHA-256 in its own manifest (DataPackInstaller).
      * Only a player who installed it is kept current -- nothing is pushed on anyone else.
      *
-     * This is the one place that decides whether the patch needs updating: the Updates card runs
-     * it inside check(), the GeneralsOnline screen's data card runs it alone
-     * (checkDatapackOnly) and both show what it recorded (datapackLatestSeen).
+     * The multiplayer screen's data card is where the patch is checked and installed
+     * (checkDatapackOnly); the Updates card only notices a newer version (noticeNewerDatapack)
+     * and points there.
      */
     private static void checkDatapack(Context ctx, Result r, boolean install,
                                       DataPackInstaller.Progress progress) {
@@ -326,11 +325,22 @@ final class UpdateManager {
         }
     }
 
-    private static final DataPackInstaller.Progress SILENT_PROGRESS = new DataPackInstaller.Progress() {
-        @Override public void onChecking() { }
-        @Override public void onDownloading(long bytes, long total) { }
-        @Override public void onInstalling() { }
-    };
+    private static void noticeNewerDatapack(Context ctx, Result r) {
+        if (DataPackInstaller.installedVersion(ctx) == null) {
+            return;
+        }
+        noteDatapackLatest(ctx, DataPackInstaller.latestVersion(ctx));
+        if (datapackNewerAvailable(ctx)) {
+            r.datapackAvailable = datapackLatestSeen(ctx);
+        }
+    }
+
+    /** The CDN has a patch version other than the installed one (as of the last check). */
+    static boolean datapackNewerAvailable(Context ctx) {
+        String installed = DataPackInstaller.installedVersion(ctx);
+        String latest = datapackLatestSeen(ctx);
+        return installed != null && latest != null && !latest.equals(installed);
+    }
 
     /** The data patch part of check() alone. Blocking; call off the UI thread. */
     static Result checkDatapackOnly(Context ctx, boolean install, DataPackInstaller.Progress progress) {

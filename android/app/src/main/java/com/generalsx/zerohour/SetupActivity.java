@@ -455,6 +455,7 @@ public class SetupActivity extends Activity {
     // GeneralsX @feature Android port 27/09/2026 Signed updates from the repository without a new
     // APK: server settings and, when one is published, a newer engine. See UpdateManager.
     private TextView updatesStatusView;
+    private View updatesOpenOnlineButton;
     private boolean updateCheckRunning;
     private static boolean sAutoUpdateCheckedThisProcess;
 
@@ -466,6 +467,11 @@ public class SetupActivity extends Activity {
         updatesStatusView = UiKit.body(content, null);
         UiKit.button(content, UiKit.BTN_TONAL, R.drawable.ic_gzh_download,
             getString(R.string.setup_button_check_updates), () -> runUpdateCheck(true));
+        // The community data patch is updated on the multiplayer screen; this card only says a
+        // newer one is out and takes the player there.
+        updatesOpenOnlineButton = UiKit.button(content, UiKit.BTN_TONAL, R.drawable.ic_gzh_globe,
+            getString(R.string.setup_button_open_online_data), () ->
+                startActivity(new Intent(this, GeneralsOnlineActivity.class)));
         SwitchCompat auto = UiKit.switchRow(content,
             getString(R.string.setup_switch_auto_updates), getString(R.string.setup_switch_auto_updates_desc));
         auto.setChecked(UpdateManager.isAutoCheckEnabled(this));
@@ -486,21 +492,17 @@ public class SetupActivity extends Activity {
             ? android.text.format.DateFormat.getDateFormat(this).format(new java.util.Date(last)) + " "
               + android.text.format.DateFormat.getTimeFormat(this).format(new java.util.Date(last))
             : getString(R.string.setup_updates_never);
-        // The community data patch is part of the same check, so its state is shown here too;
-        // the GeneralsOnline screen's data card shows the same state and installs it.
-        String patch = DataPackInstaller.installedVersion(this);
-        String patchLine;
-        if (patch == null) {
-            patchLine = getString(R.string.setup_updates_datapack_none);
-        } else if (UpdateManager.datapackUpdateWanted(this)) {
-            String latest = UpdateManager.datapackLatestSeen(this);
-            patchLine = getString(R.string.setup_updates_datapack_line_new, patch,
-                latest != null ? latest : patch);
-        } else {
-            patchLine = getString(R.string.setup_updates_datapack_line, patch);
+        String status = getString(R.string.setup_updates_status,
+            engine, UpdateManager.acceptedSerial(this), when);
+        final boolean newerData = UpdateManager.datapackNewerAvailable(this);
+        if (newerData) {
+            status += "\n" + getString(R.string.setup_updates_datapack_line_new,
+                UpdateManager.datapackLatestSeen(this));
         }
-        updatesStatusView.setText(getString(R.string.setup_updates_status,
-            engine, UpdateManager.acceptedSerial(this), when) + " · " + patchLine);
+        updatesStatusView.setText(status);
+        if (updatesOpenOnlineButton != null) {
+            updatesOpenOnlineButton.setVisibility(newerData ? View.VISIBLE : View.GONE);
+        }
     }
 
     /** @param userAsked true for the button (always report), false for the silent start-up check. */
@@ -514,8 +516,7 @@ public class SetupActivity extends Activity {
         }
         new Thread(() -> {
             final android.content.Context app = getApplicationContext();
-            final UpdateManager.Result r = UpdateManager.check(app,
-                userAsked || UpdateManager.isUnmeteredNetwork(app));
+            final UpdateManager.Result r = UpdateManager.check(app);
             runOnUiThread(() -> {
                 updateCheckRunning = false;
                 refreshUpdatesStatus();
@@ -529,9 +530,7 @@ public class SetupActivity extends Activity {
                     }
                     return;
                 }
-                if (r.datapackInstalled != null) {
-                    toast(getString(R.string.setup_updates_datapack_installed, r.datapackInstalled));
-                } else if (r.datapackAvailable != null) {
+                if (r.datapackAvailable != null) {
                     toast(getString(R.string.setup_updates_datapack_available, r.datapackAvailable));
                 }
                 if (r.engineDownloaded) {

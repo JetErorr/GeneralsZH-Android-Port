@@ -314,10 +314,9 @@
     <string name="setup_updates_not_published">Aucune mise à jour n\'a encore été publiée.</string>
     <string name="setup_updates_offline">Pas de connexion Internet. Le lanceur et le jeu fonctionnent hors ligne ; les mises à jour seront vérifiées la prochaine fois.</string>
     <string name="setup_updates_datapack_installed">Patch de données communautaire mis à jour en version %1$s.</string>
-    <string name="setup_updates_datapack_available">Un nouveau patch de données communautaire est disponible (%1$s). Touchez « Rechercher des mises à jour » pour le télécharger (environ 35 Mo).</string>
-    <string name="setup_updates_datapack_none">Patch de données : non installé</string>
-    <string name="setup_updates_datapack_line">Patch de données : %1$s</string>
-    <string name="setup_updates_datapack_line_new">Patch de données : %1$s, nouvelle %2$s</string>
+    <string name="setup_updates_datapack_available">Une nouvelle version des données de jeu en ligne est sortie (%1$s). Mettez-la à jour dans Compte GeneralsOnline → Données de jeu en ligne.</string>
+    <string name="setup_updates_datapack_line_new">Une nouvelle version des données de jeu en ligne est sortie : %1$s.</string>
+    <string name="setup_button_open_online_data">Mettre à jour les données en ligne</string>
     <string name="online_datapacks_update_available">Installée : version %1$s. Une nouvelle version est sortie : %2$s.</string>
     <string name="online_datapacks_update_for_crc">Installée : version %1$s. Mettez à jour une fois pour que l’appareil en calcule la somme de contrôle du client PC.</string>
     <string name="online_datapacks_up_to_date">Installée : version %1$s, la plus récente.</string>

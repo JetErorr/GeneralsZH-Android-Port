@@ -314,10 +314,9 @@
     <string name="setup_updates_not_published">هنوز به‌روزرسانی‌ای منتشر نشده است.</string>
     <string name="setup_updates_offline">اتصال اینترنت وجود ندارد. لانچر و بازی بدون اینترنت هم کار می‌کنند؛ به‌روزرسانی‌ها دفعه بعد بررسی می‌شوند.</string>
     <string name="setup_updates_datapack_installed">وصله داده‌های جامعه به نسخه %1$s به‌روز شد.</string>
-    <string name="setup_updates_datapack_available">نسخه جدید وصله داده‌های جامعه منتشر شده (%1$s). برای دانلود «بررسی به‌روزرسانی» را بزنید (حدود ۳۵ مگابایت).</string>
-    <string name="setup_updates_datapack_none">وصلهٔ داده: نصب نشده</string>
-    <string name="setup_updates_datapack_line">وصلهٔ داده: %1$s</string>
-    <string name="setup_updates_datapack_line_new">وصلهٔ داده: %1$s، نسخهٔ جدید %2$s</string>
+    <string name="setup_updates_datapack_available">نسخهٔ جدید داده‌های بازی شبکه‌ای منتشر شده (%1$s). آن را در حساب GeneralsOnline ← داده‌های بازی آنلاین به‌روز کنید.</string>
+    <string name="setup_updates_datapack_line_new">نسخهٔ جدید داده‌های بازی شبکه‌ای منتشر شده: %1$s.</string>
+    <string name="setup_button_open_online_data">به‌روزرسانی داده‌های شبکه</string>
     <string name="online_datapacks_update_available">نصب‌شده: نسخهٔ %1$s. نسخهٔ جدید منتشر شده: %2$s.</string>
     <string name="online_datapacks_update_for_crc">نصب‌شده: نسخهٔ %1$s. یک بار به‌روز کنید تا این دستگاه از روی آن جمع کنترلی کلاینت رایانه را حساب کند.</string>
     <string name="online_datapacks_up_to_date">نصب‌شده: نسخهٔ %1$s، آخرین نسخه.</string>
