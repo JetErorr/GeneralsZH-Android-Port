@@ -11,6 +11,10 @@
 // older game data. Checked with scripts/language/translate_kit.py.
 // See languages/README.md before editing.
 
+GX:LanguageName
+"Medžuslovjansky"
+END
+
 GUI:GameOptions
 "NASTAVJENJA IGRY"
 END

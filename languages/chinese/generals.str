@@ -9,6 +9,10 @@
 // names stay in English. Includes legacy labels for older game data.
 // Checked with scripts/language/translate_kit.py. See languages/README.md before editing.
 
+GX:LanguageName
+"中文"
+END
+
 GUI:GameOptions
 "游戏选项"
 END

@@ -9,6 +9,10 @@
 // follow the "이름(&K)" convention. Multiplayer map names stay in English.
 // Checked with scripts/language/translate_kit.py. See languages/README.md before editing.
 
+GX:LanguageName
+"한국어"
+END
+
 GUI:GameOptions
 "게임 옵션"
 END
