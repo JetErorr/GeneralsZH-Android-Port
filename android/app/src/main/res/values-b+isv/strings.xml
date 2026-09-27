@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">Ustanovjena versija %1$s. Jest nova versija: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Ustanovjena versija %1$s. Obnovite jedin raz, da pristroj izčisli iz nje kontrolnu sumu komputernogo klienta.</string>
     <string name="online_datapacks_up_to_date">Ustanovjena versija %1$s, najnovějša.</string>
-    <string name="online_network_settings">Mrežne nastavjenja (servery, sųglasnost s komputerom): č. %1$d, obnovjajut sę avtomatično iz GitHub projekta i sut podpisane.</string>
+    <string name="online_network_settings">Mrežne nastavjenja (servery, sųglasnost s komputerom): od %1$s, obnovjajut sę avtomatično iz GitHub projekta i sut podpisane.</string>
     <string name="online_network_settings_builtin">Mrežne nastavjenja (servery, sųglasnost s komputerom): vstrojene v tutu versiju; nove prijdut avtomatično iz GitHub projekta.</string>
     <string name="online_datapacks_chip_update">Jest obnovljenje</string>
 </resources>

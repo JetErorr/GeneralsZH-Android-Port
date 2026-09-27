@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">Instalada: versión %1$s. Hay una versión nueva: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Instalada: versión %1$s. Actualiza una vez para que el dispositivo calcule con él la suma de verificación del cliente de PC.</string>
     <string name="online_datapacks_up_to_date">Instalada: versión %1$s, la más reciente.</string>
-    <string name="online_network_settings">Ajustes de red (servidores, compatibilidad con PC): n.º %1$d, actualizados automáticamente desde el GitHub del proyecto y firmados.</string>
+    <string name="online_network_settings">Ajustes de red (servidores, compatibilidad con PC): del %1$s, actualizados automáticamente desde el GitHub del proyecto y firmados.</string>
     <string name="online_network_settings_builtin">Ajustes de red (servidores, compatibilidad con PC): incluidos en esta versión; los nuevos llegarán automáticamente desde el GitHub del proyecto.</string>
     <string name="online_datapacks_chip_update">Actualización disponible</string>
 </resources>

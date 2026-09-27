@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">نصب‌شده: نسخهٔ %1$s. نسخهٔ جدید منتشر شده: %2$s.</string>
     <string name="online_datapacks_update_for_crc">نصب‌شده: نسخهٔ %1$s. یک بار به‌روز کنید تا این دستگاه از روی آن جمع کنترلی کلاینت رایانه را حساب کند.</string>
     <string name="online_datapacks_up_to_date">نصب‌شده: نسخهٔ %1$s، آخرین نسخه.</string>
-    <string name="online_network_settings">تنظیمات شبکه (سرورها، سازگاری با رایانه): شمارهٔ %1$d، به‌طور خودکار از GitHub پروژه به‌روز و امضا می‌شوند.</string>
+    <string name="online_network_settings">تنظیمات شبکه (سرورها، سازگاری با رایانه): مورخ %1$s، به‌طور خودکار از GitHub پروژه به‌روز و امضا می‌شوند.</string>
     <string name="online_network_settings_builtin">تنظیمات شبکه (سرورها، سازگاری با رایانه): درون این نسخه؛ نسخه‌های تازه به‌طور خودکار از GitHub پروژه می‌آیند.</string>
     <string name="online_datapacks_chip_update">به‌روزرسانی موجود است</string>
 </resources>

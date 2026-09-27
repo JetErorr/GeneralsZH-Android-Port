@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">설치됨: 버전 %1$s. 새 버전이 나왔습니다: %2$s.</string>
     <string name="online_datapacks_update_for_crc">설치됨: 버전 %1$s. 한 번 업데이트하면 이 기기가 PC 클라이언트 체크섬을 계산합니다.</string>
     <string name="online_datapacks_up_to_date">설치됨: 버전 %1$s, 최신입니다.</string>
-    <string name="online_network_settings">네트워크 설정(서버, PC 호환성): #%1$d, 프로젝트 GitHub에서 자동으로 업데이트되며 서명되어 있습니다.</string>
+    <string name="online_network_settings">네트워크 설정(서버, PC 호환성): %1$s 게시, 프로젝트 GitHub에서 자동으로 업데이트되며 서명되어 있습니다.</string>
     <string name="online_network_settings_builtin">네트워크 설정(서버, PC 호환성): 이 버전에 내장됨. 새 설정은 프로젝트 GitHub에서 자동으로 받습니다.</string>
     <string name="online_datapacks_chip_update">업데이트 있음</string>
 </resources>

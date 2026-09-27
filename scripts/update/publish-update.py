@@ -10,6 +10,7 @@
 # The engine entry names the SHA-256 of every other native library in the APK
 # (requires_libs): the launcher runs a downloaded engine only on an install whose libraries
 # are exactly those, so an engine linked against a different SDL/OpenAL/DXVK never loads.
+import datetime
 import argparse, base64, gzip, hashlib, json, os, subprocess, sys, tempfile, urllib.request, zipfile
 
 BASE_URL = "https://raw.githubusercontent.com/MYSOREZ/GeneralsZH-Android-Port/updates/"
@@ -40,6 +41,9 @@ def main():
 
     os.makedirs(a.out, exist_ok=True)
     manifest = {"schema": 1, "serial": a.serial or current_serial() + 1}
+    # What the launcher shows players ("Network settings: from 27.09.2026"); the serial is only
+    # the anti-rollback counter.
+    manifest["published"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
     if a.note:
         manifest["note"] = a.note
     with open(a.config, encoding="utf-8") as f:

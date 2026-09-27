@@ -321,7 +321,7 @@
     <string name="online_datapacks_update_available">Установлена версия %1$s. Вышла новая версия %2$s.</string>
     <string name="online_datapacks_update_for_crc">Установлена версия %1$s. Обновите один раз, чтобы телефон посчитал по нему контрольную сумму ПК-клиента.</string>
     <string name="online_datapacks_up_to_date">Установлена версия %1$s, она последняя.</string>
-    <string name="online_network_settings">Сетевые настройки (серверы, совместимость с ПК): №%1$d, обновляются автоматически с GitHub проекта и подписаны.</string>
+    <string name="online_network_settings">Сетевые настройки (серверы, совместимость с ПК): от %1$s, обновляются автоматически с GitHub проекта и подписаны.</string>
     <string name="online_network_settings_builtin">Сетевые настройки (серверы, совместимость с ПК): встроенные в эту версию; новые придут автоматически с GitHub проекта.</string>
     <string name="online_datapacks_chip_update">Есть обновление</string>
 </resources>

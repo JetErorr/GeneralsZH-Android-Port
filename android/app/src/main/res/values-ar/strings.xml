@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">المثبت: الإصدار %1$s. صدر إصدار جديد: %2$s.</string>
     <string name="online_datapacks_update_for_crc">المثبت: الإصدار %1$s. حدّث مرة واحدة ليحسب هذا الجهاز منه المجموع الاختباري لعميل الحاسوب.</string>
     <string name="online_datapacks_up_to_date">المثبت: الإصدار %1$s، وهو الأحدث.</string>
-    <string name="online_network_settings">إعدادات الشبكة (الخوادم، التوافق مع الحاسوب): رقم %1$d، تُحدَّث تلقائيًا من GitHub المشروع وموقّعة.</string>
+    <string name="online_network_settings">إعدادات الشبكة (الخوادم، التوافق مع الحاسوب): بتاريخ %1$s، تُحدَّث تلقائيًا من GitHub المشروع وموقّعة.</string>
     <string name="online_network_settings_builtin">إعدادات الشبكة (الخوادم، التوافق مع الحاسوب): مدمجة في هذا الإصدار؛ ستصل الأحدث تلقائيًا من GitHub المشروع.</string>
     <string name="online_datapacks_chip_update">يتوفر تحديث</string>
 </resources>

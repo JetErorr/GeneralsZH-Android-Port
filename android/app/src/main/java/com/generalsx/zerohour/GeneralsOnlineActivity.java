@@ -309,9 +309,10 @@ public class GeneralsOnlineActivity extends Activity {
         final String version = DataPackInstaller.installedVersion(this);
         final boolean installed = version != null && !version.isEmpty();
 
-        final int settingsSerial = UpdateManager.acceptedSerial(this);
-        networkSettingsStatus.setText(settingsSerial > 0
-            ? getString(R.string.online_network_settings, settingsSerial)
+        final java.util.Date settingsDate = UpdateManager.settingsPublished(this);
+        networkSettingsStatus.setText(settingsDate != null
+            ? getString(R.string.online_network_settings,
+                android.text.format.DateFormat.getDateFormat(this).format(settingsDate))
             : getString(R.string.online_network_settings_builtin));
 
         final boolean updateWanted = installed && UpdateManager.datapackUpdateWanted(this);

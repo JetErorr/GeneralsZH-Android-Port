@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">Встановлено версію %1$s. Вийшла нова версія %2$s.</string>
     <string name="online_datapacks_update_for_crc">Встановлено версію %1$s. Оновіть один раз, щоб телефон обчислив за ним контрольну суму ПК-клієнта.</string>
     <string name="online_datapacks_up_to_date">Встановлено версію %1$s, вона остання.</string>
-    <string name="online_network_settings">Мережеві налаштування (сервери, сумісність із ПК): №%1$d, оновлюються автоматично з GitHub проєкту й підписані.</string>
+    <string name="online_network_settings">Мережеві налаштування (сервери, сумісність із ПК): від %1$s, оновлюються автоматично з GitHub проєкту й підписані.</string>
     <string name="online_network_settings_builtin">Мережеві налаштування (сервери, сумісність із ПК): вбудовані в цю версію; нові прийдуть автоматично з GitHub проєкту.</string>
     <string name="online_datapacks_chip_update">Є оновлення</string>
 </resources>

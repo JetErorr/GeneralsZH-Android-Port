@@ -75,6 +75,7 @@ final class UpdateManager {
     private static final String KEY_LAST_CHECK = "last_check";
     private static final String KEY_DEPS_OK_FOR = "deps_ok_for";
     private static final String KEY_DATAPACK_LATEST = "datapack_latest";
+    private static final String KEY_SETTINGS_DATE = "settings_date";
 
     private UpdateManager() {
     }
@@ -116,6 +117,19 @@ final class UpdateManager {
 
     static long lastCheckMillis(Context ctx) {
         return prefs(ctx).getLong(KEY_LAST_CHECK, 0L);
+    }
+
+    /** When the settings in use were published, or null while only the built-in ones exist. */
+    static java.util.Date settingsPublished(Context ctx) {
+        String date = prefs(ctx).getString(KEY_SETTINGS_DATE, null);
+        if (date == null || acceptedSerial(ctx) <= 0) {
+            return null;
+        }
+        try {
+            return new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).parse(date);
+        } catch (java.text.ParseException e) {
+            return null;
+        }
     }
 
     static int acceptedSerial(Context ctx) {
@@ -268,7 +282,17 @@ final class UpdateManager {
             noticeNewerDatapack(ctx, r);
 
             writeBytes(new File(dir, "manifest.json"), manifestBytes);
-            prefs(ctx).edit()
+            SharedPreferences.Editor edit = prefs(ctx).edit();
+            if (r.serial != acceptedSerial(ctx) || !prefs(ctx).contains(KEY_SETTINGS_DATE)) {
+                // Players see the settings by date, not by serial. A manifest from before the
+                // "published" field is dated by the day it arrived.
+                String published = manifest.optString("published", "");
+                edit.putString(KEY_SETTINGS_DATE, published.matches("\\d{4}-\\d{2}-\\d{2}")
+                    ? published
+                    : new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                        .format(new java.util.Date()));
+            }
+            edit
                 .putInt(KEY_SERIAL, r.serial)
                 .putLong(KEY_LAST_CHECK, System.currentTimeMillis())
                 .apply();

@@ -319,7 +319,7 @@
     <string name="online_datapacks_update_available">已安装：版本 %1$s。新版本已发布：%2$s。</string>
     <string name="online_datapacks_update_for_crc">已安装：版本 %1$s。请更新一次，以便本设备据此计算 PC 客户端校验和。</string>
     <string name="online_datapacks_up_to_date">已安装：版本 %1$s，已是最新。</string>
-    <string name="online_network_settings">网络设置（服务器、PC 兼容性）：第 %1$d 版，自动从项目 GitHub 更新并已签名。</string>
+    <string name="online_network_settings">网络设置（服务器、PC 兼容性）：%1$s 发布，自动从项目 GitHub 更新并已签名。</string>
     <string name="online_network_settings_builtin">网络设置（服务器、PC 兼容性）：内置于此版本；新设置会自动从项目 GitHub 获取。</string>
     <string name="online_datapacks_chip_update">有可用更新</string>
 </resources>
