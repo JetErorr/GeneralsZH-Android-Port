@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "هاجم الهدف التالي الذي تلمسه، حتى لو كان وحداتك أو أرضًا فارغة"
 END
 
+GX:BuilderPageMore
+"أوامر أخرى"
+END
+
+GX:ToolTipBuilderPageMore
+"عرض أوامر وحدة البناء هذه، مثل نقاط المسار"
+END
+
+GX:BuilderPageBack
+"المباني"
+END
+
+GX:ToolTipBuilderPageBack
+"العودة إلى قائمة المباني"
+END
+
 GUI:LoadReplayLong
 "تحميل إعادة"
 END

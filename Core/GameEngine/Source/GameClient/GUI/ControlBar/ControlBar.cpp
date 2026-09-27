@@ -907,6 +907,9 @@ ControlBar::ControlBar()
 	m_touchHoldPoint.x = m_touchHoldPoint.y = 0;
 	m_touchForceAttackButton = nullptr;
 	m_touchWaypointButton = nullptr;
+	m_touchBuilderMoreButton = nullptr;
+	m_touchBuilderBackButton = nullptr;
+	m_builderPageObject = INVALID_ID;
 
 	m_animateDownWin1Pos.x = m_animateDownWin1Pos.y = 0;
 	m_animateDownWin1Size.x = m_animateDownWin1Size.y = 0;
@@ -2773,6 +2776,25 @@ void ControlBar::initTouchModeButtons()
 	{
 		fprintf(stderr, "[touchmodes] SSRally image missing; no waypoint button\n");
 		m_touchWaypointButton = nullptr;
+	}
+
+	// GeneralsX @feature Android port 27/09/2026 The page arrows on a builder's bar
+	// (addBuilderPageButtons). SUFakeToggle is the arrow the GLA worker already uses to flip
+	// between its real and fake buildings, so the same picture means "other page" here too.
+	CommandButton *builderMore = newCommandButton( "GX_Command_TouchBuilderPageMore" );
+	builderMore->initTouchModeButton( GUI_COMMAND_GX_BUILDER_PAGE,
+																	 "GX:BuilderPageMore", "GX:ToolTipBuilderPageMore", "SUFakeToggle" );
+	CommandButton *builderBack = newCommandButton( "GX_Command_TouchBuilderPageBack" );
+	builderBack->initTouchModeButton( GUI_COMMAND_GX_BUILDER_PAGE,
+																	 "GX:BuilderPageBack", "GX:ToolTipBuilderPageBack", "SUFakeToggle" );
+	if( builderMore->getButtonImage() != nullptr && builderBack->getButtonImage() != nullptr )
+	{
+		m_touchBuilderMoreButton = builderMore;
+		m_touchBuilderBackButton = builderBack;
+	}
+	else
+	{
+		fprintf(stderr, "[touchmodes] SUFakeToggle image missing; no builder page arrow\n");
 	}
 #endif
 }

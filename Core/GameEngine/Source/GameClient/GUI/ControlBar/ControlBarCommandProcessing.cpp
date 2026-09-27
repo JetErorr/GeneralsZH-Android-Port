@@ -693,6 +693,15 @@ CBCommandStatus ControlBar::processCommandUI( GameWindow *control,
 			break;
 		}
 
+		//---------------------------------------------------------------------------------------------
+		case GUI_COMMAND_GX_BUILDER_PAGE:
+		{
+			// GeneralsX @feature Android port 27/09/2026 Page arrow on a builder's bar. UI only:
+			// no message reaches the logic, so it cannot affect a replay or a network game.
+			toggleBuilderPage();
+			break;
+		}
+
 		//-------------------------------------------------------------------------------------------------
 		case GUI_COMMAND_EXIT_CONTAINER:
 		{

@@ -249,6 +249,10 @@ static const GXEnglishDefault s_gxEnglishDefaults[] =
 	{ "GUI:CustomMission",     L"CUSTOM MISSION" },
 	{ "GX:ForceAttack",        L"Force Attack" },
 	{ "GX:ToolTipForceAttack", L"Attack the next target you tap, even your own units or empty ground" },
+	{ "GX:BuilderPageMore",        L"More Orders" },
+	{ "GX:ToolTipBuilderPageMore", L"Show this builder's orders, such as waypoints" },
+	{ "GX:BuilderPageBack",        L"Structures" },
+	{ "GX:ToolTipBuilderPageBack", L"Back to the list of structures" },
 };
 
 

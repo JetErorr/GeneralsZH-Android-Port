@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "Atakuj następny dotknięty cel, nawet własne jednostki lub pusty teren"
 END
 
+GX:BuilderPageMore
+"Więcej rozkazów"
+END
+
+GX:ToolTipBuilderPageMore
+"Pokaż rozkazy tego budowniczego, np. punkty trasy"
+END
+
+GX:BuilderPageBack
+"Budynki"
+END
+
+GX:ToolTipBuilderPageBack
+"Powrót do listy budynków"
+END
+
 GUI:LoadReplayLong
 "WCZYTAJ POWTÓRKĘ"
 END

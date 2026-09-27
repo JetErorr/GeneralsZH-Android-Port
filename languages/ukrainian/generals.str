@@ -25708,6 +25708,22 @@ GX:ToolTipForceAttack
 "Атакувати наступну ціль, якої ви торкнетеся, навіть свої війська чи порожню землю"
 END
 
+GX:BuilderPageMore
+"Інші накази"
+END
+
+GX:ToolTipBuilderPageMore
+"Показати накази будівельника, наприклад маршрутні точки"
+END
+
+GX:BuilderPageBack
+"Споруди"
+END
+
+GX:ToolTipBuilderPageBack
+"Повернутися до списку споруд"
+END
+
 GUI:LoadReplayLong
 "ЗАВАНТАЖИТИ ПОВТОР"
 END

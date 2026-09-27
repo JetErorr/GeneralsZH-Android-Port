@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "Ataca o próximo alvo que você tocar, até suas próprias unidades ou o chão vazio"
 END
 
+GX:BuilderPageMore
+"Mais ordens"
+END
+
+GX:ToolTipBuilderPageMore
+"Mostrar as ordens deste construtor, como os pontos de rota"
+END
+
+GX:BuilderPageBack
+"Estruturas"
+END
+
+GX:ToolTipBuilderPageBack
+"Voltar à lista de estruturas"
+END
+
 GUI:LoadReplayLong
 "CARREGAR REPLAY"
 END

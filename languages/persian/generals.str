@@ -25711,6 +25711,22 @@ GX:ToolTipForceAttack
 "به هدف بعدی که لمس می‌کنید حمله کن، حتی یگان‌های خودی یا زمین خالی"
 END
 
+GX:BuilderPageMore
+"دستورهای دیگر"
+END
+
+GX:ToolTipBuilderPageMore
+"نمایش دستورهای این سازنده، مانند نقاط مسیر"
+END
+
+GX:BuilderPageBack
+"ساختمان‌ها"
+END
+
+GX:ToolTipBuilderPageBack
+"بازگشت به فهرست ساختمان‌ها"
+END
+
 GUI:LoadReplayLong
 "بارگذاری بازپخش"
 END

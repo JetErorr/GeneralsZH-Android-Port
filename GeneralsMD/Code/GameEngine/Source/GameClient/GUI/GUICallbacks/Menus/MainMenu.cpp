@@ -56,6 +56,8 @@
 #include "GameClient/KeyDefs.h"
 #include "GameClient/GameWindowManager.h"
 #include "GameClient/GadgetStaticText.h"
+#include "GameClient/DisplayStringManager.h"
+#include "Common/GXSafeArea.h"
 #include "GameClient/GlobalLanguage.h"
 #include "GameClient/Mouse.h"
 #include "GameClient/WindowVideoManager.h"
@@ -443,6 +445,44 @@ static void initLabelVersion()
 	if (labelVersion)
 	{
 		GadgetStaticTextSetText( labelVersion, creditText );
+
+		// GeneralsX @bugfix Android port 27/09/2026 The stock LabelVersion box is sized for the
+		// 800x600 version string, and the text in it is drawn wrapped at the box width and
+		// clipped to the box. With the scaled-up font the watermark wrapped after "C&C" and the
+		// second line, plus the lower half of the first, fell outside the box (seen on a
+		// 2510x1156 phone). Grow the box to the unwrapped text and keep it inside the screen's
+		// safe area; the box never shrinks, so a desktop layout that already fits is unchanged.
+		GameFont *font = labelVersion->winGetFont();
+		if (font && TheDisplay && TheDisplayStringManager)
+		{
+			DisplayString *measure = TheDisplayStringManager->newDisplayString();
+			measure->setFont( font );
+			measure->setText( creditText );
+			Int textWidth = 0, textHeight = 0;
+			measure->getSize( &textWidth, &textHeight );
+			TheDisplayStringManager->freeDisplayString( measure );
+
+			// drawStaticTextText wraps at width - 10 and draws at the left/top margins.
+			TextData *textData = (TextData *)labelVersion->winGetUserData();
+			const Int marginX = textData ? textData->leftMargin : 0;
+			const Int marginY = textData ? textData->topMargin : 0;
+			Int width = 0, height = 0, x = 0, y = 0;
+			labelVersion->winGetSize( &width, &height );
+			labelVersion->winGetScreenPosition( &x, &y );
+			width = max( width, textWidth + marginX + 12 );
+			height = max( height, textHeight + marginY + 2 );
+
+			const Int left = GXSafeArea::leftPx();
+			const Int bottom = TheDisplay->getHeight() - GXSafeArea::bottomPx();
+			Int newX = max( x, left );
+			Int newY = min( y, bottom - height );
+
+			Int parentX = 0, parentY = 0;
+			if (GameWindow *parent = labelVersion->winGetParent())
+				parent->winGetScreenPosition( &parentX, &parentY );
+			labelVersion->winSetSize( width, height );
+			labelVersion->winSetPosition( newX - parentX, newY - parentY );
+		}
 		return;
 	}
 
@@ -750,6 +790,14 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 		initialGadgetDelay = 2;
 		if(rule)
 		rule->winHide(FALSE);
+
+		// GeneralsX @bugfix Android port 27/09/2026 This path brings the menu up by itself (the
+		// justEntered branch in MainMenuUpdate), but notShown stayed TRUE if the first menu was
+		// never revealed through MainMenuInput -- e.g. the first session went straight into a
+		// game. The next tap anywhere then counted as "first input", MainMenuInput slid the main
+		// dropdown in again, and it sat on top of whichever submenu was open, both working.
+		notShown = FALSE;
+		TheMouse->setVisibility(TRUE);
 	}
 
 	layout->bringForward();

@@ -222,6 +222,12 @@ enum GUICommandType CPP_11(: Int)
 	// MSG_DO_FORCE_ATTACK_* a Ctrl+click sends. Appended last so no existing value moves.
 	GUI_COMMAND_GX_FORCE_ATTACK,
 
+	// GeneralsX @feature Android port 27/09/2026 Page switch on a builder's bar (dozer, worker):
+	// the first page is the stock palette of structures, the second holds the touch order
+	// buttons. Built in code like GX_FORCE_ATTACK and purely a UI state -- nothing is sent to
+	// the logic, unlike the GLA worker's own fake-building toggle, which is an object upgrade.
+	GUI_COMMAND_GX_BUILDER_PAGE,
+
 	// add more commands here, don't forget to update the string command list below too ...
 
 	GUI_COMMAND_NUM_COMMANDS
@@ -276,6 +282,7 @@ static const char *const TheGuiCommandNames[] =
 	"SPECIAL_POWER_CONSTRUCT_FROM_SHORTCUT",
 	"SELECT_ALL_UNITS_OF_TYPE",
 	"GX_FORCE_ATTACK",
+	"GX_BUILDER_PAGE",
 
 	nullptr
 };
@@ -1017,7 +1024,18 @@ protected:
 	const CommandButton *m_touchWaypointButton;
 	void initTouchModeButtons();
 	void addTouchModeButtons( const CommandSet *commandSet );
+
+	// GeneralsX @feature Android port 27/09/2026 A builder's bar has no room for order buttons
+	// among its structures, so it gets a second page instead: an arrow in the bottom-right slot
+	// (14) opens it and an arrow in the same slot brings the structures back. Whatever the
+	// stock set keeps in slot 14 moves to a free slot. m_builderPageObject is the builder whose
+	// second page is showing, INVALID_ID when none is.
+	const CommandButton *m_touchBuilderMoreButton;
+	const CommandButton *m_touchBuilderBackButton;
+	ObjectID m_builderPageObject;
+	Bool addBuilderPageButtons( const CommandSet *commandSet, const Object *obj );
 public:
+	void toggleBuilderPage();
 	void setTouchHoldPoint( Int x, Int y, Bool held )
 	{
 		m_touchHoldActive = held;
