@@ -25708,6 +25708,22 @@ GX:ToolTipForceAttack
 "Атаковать следующую цель, которой вы коснётесь, даже свои войска или пустую землю"
 END
 
+GX:BuilderPageMore
+"Другие приказы"
+END
+
+GX:ToolTipBuilderPageMore
+"Показать приказы строителя, например путевые точки"
+END
+
+GX:BuilderPageBack
+"Постройки"
+END
+
+GX:ToolTipBuilderPageBack
+"Вернуться к списку построек"
+END
+
 GUI:LoadReplayLong
 "ЗАГРУЗИТЬ ПОВТОР"
 END

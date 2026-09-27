@@ -25711,6 +25711,22 @@ GX:ToolTipForceAttack
 "Napadni sleduješi objekt, na kotory kliknete, daže vaše vlastne jedinice ili prazdnu zemju"
 END
 
+GX:BuilderPageMore
+"Drugi prikazy"
+END
+
+GX:ToolTipBuilderPageMore
+"Pokazati prikazy tutogo graditelja, napriměr točky puti"
+END
+
+GX:BuilderPageBack
+"Zgrady"
+END
+
+GX:ToolTipBuilderPageBack
+"Vråtiti se k spisku zgrad"
+END
+
 GUI:LoadReplayLong
 "NAGRUZITI REPLAY"
 END

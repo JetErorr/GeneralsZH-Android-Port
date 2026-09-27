@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "Ataca el siguiente objetivo que toques, incluso tus propias unidades o el suelo vacío"
 END
 
+GX:BuilderPageMore
+"Más órdenes"
+END
+
+GX:ToolTipBuilderPageMore
+"Mostrar las órdenes de este constructor, como los puntos de ruta"
+END
+
+GX:BuilderPageBack
+"Estructuras"
+END
+
+GX:ToolTipBuilderPageBack
+"Volver a la lista de estructuras"
+END
+
 GUI:LoadReplayLong
 "CARGAR REPETICIÓN"
 END

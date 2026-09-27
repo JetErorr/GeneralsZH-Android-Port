@@ -25708,6 +25708,22 @@ GX:ToolTipForceAttack
 "Attaque la prochaine cible que vous touchez, même vos propres unités ou un terrain vide"
 END
 
+GX:BuilderPageMore
+"Autres ordres"
+END
+
+GX:ToolTipBuilderPageMore
+"Afficher les ordres de ce constructeur, comme les points de passage"
+END
+
+GX:BuilderPageBack
+"Bâtiments"
+END
+
+GX:ToolTipBuilderPageBack
+"Retour à la liste des bâtiments"
+END
+
 GUI:LoadReplayLong
 "CHARGER LE REPLAY"
 END

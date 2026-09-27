@@ -25708,6 +25708,22 @@ GX:ToolTipForceAttack
 "Das nächste angetippte Ziel angreifen, auch eigene Einheiten oder leeren Boden"
 END
 
+GX:BuilderPageMore
+"Weitere Befehle"
+END
+
+GX:ToolTipBuilderPageMore
+"Befehle dieses Bautrupps anzeigen, etwa Wegpunkte"
+END
+
+GX:BuilderPageBack
+"Gebäude"
+END
+
+GX:ToolTipBuilderPageBack
+"Zurück zur Gebäudeliste"
+END
+
 GUI:LoadReplayLong
 "WIEDERHOLUNG LADEN"
 END

@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "다음에 탭하는 목표를 공격합니다. 아군 유닛이나 빈 땅도 공격합니다"
 END
 
+GX:BuilderPageMore
+"추가 명령"
+END
+
+GX:ToolTipBuilderPageMore
+"이 건설 유닛의 명령(예: 경유지)을 표시합니다"
+END
+
+GX:BuilderPageBack
+"건물"
+END
+
+GX:ToolTipBuilderPageBack
+"건물 목록으로 돌아갑니다"
+END
+
 GUI:LoadReplayLong
 "리플레이 불러오기"
 END

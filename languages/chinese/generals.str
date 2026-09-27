@@ -25709,6 +25709,22 @@ GX:ToolTipForceAttack
 "攻击你点击的下一个目标，即使是你自己的单位或空地"
 END
 
+GX:BuilderPageMore
+"更多命令"
+END
+
+GX:ToolTipBuilderPageMore
+"显示此建造单位的命令，例如路径点"
+END
+
+GX:BuilderPageBack
+"建筑"
+END
+
+GX:ToolTipBuilderPageBack
+"返回建筑列表"
+END
+
 GUI:LoadReplayLong
 "载入录像"
 END
