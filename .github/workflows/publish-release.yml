@@ -1,0 +1,72 @@
+# GeneralsX @feature Android port 27/09/2026 Publish a GitHub Release from files already in the
+# repository, without building anything.
+#
+# Android builds happen locally (AGENTS.md): scripts/build/android/build-dual-hz.sh produces the
+# APK with both engines, it is committed as the one file in apk/, and the release notes and symbol
+# tables go to docs/releases/v<version>/. This job only checks those files and publishes them, so
+# it takes seconds of the Actions budget instead of a full build -- and, unlike build-android.yml's
+# create_release, the APK it publishes carries both the 30 Hz and the 60 Hz engine.
+name: Publish Android Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version without the v (e.g. 1.3.0). Needs docs/releases/v<version>/notes.md and exactly one APK in apk/ built with that versionName."
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Check the release files
+        id: files
+        run: |
+          set -euo pipefail
+          VERSION="${{ inputs.version }}"
+          DIR="docs/releases/v${VERSION}"
+          if [ ! -f "${DIR}/notes.md" ]; then
+            echo "::error::${DIR}/notes.md is missing -- write the release notes there first."
+            exit 1
+          fi
+          shopt -s nullglob
+          APKS=(apk/*.apk)
+          if [ "${#APKS[@]}" -ne 1 ]; then
+            echo "::error::expected exactly one APK in apk/, found ${#APKS[@]}."
+            exit 1
+          fi
+          APK="${APKS[0]}"
+          # The manifest is binary XML with UTF-16 strings: drop the NULs to find versionName.
+          if ! unzip -p "${APK}" AndroidManifest.xml | tr -d '\0' | grep -q "${VERSION}"; then
+            echo "::error::${APK} was not built as version ${VERSION} (android/app/build.gradle versionName)."
+            exit 1
+          fi
+          for lib in libmain.so libmain60.so; do
+            if ! unzip -l "${APK}" "lib/arm64-v8a/${lib}" >/dev/null; then
+              echo "::error::${APK} has no lib/arm64-v8a/${lib} -- build it with build-dual-hz.sh."
+              exit 1
+            fi
+          done
+          ASSET="GeneralsXZH-android-v${VERSION}.apk"
+          cp "${APK}" "${ASSET}"
+          echo "apk=${ASSET}" >> "$GITHUB_OUTPUT"
+          echo "dir=${DIR}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          target_commitish: ${{ github.sha }}
+          body_path: ${{ steps.files.outputs.dir }}/notes.md
+          files: |
+            ${{ steps.files.outputs.apk }}
+            ${{ steps.files.outputs.dir }}/*.symbols.txt.gz
+          make_latest: true

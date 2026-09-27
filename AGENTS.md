@@ -91,6 +91,12 @@ APK is ~60 MB of permanent git history.
 
 **Give the user the APK link first, at the top of the reply, not at the end.**
 
+**Releases** are published from the local build too: bump `versionName`/`versionCode` in
+`android/app/build.gradle`, build with `build-dual-hz.sh`, commit the APK as the one file in `apk/`
+and the notes (plus the symbol tables of both engines) under `docs/releases/v<version>/`, push to
+`main`, then run `Actions → Publish Android Release` with the version. It builds nothing, so it
+costs seconds.
+
 CI (`Actions tab → Build Android → Run workflow`) still exists for release
 artifacts and the symbol bundle. For a local build's prerequisites see
 `docs/port/ANDROID_PORT.md §3`:
