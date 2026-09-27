@@ -181,3 +181,16 @@ The text needs a font with CJK glyphs. The APK only bundles Latin fonts (`fonts/
 friends), and on Android `Locate_Font_FontConfig` resolves every unknown face name to
 `fonts/arial.ttf`, so until a CJK font is resolved the pack renders as empty boxes on Android.
 
+## Korean
+
+`languages/korean/generals.str` is a new translation from the English original into Korean. It
+uses the names of the Korean release: "사령부", "군수 공장", "스커드 스톰", "입자 캐논",
+"블랙 로투스", "오버로드", "황제" for the Emperor, "파괴 공작원" for the Saboteur, "스랙스 박사" for
+Dr. Thrax, and so on. EVA and the officers speak the formal 합쇼체 and call the player "장군님";
+the enemy generals speak down to the player ("장군", 반말), and the USA boss's "Boy/Kid/Punk"
+become "꼬마" and "애송이". Hotkeys follow "이름(&K)". Tooltips read "강함: … / 약함: …",
+"필요 전력:", "재사용 대기시간:", "사용 위치:". Multiplayer map names stay in English. Jokes are
+localised ("산토끼 토끼야" for the test rhyme, "소리 없이 강하다" for "Silent but deadly").
+
+Like the Chinese pack, it needs a font with Hangul glyphs; see the note under Simplified Chinese.
+
