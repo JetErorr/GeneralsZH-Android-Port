@@ -312,4 +312,5 @@
     <string name="setup_updates_config_updated">Налаштування серверів оновлено.</string>
     <string name="setup_updates_failed">Не вдалося перевірити оновлення: %1$s</string>
     <string name="setup_updates_not_published">Оновлення ще не публікувалися.</string>
+    <string name="setup_updates_offline">Немає підключення до інтернету. Лаунчер і гра працюють і без нього; оновлення перевіряться наступного разу.</string>
 </resources>

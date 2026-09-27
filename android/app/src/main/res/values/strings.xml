@@ -319,4 +319,5 @@
     <string name="setup_updates_config_updated">Server settings updated.</string>
     <string name="setup_updates_failed">Update check failed: %1$s</string>
     <string name="setup_updates_not_published">No updates have been published yet.</string>
+    <string name="setup_updates_offline">No internet connection. The launcher and the game work offline; updates will be checked next time.</string>
 </resources>

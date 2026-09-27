@@ -506,7 +506,9 @@ public class SetupActivity extends Activity {
                 refreshUpdatesStatus();
                 if (!r.ok) {
                     if (userAsked) {
-                        toast(r.error != null && r.error.startsWith("HTTP 404")
+                        toast(r.offline
+                            ? getString(R.string.setup_updates_offline)
+                            : r.error != null && r.error.startsWith("HTTP 404")
                             ? getString(R.string.setup_updates_not_published)
                             : getString(R.string.setup_updates_failed, r.error));
                     }

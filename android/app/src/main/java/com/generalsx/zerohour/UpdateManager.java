@@ -204,6 +204,7 @@ final class UpdateManager {
         int engineSeq;              // engine offered by the manifest, 0 if none
         boolean engineDownloaded;   // newly downloaded and ready for the next start
         boolean engineIncompatible; // offered but built against other libraries -- needs a new APK
+        boolean offline;            // no network: nothing changed, the last good update stays in use
     }
 
     /** Blocking; call off the UI thread. */
@@ -245,6 +246,12 @@ final class UpdateManager {
                 .putLong(KEY_LAST_CHECK, System.currentTimeMillis())
                 .apply();
             r.ok = r.error == null;
+        } catch (java.net.UnknownHostException | java.net.ConnectException
+                 | java.net.SocketTimeoutException | java.net.NoRouteToHostException e) {
+            // Offline is a normal state, not an error: the launcher and the game work without a
+            // network, and whatever was verified last time (settings, engine) stays in use.
+            r.offline = true;
+            r.error = "offline";
         } catch (Exception e) {
             Log.w(TAG, "update check failed", e);
             String msg = e.getMessage();

@@ -314,4 +314,5 @@
     <string name="setup_updates_config_updated">Настройки серверов обновлены.</string>
     <string name="setup_updates_failed">Не удалось проверить обновления: %1$s</string>
     <string name="setup_updates_not_published">Обновления ещё не публиковались.</string>
+    <string name="setup_updates_offline">Нет подключения к интернету. Лаунчер и игра работают и без него; обновления проверятся в следующий раз.</string>
 </resources>

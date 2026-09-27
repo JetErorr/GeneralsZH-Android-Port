@@ -312,4 +312,5 @@
     <string name="setup_updates_config_updated">Servereinstellungen aktualisiert.</string>
     <string name="setup_updates_failed">Update-Prüfung fehlgeschlagen: %1$s</string>
     <string name="setup_updates_not_published">Es wurden noch keine Updates veröffentlicht.</string>
+    <string name="setup_updates_offline">Keine Internetverbindung. Launcher und Spiel funktionieren auch offline; Updates werden beim nächsten Mal geprüft.</string>
 </resources>
