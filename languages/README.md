@@ -165,3 +165,19 @@ and "gnojku". Tooltips follow one pattern ("Skuteczny przeciw: czołgom / Słaby
 samolotom", "Wymagana energia:", "Czas odnowienia:"). Multiplayer map names stay in English.
 Jokes are carried over as Polish ones ("Wlazł kotek na płotek" for the test rhyme, "zapach MOAB
 o poranku", "Rozlane w alejce pierwszej!").
+
+## Simplified Chinese
+
+`languages/chinese/generals.str` is a new translation from the English original into Simplified
+Chinese. It uses the names the Chinese-speaking community uses for the game: "GLA", "指挥中心",
+"战车工厂", "飞毛腿风暴", "粒子加农炮", "黑莲花", "霸王坦克" for the Overlord and "皇帝坦克" for the
+Emperor, "萨拉克斯博士" for Dr. Thrax, and so on. Hotkeys follow the Chinese convention of a
+Latin letter in brackets after the name ("推土机(&D)"), so `&`+letter counts still match the
+English. Tooltips read "强于：… / 弱于：…", "所需电力：", "冷却时间：", "召唤地点：". Multiplayer map
+names stay in English. Jokes are localised ("小兔子乖乖，把门儿开开" for the test rhyme, "滴滴香浓，
+意犹未尽" for "Good to the last drop", "一号货架有东西洒了！").
+
+The text needs a font with CJK glyphs. The APK only bundles Latin fonts (`fonts/arial.ttf` and
+friends), and on Android `Locate_Font_FontConfig` resolves every unknown face name to
+`fonts/arial.ttf`, so until a CJK font is resolved the pack renders as empty boxes on Android.
+
