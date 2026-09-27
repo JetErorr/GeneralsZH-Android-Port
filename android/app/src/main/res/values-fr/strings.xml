@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Impossible d\'activer la trace réseau ; le journal n\'aura pas le détail des sommes de contrôle.</string>
     <string name="replaycheck_crc_every_frame">Somme de contrôle de chaque image</string>
     <string name="replaycheck_crc_every_frame_help">Écrit aussi dans le journal la somme de contrôle de la logique à chaque image. Sert à construire une copie du replay que le client PC vérifie image par image. Plus lent.</string>
+    <string name="setup_online_anticheat_note">Les clients mobiles n\'ont pas d\'anti-triche. Pour jouer ensemble, le joueur PC doit désactiver l\'anti-triche (GeneralsOnline AntiCheat ou Easy Anti-Cheat) dans le lanceur GeneralsOnline : un salon avec un autre anti-triche est inaccessible depuis un téléphone, et inversement.</string>
+    <string name="setup_switch_logging">Collecter les journaux</string>
+    <string name="setup_switch_logging_desc">Écrire les journaux du jeu, des plantages et du réseau sur l\'appareil. Désactivez pour ne rien conserver en arrière-plan, jusqu\'à ce que vous le réactiviez. Nécessaire pour signaler un bug.</string>
 </resources>

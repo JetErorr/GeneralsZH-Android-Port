@@ -1664,6 +1664,17 @@ public class SetupActivity extends Activity {
             getString(R.string.setup_diagnostics_no_folder),
             R.color.gzh_status_warn, R.color.gzh_surface_container_high);
 
+        // GeneralsX @feature Android port 27/09/2026 Master switch: when off, nothing is logged in
+        // the background -- not the engine's stderr mirror, not crash.log, not GeneralsOnline.log,
+        // not this launcher's network trace. Kept as a marker in the app's own files dir (not the
+        // game folder) so it holds before any folder is chosen, and so the native side can find
+        // it at load time, before SDL_main (see GXLogging.h).
+        loggingSwitch = UiKit.switchRow(content,
+            getString(R.string.setup_switch_logging), getString(R.string.setup_switch_logging_desc));
+        loggingSwitch.setChecked(!isLoggingDisabled(this));
+        loggingSwitch.setOnCheckedChangeListener((button, checked) -> setLoggingDisabled(!checked));
+        UiKit.divider(content);
+
         for (int i = 0; i < DIAGNOSTIC_MARKERS.length; i++) {
             if (i > 0) {
                 UiKit.divider(content);
@@ -1676,6 +1687,26 @@ public class SetupActivity extends Activity {
     }
 
     private TextView diagnosticsNoFolderHint;
+    private SwitchCompat loggingSwitch;
+
+    static final String LOGGING_OFF_MARKER = "logging_off";
+
+    static boolean isLoggingDisabled(android.content.Context ctx) {
+        return new File(ctx.getFilesDir(), LOGGING_OFF_MARKER).isFile();
+    }
+
+    private void setLoggingDisabled(boolean disabled) {
+        File marker = new File(getFilesDir(), LOGGING_OFF_MARKER);
+        if (disabled) {
+            try {
+                marker.createNewFile();
+            } catch (java.io.IOException e) {
+                Toast.makeText(this, getString(R.string.setup_toast_options_save_failed, e.getMessage()), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            marker.delete();
+        }
+    }
 
     private File diagnosticMarkerFile(String name) {
         String gamePath = getSavedGamePath();
@@ -1728,6 +1759,13 @@ public class SetupActivity extends Activity {
             getString(R.string.setup_card_online), false);
 
         onlineStatusView = UiKit.supporting(content, null);
+
+        // GeneralsX @feature Android port 27/09/2026 The service refuses a join between lobbies
+        // whose anti-cheat differs (anticheat_id, JoinLobbyResult_AnticheatMismatch), and this
+        // client has none. A PC player running GeneralsOnline AntiCheat or Easy Anti-Cheat is
+        // therefore unreachable from a phone until they turn it off -- say so up front instead
+        // of leaving players to discover it as a failed join.
+        UiKit.supporting(content, getString(R.string.setup_online_anticheat_note));
 
         UiKit.button(content, UiKit.BTN_TONAL, R.drawable.ic_gzh_account,
             getString(R.string.setup_button_online_account), () ->

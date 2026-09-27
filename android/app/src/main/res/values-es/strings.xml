@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">No se pudo activar el rastreo de red; el registro no tendrá los detalles de las sumas de control.</string>
     <string name="replaycheck_crc_every_frame">Suma de control de cada fotograma</string>
     <string name="replaycheck_crc_every_frame_help">Además escribe en el registro la suma de control de la lógica de cada fotograma. Sirve para crear una copia de la repetición que el cliente de PC comprueba fotograma a fotograma. Más lento.</string>
+    <string name="setup_online_anticheat_note">Los clientes móviles no tienen antitrampas. Para jugar juntos, el jugador de PC debe desactivar el antitrampas (GeneralsOnline AntiCheat o Easy Anti-Cheat) en el lanzador de GeneralsOnline: no se puede entrar desde un móvil a una sala con otro antitrampas, ni al revés.</string>
+    <string name="setup_switch_logging">Recopilar registros</string>
+    <string name="setup_switch_logging_desc">Guardar en el dispositivo los registros del juego, de fallos y de red. Desactívalo para no guardar nada en segundo plano hasta que lo vuelvas a activar. Necesario para informar de errores.</string>
 </resources>

@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Netzwerk-Trace konnte nicht eingeschaltet werden; im Log fehlen die Prüfsummen-Details.</string>
     <string name="replaycheck_crc_every_frame">Prüfsumme jedes Frames</string>
     <string name="replaycheck_crc_every_frame_help">Schreibt zusätzlich die Logik-Prüfsumme jedes Frames ins Log. Damit lässt sich eine Kopie des Replays bauen, die der PC-Client Frame für Frame prüft. Langsamer.</string>
+    <string name="setup_online_anticheat_note">Mobile Clients haben keinen Anti-Cheat. Zum gemeinsamen Spielen muss der PC-Spieler den Anti-Cheat (GeneralsOnline AntiCheat oder Easy Anti-Cheat) im GeneralsOnline-Launcher ausschalten: Lobbys mit anderem Anti-Cheat sind vom Handy aus nicht beitretbar und umgekehrt.</string>
+    <string name="setup_switch_logging">Logs sammeln</string>
+    <string name="setup_switch_logging_desc">Spiel-, Absturz- und Netzwerklogs auf dem Gerät speichern. Ausschalten, damit im Hintergrund nichts gespeichert wird; bleibt aus, bis Sie es wieder einschalten. Für Fehlerberichte nötig.</string>
 </resources>

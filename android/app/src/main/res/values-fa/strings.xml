@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">روشن کردن ردیابی شبکه ممکن نشد؛ گزارش جزئیات مجموع‌های بررسی را نخواهد داشت.</string>
     <string name="replaycheck_crc_every_frame">مجموع بررسی هر فریم</string>
     <string name="replaycheck_crc_every_frame_help">مجموع بررسی منطق هر فریم را هم در گزارش می‌نویسد. برای ساختن نسخه‌ای از بازپخش که کلاینت رایانه فریم‌به‌فریم بررسی می‌کند. کندتر.</string>
+    <string name="setup_online_anticheat_note">کلاینت موبایل ضدتقلب ندارد. برای بازی با هم، بازیکن رایانه باید ضدتقلب (GeneralsOnline AntiCheat یا Easy Anti-Cheat) را در لانچر GeneralsOnline خاموش کند: از گوشی نمی‌توان به لابی با ضدتقلب دیگر پیوست و برعکس.</string>
+    <string name="setup_switch_logging">جمع‌آوری گزارش‌ها</string>
+    <string name="setup_switch_logging_desc">گزارش‌های بازی، خرابی و شبکه روی دستگاه ذخیره شود. خاموش کنید تا تا روشن‌کردن دوباره هیچ چیز در پس‌زمینه ذخیره نشود. برای گزارش اشکال لازم است.</string>
 </resources>

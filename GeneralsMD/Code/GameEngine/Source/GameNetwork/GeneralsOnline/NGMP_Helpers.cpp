@@ -1,4 +1,5 @@
 #include "GameNetwork/GeneralsOnline/NGMP_include.h"
+#include "Common/GXLogging.h"
 #include <chrono>
 #include <mutex>
 #include <string>
@@ -26,6 +27,12 @@ std::wstring from_utf8(const std::string& utf8_str)
 
 void NetworkLog(ELogVerbosity logVerbosity, const char* fmt, ...)
 {
+	// GeneralsX @feature Android port 27/09/2026 The launcher's "Collect logs" switch.
+	if (GXLoggingDisabled())
+	{
+		return;
+	}
+
 	if (!NGMP_OnlineServicesManager::Settings.Debug_VerboseLogging())
 	{
 		if (logVerbosity < g_LogVerbosity)

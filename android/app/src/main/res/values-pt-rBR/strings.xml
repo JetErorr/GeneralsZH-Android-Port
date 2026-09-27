@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Não foi possível ativar o rastreamento de rede; o registro não terá os detalhes das somas de verificação.</string>
     <string name="replaycheck_crc_every_frame">Soma de verificação de cada quadro</string>
     <string name="replaycheck_crc_every_frame_help">Também grava no registro a soma de verificação da lógica de cada quadro. Serve para montar uma cópia do replay que o cliente de PC verifica quadro a quadro. Mais lento.</string>
+    <string name="setup_online_anticheat_note">Clientes móveis não têm anti-cheat. Para jogar juntos, o jogador de PC precisa desativar o anti-cheat (GeneralsOnline AntiCheat ou Easy Anti-Cheat) no launcher do GeneralsOnline: não dá para entrar pelo celular em uma sala com outro anti-cheat, nem o contrário.</string>
+    <string name="setup_switch_logging">Coletar registros</string>
+    <string name="setup_switch_logging_desc">Gravar no aparelho os registros do jogo, de falhas e de rede. Desative para não guardar nada em segundo plano até ativar de novo. Necessário para relatar erros.</string>
 </resources>

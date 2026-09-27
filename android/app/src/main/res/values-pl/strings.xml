@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Nie udało się włączyć śledzenia sieci; w dzienniku zabraknie szczegółów sum kontrolnych.</string>
     <string name="replaycheck_crc_every_frame">Suma kontrolna każdej klatki</string>
     <string name="replaycheck_crc_every_frame_help">Dodatkowo zapisuje w dzienniku sumę kontrolną logiki dla każdej klatki. Służy do zbudowania kopii powtórki, którą klient PC sprawdzi klatka po klatce. Wolniej.</string>
+    <string name="setup_online_anticheat_note">Klient mobilny nie ma anty-cheata. Aby grać razem, gracz na PC musi wyłączyć anty-cheat (GeneralsOnline AntiCheat lub Easy Anti-Cheat) w launcherze GeneralsOnline: do lobby z innym anty-cheatem nie da się dołączyć z telefonu i odwrotnie.</string>
+    <string name="setup_switch_logging">Zbieraj logi</string>
+    <string name="setup_switch_logging_desc">Zapisuj na urządzeniu logi gry, awarii i sieci. Wyłącz, aby nic nie było zapisywane w tle, dopóki nie włączysz ponownie. Potrzebne do zgłaszania błędów.</string>
 </resources>

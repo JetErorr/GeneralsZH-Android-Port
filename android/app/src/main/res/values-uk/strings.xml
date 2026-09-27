@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Не вдалося ввімкнути мережеве трасування; у лозі не буде подробиць щодо контрольних сум.</string>
     <string name="replaycheck_crc_every_frame">Контрольна сума кожного кадру</string>
     <string name="replaycheck_crc_every_frame_help">Додатково записує в лог контрольну суму логіки на кожному кадрі. Потрібна, щоб зібрати копію реплею, яку клієнт ПК перевірить покадрово. Повільніше.</string>
+    <string name="setup_online_anticheat_note">У мобільному клієнті немає античиту. Щоб грати разом, гравець на ПК має вимкнути античит (GeneralsOnline AntiCheat або Easy Anti-Cheat) у лаунчері GeneralsOnline: до лобі з іншим античитом з телефона не зайти, і до лобі з телефона не зайти з ним.</string>
+    <string name="setup_switch_logging">Збирати логи</string>
+    <string name="setup_switch_logging_desc">Записувати на пристрій логи гри, збоїв і мережі. Вимкніть, щоб у фоні нічого не зберігалося; логи не пишуться, доки ви знову не ввімкнете. Потрібно для звітів про помилки.</string>
 </resources>

@@ -41,6 +41,7 @@
 
 #if defined(__ANDROID__)
 
+#include "Common/GXLogging.h"
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -262,6 +263,12 @@ void computeBuildId() {
 }
 
 void computeCrashLogPath() {
+	// GeneralsX @feature Android port 27/09/2026 An empty path is the handler's own "do not
+	// write" state (appendCrashLog, rotatePrevCrashLog); the launcher's switch sets it.
+	if (GXLoggingDisabled()) {
+		s_crashLogPath[0] = '\0';
+		return;
+	}
 	int userId = (int)(getuid() / 100000);
 	snprintf(s_crashLogPath, sizeof(s_crashLogPath),
 		"/data/user/%d/com.generalsx.zerohour/files/crash.log", userId);

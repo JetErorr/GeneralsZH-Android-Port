@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">네트워크 추적을 켤 수 없습니다. 로그에 체크섬 세부 정보가 없습니다.</string>
     <string name="replaycheck_crc_every_frame">매 프레임 체크섬</string>
     <string name="replaycheck_crc_every_frame_help">매 프레임의 로직 체크섬도 로그에 기록합니다. PC 클라이언트가 프레임 단위로 검사할 리플레이 사본을 만드는 데 씁니다. 느려집니다.</string>
+    <string name="setup_online_anticheat_note">모바일 클라이언트에는 안티치트가 없습니다. 함께 플레이하려면 PC 플레이어가 GeneralsOnline 런처에서 안티치트(GeneralsOnline AntiCheat 또는 Easy Anti-Cheat)를 꺼야 합니다. 다른 안티치트를 쓰는 로비에는 휴대폰에서 참가할 수 없고, 그 반대도 마찬가지입니다.</string>
+    <string name="setup_switch_logging">로그 수집</string>
+    <string name="setup_switch_logging_desc">게임, 충돌, 네트워크 로그를 기기에 기록합니다. 끄면 다시 켤 때까지 백그라운드에서 아무것도 저장하지 않습니다. 버그 보고에 필요합니다.</string>
 </resources>

@@ -31,6 +31,7 @@
 // SYSTEM INCLUDES
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
+#include "Common/GXLogging.h"
 #if defined(__APPLE__)
 #include <TargetConditionals.h>
 #endif
@@ -763,7 +764,9 @@ int main(int argc, char* argv[])
 		// engine this chatty is undebuggable blind. Keep the previous session's
 		// log — a session that ends in a low-memory kill leaves no crash report,
 		// so the prior log is often the only evidence.
-		if (externalPath != nullptr) {
+		// GeneralsX @feature Android port 27/09/2026 ...unless the player turned logging off in
+		// the launcher (GXLogging.h). stderr then stays where Android sends it, /dev/null.
+		if (externalPath != nullptr && !GXLoggingDisabled()) {
 			char logPath[1024], prevPath[1024];
 			snprintf(logPath, sizeof(logPath), "%s/generals-stderr.log", externalPath);
 			snprintf(prevPath, sizeof(prevPath), "%s/generals-stderr-prev.log", externalPath);

@@ -125,6 +125,10 @@ final class NetworkTrace {
     }
 
     static void write(Context ctx, String line) {
+        // GeneralsX @feature Android port 27/09/2026 The launcher's "Collect logs" switch.
+        if (ctx != null && SetupActivity.isLoggingDisabled(ctx)) {
+            return;
+        }
         if (ctx == null) {
             return;
         }

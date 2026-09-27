@@ -170,6 +170,9 @@ public class GeneralsOnlineActivity extends Activity {
             getString(R.string.online_window_title), false);
         statusText = UiKit.body(statusCard, null);
         statusText.setTextIsSelectable(true);
+        // GeneralsX @feature Android port 27/09/2026 See SetupActivity's online card: the service
+        // keeps lobbies with different anti-cheat apart, and this client has none.
+        UiKit.supporting(statusCard, getString(R.string.setup_online_anticheat_note));
         signOutButton = UiKit.button(statusCard, UiKit.BTN_DANGER, R.drawable.ic_gzh_trash,
             getString(R.string.online_button_sign_out), this::onSignOut);
 

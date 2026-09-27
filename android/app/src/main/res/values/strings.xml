@@ -300,4 +300,7 @@
     <string name="replaycheck_trace_failed">Could not switch the network trace on; the log will lack the checksum details.</string>
     <string name="replaycheck_crc_every_frame">Checksum of every frame</string>
     <string name="replaycheck_crc_every_frame_help">Also writes the logic checksum of every frame to the log. Used to build a copy of a replay that the PC client checks frame by frame. Slower.</string>
+    <string name="setup_online_anticheat_note">Mobile clients have no anti-cheat. To play together, the PC player has to turn anti-cheat off (GeneralsOnline AntiCheat or Easy Anti-Cheat) in the GeneralsOnline launcher: lobbies with a different anti-cheat cannot be joined from a phone, and a phone lobby cannot be joined from them.</string>
+    <string name="setup_switch_logging">Collect logs</string>
+    <string name="setup_switch_logging_desc">Write game, crash and network logs to the device. Turn off to keep nothing in the background; the logs stay off until you turn this back on. Needed for bug reports.</string>
 </resources>

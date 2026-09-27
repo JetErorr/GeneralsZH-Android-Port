@@ -293,4 +293,7 @@
     <string name="replaycheck_trace_failed">Ne udalo se vključiti mrěžno slědženje; v logu ne bude podrobnostij o kontrolnyh sumah.</string>
     <string name="replaycheck_crc_every_frame">Kontrolna suma každogo kadra</string>
     <string name="replaycheck_crc_every_frame_help">Dodatno piše v log kontrolnu sumu logiky na každom kadru. Treba, da sobrati kopiju replaja, ktoru klient PK prověri po kadram. Počasněje.</string>
+    <string name="setup_online_anticheat_note">Mobilny klient ne imaje anti-čita. Za igru vměsto igrač na PC musi izključiti anti-čit (GeneralsOnline AntiCheat ili Easy Anti-Cheat) v launcheru GeneralsOnline: v lobi s drugym anti-čitom ne jest možno vstupiti s telefona i obratno.</string>
+    <string name="setup_switch_logging">Sbirati logy</string>
+    <string name="setup_switch_logging_desc">Zapisyvati na ustrojstvo logy igry, padov i mreže. Izključite, da by ničto ne bylo hranjeno v fonu, dokolě ne vključite znova. Trěbuje se za otčety o grěškah.</string>
 </resources>

@@ -295,4 +295,7 @@
     <string name="replaycheck_trace_failed">Не удалось включить сетевую трассировку; в логе не будет подробностей по контрольным суммам.</string>
     <string name="replaycheck_crc_every_frame">Контрольная сумма каждого кадра</string>
     <string name="replaycheck_crc_every_frame_help">Дополнительно пишет в лог контрольную сумму логики на каждом кадре. Нужна, чтобы собрать копию реплея, которую клиент ПК проверит покадрово. Медленнее.</string>
+    <string name="setup_online_anticheat_note">В мобильном клиенте нет античита. Чтобы играть вместе, игрок на ПК должен выключить античит (GeneralsOnline AntiCheat или Easy Anti-Cheat) в лаунчере GeneralsOnline: в лобби с другим античитом с телефона не зайти, и в лобби с телефона не зайти с ним.</string>
+    <string name="setup_switch_logging">Собирать логи</string>
+    <string name="setup_switch_logging_desc">Записывать на устройство логи игры, сбоев и сети. Выключите, чтобы в фоне ничего не сохранялось; логи не пишутся, пока вы снова не включите. Нужно для отчётов об ошибках.</string>
 </resources>
