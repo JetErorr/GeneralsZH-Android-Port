@@ -217,3 +217,26 @@ diary entry of 27/09/2026). Harakat such as shadda and tanween stay in the file,
 drops them when drawing, because the glyph-per-cell layout cannot stack a mark on its letter.
 The glyphs come from the system Arabic font (Noto Naskh Arabic on Android), which covers every
 presentation form the shaper produces.
+
+## Persian
+
+`languages/persian/generals.str` is a new translation from the English original into Persian.
+The GLA stays "GLA", and unit names follow the renderings Persian players know: "مرکز فرماندهی",
+"کارخانه جنگ", "طوفان اسکاد", "توپ ذره‌ای", "نیلوفر سیاه", "اورلورد" and "امپراتور". EVA is
+"ایوا". Generals keep their names in transliteration ("ژنرال لیانگ", "دکتر تراکس", "شاهزاده
+قصاد"). Hotkeys follow "نام (&K)". Tooltips read "قوی در برابر: … / ضعیف در برابر: …",
+"برق مورد نیاز:", "زمان شمارش معکوس:" and "استقرار از:". Static numbers use Persian digits;
+numbers that the game fills in at runtime stay as the engine prints them. Multiplayer map names
+stay in English.
+
+Characters speak in their own register: the American boss talks colloquial Tehrani ("پسر",
+"بچه‌جون", "جوجه"), the others speak standard written Persian. Jokes are localised: "اتل متل
+توتوله" for the test rhyme, "مدرکم را از جلوی دانشگاه، میدان انقلاب، می‌خریدم" for Dr. Thrax's
+mail-order degree, "وقتی پول مطرب رو نداری مجلس رقص راه ننداز" for "you don't start the dance if
+you can't pay the bill", "بی‌صدا ولی بودار", "ظرفیت سم ندارند" and "مدیرکل بهداشت" for the
+Surgeon General jab.
+
+Persian spelling needs the zero-width non-joiner (U+200C) inside words such as "می‌کند". The
+file keeps it; the engine's shaper uses it to stop the join and then drops it, so it takes no
+cell. The Persian letters (پ چ ژ گ ک ی) shape into the FB50 presentation forms, all of which are
+in Noto Naskh Arabic. Everything else about right-to-left layout is as described for Arabic.

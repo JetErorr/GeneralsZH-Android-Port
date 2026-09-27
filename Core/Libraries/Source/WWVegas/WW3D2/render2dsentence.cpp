@@ -173,8 +173,8 @@ static JoiningType Get_Joining_Type( WCHAR ch )
 
 static bool Is_Strong_RTL( WCHAR ch )
 {
-	if ( ( ch >= 0x0660 && ch <= 0x0669 ) || ( ch >= 0x06F0 && ch <= 0x06F9 ) ) {
-		return false;	// Arabic-Indic digits keep number order
+	if ( ( ch >= 0x0660 && ch <= 0x066C ) || ( ch >= 0x06F0 && ch <= 0x06F9 ) ) {
+		return false;	// Arabic-Indic digits and the percent/decimal/thousands signs keep number order
 	}
 	return ( ch >= 0x0590 && ch <= 0x08FF ) || ( ch >= 0xFB1D && ch <= 0xFDFF ) || ( ch >= 0xFE70 && ch <= 0xFEFF );
 }
