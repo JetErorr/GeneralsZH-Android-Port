@@ -409,7 +409,7 @@
  },
  {
   "label": "CONTROLBAR:ConstructGLAInfantrySaboteur",
-  "text": "사보타주병(&S)"
+  "text": "파괴 공작원(&S)"
  },
  {
   "label": "CONTROLBAR:ConstructChinaInfantryPropagandaTrooper",
@@ -461,7 +461,7 @@
  },
  {
   "label": "CONTROLBAR:ConstructChinaVehicleListeningOutpost",
-  "text": "감청 초소(&S)"
+  "text": "청음 전초기지(&S)"
  },
  {
   "label": "CONTROLBAR:ConstructFakeGLABlackMarket",
@@ -477,7 +477,7 @@
  },
  {
   "label": "CONTROLBAR:ConstructGLAVehicleBattleBus",
-  "text": "전투 버스(&E)"
+  "text": "배틀 버스(&E)"
  },
  {
   "label": "CONTROLBAR:UpgradeAmericaSentryDroneGun",
