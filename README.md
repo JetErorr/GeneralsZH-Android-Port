@@ -8,6 +8,28 @@
 > release. If you saw this described anywhere as an "official" release, that's
 > wrong — please don't spread it further.
 
+### Generals — the front line just went mobile.
+
+You thought this war was over? That the GLA was finished, the Particle Cannon had fallen silent
+and the last SCUD Storm had burned out? Think again. The war has gone global — and commanding it
+from a bunker, chained to a desk behind a stationary PC, is no longer enough. The front needs a
+new breed of officer: forward commanders who deploy their HQ anywhere and lead the charge on the
+move. **The world needs more Generals. Your time has come, Mobile Generals.**
+
+*Command & Conquer: Generals – Zero Hour* launches a full-scale invasion of Android, and nine
+Generals are waiting for your orders. Rule the skies with General Granger's air power, burn
+through the enemy with General Alexander's lasers, or unleash General Townes' Particle Cannon for
+the USA. Steamroll the line with General Kwai's Overlords, bring down General Tao's nuclear fire,
+or bury the enemy under General Fai's endless infantry for China. Or fight the GLA way — poison
+the battlefield with Dr. Thrax's toxins, rig it to blow with General Juhziz, and strike unseen
+with Prince Kassad's stealth.
+
+Build your Command Center, secure your supply lines and wipe the enemy off the map — straight
+from your touchscreen. And the desk-bound commanders are no longer out of reach: **meet PC players
+on the same online battlefield.**
+
+*General, the uplink is ready. Target coordinates received — engage!*
+
 <img width="500" height="281" alt="IMG_3457_500" src="https://github.com/user-attachments/assets/aeaf6692-36e6-40c8-b9f8-8066d014ec4b" />
 
 **Zero Hour running natively on Android** — campaign, skirmish, Generals Challenge,
