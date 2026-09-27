@@ -1902,7 +1902,14 @@ public class SetupActivity extends Activity {
         String val = prefs.get("ResolutionFontAdjustment");
         if (val != null) {
             try {
-                return Math.max(0, Math.min(150, Integer.parseInt(val.trim())));
+                int percent = Integer.parseInt(val.trim());
+                // GeneralsX @bugfix Android port 27/09/2026 A negative value means "the game's
+                // default": the in-game Options menu saves -100 when the player never set one
+                // (OptionsMenu.cpp, getResolutionFontAdjustment() returns -1). Clamped to 0 it
+                // showed as 0% here, and Apply then saved a real 0 -- unscaled 800x600-size text.
+                if (percent >= 0) {
+                    return Math.min(150, percent);
+                }
             } catch (NumberFormatException ignored) {
                 // Fall through to the engine's own default below.
             }
