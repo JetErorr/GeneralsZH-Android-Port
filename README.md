@@ -233,6 +233,23 @@ architecture, bring-up log): [docs/port/ANDROID_PORT.md](docs/port/ANDROID_PORT.
   **and the replay** (yours and, if you can, the PC player's `.rep`) in an
   [issue](../../issues).
 
+## Support the project
+
+This port is developed with [Claude Code](https://claude.com/claude-code) (Anthropic's Claude),
+and the subscription is paid out of pocket. If the port is useful to you and you'd like to help
+keep it going, donations are welcome — they go to that subscription.
+
+| Currency and network | Address |
+|---|---|
+| **USDT — TRON (TRC20)** | `TAQHCF733ovKpvBjUgvkE6wHxkntnKZ6br` |
+| **USDT — BSC (BEP20)** | `0x52c05c81485d68367385ff389cf19a453f036310` |
+| **USDT — TON** (no memo needed) | `UQAOdBpFSPhlgbvUIJ2O2w2NuwWashaNjFWDsOirDqH9kGbR` |
+
+Send **USDT only, and only over the network written next to the address** — any other token,
+or USDT over a different network, will be lost. Donations support development only: the game
+and every build stay free, and nothing is unlocked by donating. *Command & Conquer* is a
+trademark of Electronic Arts; this is an unofficial fan project.
+
 ## Lineage & credits
 
 This port is the newest link in a long chain, and the earlier links did foundational
