@@ -14,8 +14,9 @@ lobby, or host one from the phone and let PC players join it.
 - Setup: sign in with your GeneralsOnline account in the launcher, install **Online game data** there (community data
   patch + maps, straight from GeneralsOnline) and turn on **Play with PC players**.
 
-Cross-play is new; if a match against a PC goes out of sync, please send the logs from the launcher (log button) --
-that is how the remaining differences are being found.
+Cross-play is new; if a match against a PC goes out of sync, please send **the logs** from the launcher (log button)
+**and the replay** of that match (the phone's and, if you can get it, the PC player's `.rep`) -- that is how the
+remaining differences are being found.
 
 ### The game in 12 languages besides English
 

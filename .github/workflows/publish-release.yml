@@ -43,8 +43,10 @@ jobs:
             exit 1
           fi
           APK="${APKS[0]}"
-          # The manifest is binary XML with UTF-16 strings: drop the NULs to find versionName.
-          if ! unzip -p "${APK}" AndroidManifest.xml | tr -d '\0' | grep -q "${VERSION}"; then
+          # The manifest is binary XML with UTF-16 strings: drop the NULs to find versionName. Read
+          # it whole first -- with pipefail, grep -q closing the pipe early fails the pipeline.
+          MANIFEST="$(unzip -p "${APK}" AndroidManifest.xml | tr -d '\0')"
+          if ! grep -qF "${VERSION}" <<< "${MANIFEST}"; then
             echo "::error::${APK} was not built as version ${VERSION} (android/app/build.gradle versionName)."
             exit 1
           fi
