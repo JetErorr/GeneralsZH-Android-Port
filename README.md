@@ -43,9 +43,9 @@ layer beyond DXVK itself, since Android speaks Vulkan directly.
 There is a **second, independent renderer**: DirectX 8 → **OpenGL ES 3.0**,
 through a native translation layer written for this port (optionally routed
 through [ANGLE](https://github.com/google/angle)), with **no DXVK and no
-Vulkan involved at all**. Pick it in the Setup app — it exists for phones
-whose Vulkan driver can't carry DXVK, which until now had no way to run the
-game. Vulkan stays the default where it works.
+Vulkan involved at all**. It started as the way to run on phones whose Vulkan
+driver can't carry DXVK and is now the default, because it has worked on every
+device tested so far; Vulkan remains one tap away in the launcher.
 
 The same codebase also runs on Apple Silicon Macs, iPhone, and iPad (DirectX 8 →
 DXVK → [MoltenVK](https://github.com/KhronosGroup/MoltenVK) → Metal) — that's
@@ -75,15 +75,20 @@ original GeneralsX README lives on the `upstream-main` branch.
 | Video / cutscenes | ✅ Working (FFmpeg) |
 | Touch controls | ✅ Working — native touch, not mouse emulation (see [Touch controls](#touch-controls)) |
 | Online multiplayer (GeneralsOnline) | ✅ Working — real matches between real players, P2P transport |
+| Cross-play with PC (Windows) GeneralsOnline players | ✅ Working — new in 1.3.0; the PC player turns their anti-cheat off. If a match goes out of sync, send the logs and the replay |
+| Game text languages | ✅ English plus 12 packs: Russian, Ukrainian, German, French, Spanish, Brazilian Portuguese, Polish, Interslavic, Simplified Chinese, Korean, Arabic, Persian — right-to-left layout and CJK glyphs included. [Add yours](languages/README.md) |
+| Updates without a new APK | ✅ Signed engine builds and network settings straight from this repository (Home → Updates) |
+| Simulation rate | ✅ 30 Hz (retail) or 60 Hz, chosen in the launcher — the APK carries both engines |
 | macOS / iOS / iPadOS build | ✅ Working (campaign/skirmish/Challenge; no GeneralsOnline there yet) |
 | Performance on Vulkan-1.1-only GPUs (Mali) | ⚠️ Playable, but CPU-bound — expect lower FPS and occasional freezes on weaker/older phones |
 
 - **Android**: primary target. Grab a prebuilt APK from
-  [Releases](../../releases/latest), or build via GitHub Actions (**Actions
-  tab → Build Android → Run workflow**) — no local toolchain needed either
-  way. Campaign, skirmish, and Generals Challenge run natively. **Online
-  multiplayer works, including actual matches**: GeneralsOnline (a from-scratch
-  NGMP-based backend, not the long-dead GameSpy servers) drives account login,
+  [Releases](../../releases/latest) — no toolchain needed. Campaign, skirmish,
+  and Generals Challenge run natively. **Online
+  multiplayer works, including actual matches — and, since 1.3.0, against PC
+  players**: [GeneralsOnline](https://www.playgenerals.online) (the community
+  service by the GeneralsOnline Development Team that replaced the long-dead
+  GameSpy servers; this port brings its client to Android) drives account login,
   the multiplayer lobby, Custom Match (create/browse/join, live room + player
   lists, chat), Quickmatch, My Persona (stats/rank), and Communicator
   (friends/social) — and matches now actually start and play: a P2P transport
@@ -128,6 +133,9 @@ so a tap on a panel never falls through to the map underneath.
 | Hold a UI button | Read its description, without pressing it |
 | **With an ability armed**: touch the map, drag, release | Aim it — the radius circle follows your finger; release fires it where you let go; a second finger cancels |
 | **With a building picked**: tap where it goes | Place it. The ghost appears under your finger, not before you point |
+| Drag inside a list (games, players, chat, maps) | Scroll it |
+| Arrow button, bottom right of a builder's command bar | Flip to the second page of structures |
+| Force-attack / waypoint buttons on the command bar | The touch equivalents of Ctrl-click and Alt-click |
 
 Every gesture is classified only once the intent is unambiguous (a short
 delay or distance threshold), so an ordinary tap never misfires into a
@@ -159,12 +167,15 @@ and both are hostile territory for a 2003 Windows RTS:
 
 - **GameSpy is dead. The retail multiplayer stack assumes it isn't.** Zero
   Hour's entire online layer — matchmaking, lobbies, buddy lists, stats — was
-  built on GameSpy SDK calls to servers EA shut down over a decade ago. Getting
-  multiplayer working again meant building a real backend (GeneralsOnline,
-  NGMP-based: REST + WebSocket, its own auth/session/lobby/stats/social
-  services) and re-wiring the original `.wnd` UI screens and GUI callbacks —
-  largely untouched since 2003 — to talk to it instead, one menu at a time
-  (Welcome screen, Custom Match, Quickmatch, My Persona, Communicator).
+  built on GameSpy SDK calls to servers EA shut down over a decade ago. The
+  community answer is [GeneralsOnline](https://www.playgenerals.online) (by the
+  GeneralsOnline Development Team: NGMP-based, REST + WebSocket, its own
+  auth/session/lobby/stats/social services). Bringing it to Android meant
+  porting its client and re-wiring the original `.wnd` UI screens and GUI
+  callbacks — largely untouched since 2003 — one menu at a time (Welcome
+  screen, Custom Match, Quickmatch, My Persona, Communicator), and then matching
+  the PC client closely enough — wire format, checksums, simulation — that a
+  phone and a PC can play the same lockstep match.
 - **Async callbacks + screen teardown is a loaded gun.** Almost every real
   crash chased down on real devices during multiplayer bring-up turned out to
   be the same shape: an HTTP or WebSocket completion callback captured a raw
@@ -175,12 +186,10 @@ and both are hostile territory for a 2003 Windows RTS:
   pointer, and re-resolve (or bail) inside the callback.
 - **The engine assumes a writable filesystem wherever it lives, and a mouse.**
   Android's scoped storage and SDL3's raw touch events needed the same kind of
-  rerouting and gesture-to-mouse translation work the iOS port pioneered — tap
-  defers until the 2003 GUI processes hover, a drag becomes a selection box or
-  a camera pan depending on how it started, one held finger + a second moving
-  vertically is zoom (not classic two-finger pinch, which fought camera pan),
-  and a double-tap now does what a PC double-click always did (select all of
-  one unit type on screen).
+  rerouting. Touch started as gesture-to-mouse translation, the way the iOS
+  port pioneered it, and was later rebuilt as native touch input (see
+  [Touch controls](#touch-controls)): a finger is not a mouse, and the
+  difference was behind nearly every control bug.
 - **Old data, new parser, sharp edges.** Zero Hour's `.ini` data layers on top
   of base Generals data, and the two games were split into separate build
   targets at some point in this codebase's history — with a couple of
@@ -225,31 +234,28 @@ device/driver matrix and driver-replacement options.
 
 **If Vulkan doesn't work on your phone, there is a second renderer.** The
 Setup app has a **Render Backend** picker with three options: *Vulkan*
-(default, DXVK), *OpenGL ES*, and *OpenGL ES + ANGLE*. The GLES options do
+(DXVK), *OpenGL ES* (the default) and *OpenGL ES + ANGLE*. The GLES options do
 not use DXVK or Vulkan at all — they run DirectX 8 through a translation
 layer written for this port
 ([`Core/Libraries/Source/d3d8gles/`](Core/Libraries/Source/d3d8gles)) straight
 onto OpenGL ES 3.0, which every Android GPU speaks. That covers devices whose
 Vulkan driver exists but can't carry DXVK, which previously had nothing to
 fall back on. Switching backends needs no rebuild: change it in Setup and
-restart the game. Vulkan is still the one to prefer where it works — GLES is
-the newer path and has had less device exposure.
+restart the game. GLES is the default because it works on every device tested
+so far; Vulkan can be faster where the driver handles DXVK well.
 
 **Simplest option — no build, no CI**: grab a prebuilt APK from the
 [Releases page](../../releases/latest) and sideload it.
 
-**No local toolchain needed either** — push to a `claude/**` branch (or run it
-manually) and GitHub Actions builds the APK: **Actions tab → Build Android →
-Run workflow**. Every CI build is signed with the same committed debug key and
-gets an increasing versionCode, so you can install a newer run **over** an
-older one without uninstalling. (On a fork, enable Actions once: Actions tab →
-"I understand my workflows, go ahead and enable them".) Download the APK
-artifact from the run and install it.
+Every build is signed with the same committed key, so a newer APK installs
+**over** an older one without uninstalling. A fork can also build in GitHub
+Actions (**Actions tab → Build Android → Run workflow**, manual only), though
+that workflow ships the 30 Hz engine only.
 
-**No adb needed either, for setup or logs**: the APK installs a second icon,
-**"GeneralsZH Setup"**, with an in-app folder picker (point it at wherever
-you copied your own game files — Downloads, an SD card, anywhere) and a log
-viewer with Clear/Share buttons. See [docs/port/ANDROID_PORT.md §4](docs/port/ANDROID_PORT.md#4-game-data-and-first-run--the-in-app-setup-flow-no-adb-no-pc-needed)
+**No adb needed, for setup or logs**: the game's icon opens a launcher with an
+in-app folder picker (point it at wherever you copied your own game files —
+Downloads, an SD card, anywhere), a log viewer with Clear/Share buttons, the
+GeneralsOnline account and network data, language packs and updates. See [docs/port/ANDROID_PORT.md §4](docs/port/ANDROID_PORT.md#4-game-data-and-first-run--the-in-app-setup-flow-no-adb-no-pc-needed)
 for the full first-run walkthrough. A default log is small and readable —
 if a bug report needs more (frame-timing breakdown, full trace, DXVK HUD
 counters, Vulkan validation), see [**Diagnostic marker files**](docs/port/ANDROID_PORT.md#diagnostic-marker-files-opt-in-extra-logging)
@@ -261,8 +267,7 @@ Building locally instead needs the Android NDK (r26+), vcpkg, meson/ninja:
 cd GeneralsX
 git submodule update --init references/fbraz3-dxvk
 export ANDROID_NDK_HOME=~/Android/Sdk/ndk/<version>
-./scripts/build/android/build-android-zh.sh        # game -> libmain.so, DXVK -> .so, verified
-./scripts/build/android/package-android-zh.sh --install
+./scripts/build/android/build-dual-hz.sh           # both engines (30 Hz + 60 Hz) and the APK
 ```
 
 **→ The full guide (device/driver matrix, storage layout, multiplayer
@@ -360,13 +365,11 @@ iteration.
   `W3D.big`) are absent, most of the artwork has nowhere to come from. Setup
   lists any missing archive by name and can be pointed at a separate base-game
   folder.
-- Android multiplayer is under active real-device shakeout — most reported crashes
-  have traced to a handful of recurring bug classes (see the "what this port
-  actually involved" section above) and get fixed fast, but if something's still
-  rough, check or file an issue. Matches now load and play (P2P transport,
-  camera, and the load-screen crash chain all confirmed working solo, real
-  device); cross-device matches against another live player are the next
-  thing being shaken out.
+- Cross-play with PC players is new. Both sides must compute the same game
+  frame by frame, and the remaining differences are found from real matches:
+  if a game against a PC goes out of sync, please send the launcher's logs
+  **and the replay** (yours and, if you can, the PC player's `.rep`) in an
+  [issue](../../issues).
 
 ## What's next: Renegade 👀
 
@@ -406,12 +409,17 @@ work that this repo inherits everywhere:
   this renderer path descends from
 - **[fbraz3/GeneralsX](https://github.com/fbraz3/GeneralsX)** — the macOS/Linux port
   this fork builds on directly, integrating and extending the above
+- **[GeneralsOnline Development Team](https://github.com/GeneralsOnlineDevelopmentTeam)** —
+  [GeneralsOnline](https://www.playgenerals.online), the online service and PC client
+  whose client this port brings to Android, and whose community data patch and
+  maps the launcher downloads
 - **[tarek369/GeneralsZH-Android](https://github.com/tarek369/GeneralsZH-Android)** —
   an independent, parallel Android port of the same lineage; several real bugs in
   this port (a duplicate-symbol build break, an INI-parsing gap) were cross-checked
   and traced faster thanks to its published engineering log
-- **This fork** — the Android port (GeneralsOnline multiplayer backend, touch
-  controls, in-app Setup/log-viewer flow, device bring-up) and the iOS/iPadOS
+- **This fork** — the Android port (the GeneralsOnline client on Android and
+  cross-play with PC, touch controls, in-app launcher, language packs, device
+  bring-up) and the iOS/iPadOS
   port (arm64-ios cross-build, DXVK-on-iOS, touch controls, app lifecycle,
   packaging), plus engine fixes throughout, offered upstream
 - **DXVK, MoltenVK, SDL, OpenAL Soft, FFmpeg, Liberation Fonts** — the load-bearing walls
