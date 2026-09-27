@@ -265,6 +265,13 @@ private:
 		SurfaceClass *		Surface;
 		RectClass			ScreenRect;
 		RectClass			UVRect;
+		// GeneralsX @feature Android port 27/09/2026 What Mirror_RTL_Lines needs per chunk: the
+		// width of a blitted leading space, whether the word continues in the next chunk (split
+		// at the texture edge), and whether it holds strong RTL/LTR characters.
+		float					LeadPad;
+		bool					JoinsNext;
+		bool					HasRTL;
+		bool					HasLTR;
 
 		bool operator== (const SentenceDataStruct &src)	{ return false; }
 		bool operator!= (const SentenceDataStruct &src)	{ return true; }
@@ -291,7 +298,9 @@ private:
 	//
 	void	Reset_Sentence_Data ();
 	void	Build_Textures ();
-	void	Record_Sentence_Chunk ();
+	void	Record_Sentence_Chunk (bool joins_next = false);
+	void	Note_Chunk_Char (WCHAR ch);
+	void	Mirror_RTL_Lines (int *hkX, int *hkY);
 	void	Allocate_New_Surface (const WCHAR *text, bool justCalcExtents = false);
 	void	Release_Pending_Surfaces ();
 	void	Build_Sentence_Centered (const WCHAR *text, int *hkX, int *hkY);
@@ -312,6 +321,10 @@ private:
 	// cell spills past the advance we stepped by. Record_Sentence_Chunk has to
 	// include it, or the final glyph of every chunk loses its tail.
 	int													LastCharOverhang;
+	// GeneralsX @feature Android port 27/09/2026 RTL layout state, see Mirror_RTL_Lines.
+	float												PendingLeadPad;
+	bool												ChunkHasRTL;
+	bool												ChunkHasLTR;
 	int													CurrTextureSize;
 	int													TextureSizeHint;
 	SurfaceClass *							CurSurface;
