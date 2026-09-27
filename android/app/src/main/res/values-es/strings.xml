@@ -297,8 +297,8 @@
     <string name="setup_switch_logging">Recopilar registros</string>
     <string name="setup_switch_logging_desc">Guardar en el dispositivo los registros del juego, de fallos y de red. Desactívalo para no guardar nada en segundo plano hasta que lo vuelvas a activar. Necesario para informar de errores.</string>
     <string name="setup_card_updates">Actualizaciones</string>
-    <string name="setup_updates_help">Los ajustes de servidor y las nuevas versiones del motor llegan directamente del GitHub del proyecto, sin reinstalar el APK. Cada actualización está firmada; lo que no tenga una firma válida se ignora.</string>
-    <string name="setup_updates_status">Motor: %1$s · Ajustes: n.º %2$d · Última comprobación: %3$s</string>
+    <string name="setup_updates_help">Las nuevas versiones del motor llegan directamente del GitHub del proyecto, sin reinstalar el APK. Cada actualización está firmada; lo que no tenga una firma válida se ignora. Los ajustes de red y los datos del juego en línea están en Cuenta de GeneralsOnline.</string>
+    <string name="setup_updates_status">Motor: %1$s · Última comprobación: %2$s</string>
     <string name="setup_updates_engine_bundled">integrado, versión %1$d</string>
     <string name="setup_updates_engine_updated">actualizado, versión %1$d</string>
     <string name="setup_updates_never">nunca</string>
@@ -309,7 +309,6 @@
     <string name="setup_updates_none">Todo está al día.</string>
     <string name="setup_updates_engine_ready">Se ha descargado un motor más reciente (versión %1$d). Se usará la próxima vez que inicies el juego.</string>
     <string name="setup_updates_engine_needs_apk">Un motor más reciente (versión %1$d) necesita un APK nuevo. Descárgalo de la página del proyecto.</string>
-    <string name="setup_updates_config_updated">Ajustes de servidor actualizados.</string>
     <string name="setup_updates_failed">No se pudo comprobar: %1$s</string>
     <string name="setup_updates_not_published">Aún no se han publicado actualizaciones.</string>
     <string name="setup_updates_offline">Sin conexión a Internet. El lanzador y el juego funcionan sin conexión; las actualizaciones se comprobarán la próxima vez.</string>
@@ -320,5 +319,7 @@
     <string name="online_datapacks_update_available">Instalada: versión %1$s. Hay una versión nueva: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Instalada: versión %1$s. Actualiza una vez para que el dispositivo calcule con él la suma de verificación del cliente de PC.</string>
     <string name="online_datapacks_up_to_date">Instalada: versión %1$s, la más reciente.</string>
+    <string name="online_network_settings">Ajustes de red (servidores, compatibilidad con PC): n.º %1$d, actualizados automáticamente desde el GitHub del proyecto y firmados.</string>
+    <string name="online_network_settings_builtin">Ajustes de red (servidores, compatibilidad con PC): incluidos en esta versión; los nuevos llegarán automáticamente desde el GitHub del proyecto.</string>
     <string name="online_datapacks_chip_update">Actualización disponible</string>
 </resources>

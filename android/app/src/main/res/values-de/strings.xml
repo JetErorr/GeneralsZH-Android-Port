@@ -297,8 +297,8 @@
     <string name="setup_switch_logging">Logs sammeln</string>
     <string name="setup_switch_logging_desc">Spiel-, Absturz- und Netzwerklogs auf dem Gerät speichern. Ausschalten, damit im Hintergrund nichts gespeichert wird; bleibt aus, bis Sie es wieder einschalten. Für Fehlerberichte nötig.</string>
     <string name="setup_card_updates">Updates</string>
-    <string name="setup_updates_help">Servereinstellungen und neuere Engine-Builds kommen direkt vom GitHub des Projekts, ohne das APK neu zu installieren. Jedes Update ist signiert; alles ohne gültige Signatur wird ignoriert.</string>
-    <string name="setup_updates_status">Engine: %1$s · Einstellungen: #%2$d · Letzte Prüfung: %3$s</string>
+    <string name="setup_updates_help">Neuere Engine-Builds kommen direkt vom GitHub des Projekts, ohne das APK neu zu installieren. Jedes Update ist signiert; alles ohne gültige Signatur wird ignoriert. Netzwerkeinstellungen und Online-Spieldaten findest du unter GeneralsOnline-Konto.</string>
+    <string name="setup_updates_status">Engine: %1$s · Letzte Prüfung: %2$s</string>
     <string name="setup_updates_engine_bundled">integriert, Build %1$d</string>
     <string name="setup_updates_engine_updated">aktualisiert, Build %1$d</string>
     <string name="setup_updates_never">noch nie</string>
@@ -309,7 +309,6 @@
     <string name="setup_updates_none">Alles ist aktuell.</string>
     <string name="setup_updates_engine_ready">Eine neuere Engine (Build %1$d) wurde geladen. Sie wird beim nächsten Spielstart verwendet.</string>
     <string name="setup_updates_engine_needs_apk">Eine neuere Engine (Build %1$d) braucht ein neues APK. Laden Sie es von der Projektseite.</string>
-    <string name="setup_updates_config_updated">Servereinstellungen aktualisiert.</string>
     <string name="setup_updates_failed">Update-Prüfung fehlgeschlagen: %1$s</string>
     <string name="setup_updates_not_published">Es wurden noch keine Updates veröffentlicht.</string>
     <string name="setup_updates_offline">Keine Internetverbindung. Launcher und Spiel funktionieren auch offline; Updates werden beim nächsten Mal geprüft.</string>
@@ -320,5 +319,7 @@
     <string name="online_datapacks_update_available">Installiert: Version %1$s. Eine neue Version ist da: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Installiert: Version %1$s. Einmal aktualisieren, damit das Gerät daraus die Prüfsumme des PC-Clients berechnet.</string>
     <string name="online_datapacks_up_to_date">Installiert: Version %1$s, die neueste.</string>
+    <string name="online_network_settings">Netzwerkeinstellungen (Server, PC-Kompatibilität): Nr. %1$d, automatisch vom GitHub des Projekts aktualisiert und signiert.</string>
+    <string name="online_network_settings_builtin">Netzwerkeinstellungen (Server, PC-Kompatibilität): in diese Version eingebaut; neuere kommen automatisch vom GitHub des Projekts.</string>
     <string name="online_datapacks_chip_update">Update verfügbar</string>
 </resources>

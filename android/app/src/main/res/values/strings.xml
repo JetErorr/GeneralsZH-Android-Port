@@ -304,8 +304,8 @@
     <string name="setup_switch_logging">Collect logs</string>
     <string name="setup_switch_logging_desc">Write game, crash and network logs to the device. Turn off to keep nothing in the background; the logs stay off until you turn this back on. Needed for bug reports.</string>
     <string name="setup_card_updates">Updates</string>
-    <string name="setup_updates_help">Server settings and newer engine builds come straight from the project\'s GitHub, without reinstalling the APK. Every update is signed; anything without a valid signature is ignored.</string>
-    <string name="setup_updates_status">Engine: %1$s · Settings: #%2$d · Last check: %3$s</string>
+    <string name="setup_updates_help">Newer engine builds come straight from the project\'s GitHub, without reinstalling the APK. Every update is signed; anything without a valid signature is ignored. Network settings and network game data are on the GeneralsOnline account screen.</string>
+    <string name="setup_updates_status">Engine: %1$s · Last check: %2$s</string>
     <string name="setup_updates_engine_bundled">built-in, build %1$d</string>
     <string name="setup_updates_engine_updated">updated, build %1$d</string>
     <string name="setup_updates_never">never</string>
@@ -316,7 +316,6 @@
     <string name="setup_updates_none">Everything is up to date.</string>
     <string name="setup_updates_engine_ready">A newer engine (build %1$d) has been downloaded. It will be used the next time you start the game.</string>
     <string name="setup_updates_engine_needs_apk">A newer engine (build %1$d) needs a new APK. Download it from the project page.</string>
-    <string name="setup_updates_config_updated">Server settings updated.</string>
     <string name="setup_updates_failed">Update check failed: %1$s</string>
     <string name="setup_updates_not_published">No updates have been published yet.</string>
     <string name="setup_updates_offline">No internet connection. The launcher and the game work offline; updates will be checked next time.</string>
@@ -327,5 +326,7 @@
     <string name="online_datapacks_update_available">Installed: version %1$s. A new version is out: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Installed: version %1$s. Update once so this device computes the PC client checksum from it.</string>
     <string name="online_datapacks_up_to_date">Installed: version %1$s, the latest.</string>
+    <string name="online_network_settings">Network settings (servers, PC compatibility): #%1$d, updated automatically from the project\'s GitHub and signed.</string>
+    <string name="online_network_settings_builtin">Network settings (servers, PC compatibility): built into this version; newer ones come automatically from the project\'s GitHub.</string>
     <string name="online_datapacks_chip_update">Update available</string>
 </resources>

@@ -226,11 +226,14 @@ final class UpdateManager {
     }
 
     /**
-     * Blocking; call off the UI thread. Engine and settings only: the community data patch is
-     * the multiplayer screen's business (checkDatapackOnly), and this merely notices a newer one
-     * so the Updates card can point there.
+     * Blocking; call off the UI thread. Always applies the signed settings (network servers, the
+     * PC checksum: a few lines, and the game needs them current whichever screen checked) and
+     * notices a newer community data patch; the patch itself is installed by the multiplayer
+     * screen (checkDatapackOnly).
+     * @param withEngine also download a newer engine -- the Updates card on the home screen, which
+     *        is the engine's place; the multiplayer screen passes false.
      */
-    static Result check(Context ctx) {
+    static Result check(Context ctx, boolean withEngine) {
         Result r = new Result();
         try {
             byte[] manifestBytes = download(BASE_URL + "manifest.json", 256 * 1024);
@@ -258,7 +261,7 @@ final class UpdateManager {
             }
 
             JSONObject engine = manifest.optJSONObject("engine");
-            if (engine != null) {
+            if (engine != null && withEngine) {
                 applyEngine(ctx, engine, r);
             }
 

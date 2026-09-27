@@ -92,6 +92,7 @@ public class GeneralsOnlineActivity extends Activity {
     private boolean dataPackPrompted;
     // The automatic version check runs once per process, like the Updates card's.
     private static boolean sDataPackCheckedThisProcess;
+    private TextView networkSettingsStatus;
     private TextView crossPlayPatchChip;
     private TextView crossPlayHzChip;
 
@@ -216,6 +217,7 @@ public class GeneralsOnlineActivity extends Activity {
 
         dataPackStatus = UiKit.body(card, null);
         dataPackStatus.setTextIsSelectable(true);
+        networkSettingsStatus = UiKit.supporting(card, "");
 
         dataPackButton = UiKit.button(card, UiKit.BTN_PRIMARY, R.drawable.ic_gzh_download,
             getString(R.string.online_button_datapacks_update), this::onUpdateDataPacks);
@@ -248,27 +250,31 @@ public class GeneralsOnlineActivity extends Activity {
      * shown here, on mobile data the card says a new version is there and the button installs it.
      */
     private void maybeAutoCheckDataPacks() {
-        if (sDataPackCheckedThisProcess || dataPackBusy
-                || DataPackInstaller.installedVersion(this) == null
-                || !UpdateManager.isAutoCheckEnabled(this)) {
+        if (sDataPackCheckedThisProcess || dataPackBusy || !UpdateManager.isAutoCheckEnabled(this)) {
             return;
         }
         sDataPackCheckedThisProcess = true;
-        dataPackBusy = true;
+        final boolean havePatch = DataPackInstaller.installedVersion(this) != null;
+        dataPackBusy = havePatch;
         refreshDataPackCard();
         final android.content.Context app = getApplicationContext();
         final boolean install = UpdateManager.isUnmeteredNetwork(app);
         new Thread(() -> {
-            UpdateManager.Result r = UpdateManager.checkDatapackOnly(app, install, cardProgress());
+            // The network settings first: a few lines from the signed manifest, and the ones the
+            // game uses online (servers, the PC checksum). The engine is the home screen's.
+            UpdateManager.check(app, false);
+            UpdateManager.Result r = havePatch
+                ? UpdateManager.checkDatapackOnly(app, install, cardProgress())
+                : null;
             handler.post(() -> {
                 dataPackBusy = false;
                 refreshDataPackCard();
-                if (r.datapackInstalled != null) {
+                if (r != null && r.datapackInstalled != null) {
                     dataPackStatus.setText(getString(R.string.setup_updates_datapack_installed,
                         r.datapackInstalled));
                 }
             });
-        }, "gx-datapack-check").start();
+        }, "gx-online-update-check").start();
     }
 
     private DataPackInstaller.Progress cardProgress() {
@@ -302,6 +308,11 @@ public class GeneralsOnlineActivity extends Activity {
         final boolean signedIn = getSignedInDisplayName(this) != null;
         final String version = DataPackInstaller.installedVersion(this);
         final boolean installed = version != null && !version.isEmpty();
+
+        final int settingsSerial = UpdateManager.acceptedSerial(this);
+        networkSettingsStatus.setText(settingsSerial > 0
+            ? getString(R.string.online_network_settings, settingsSerial)
+            : getString(R.string.online_network_settings_builtin));
 
         final boolean updateWanted = installed && UpdateManager.datapackUpdateWanted(this);
         final String latest = UpdateManager.datapackLatestSeen(this);

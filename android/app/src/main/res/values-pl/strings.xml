@@ -297,8 +297,8 @@
     <string name="setup_switch_logging">Zbieraj logi</string>
     <string name="setup_switch_logging_desc">Zapisuj na urządzeniu logi gry, awarii i sieci. Wyłącz, aby nic nie było zapisywane w tle, dopóki nie włączysz ponownie. Potrzebne do zgłaszania błędów.</string>
     <string name="setup_card_updates">Aktualizacje</string>
-    <string name="setup_updates_help">Ustawienia serwerów i nowsze wersje silnika przychodzą prosto z GitHuba projektu, bez ponownej instalacji APK. Każda aktualizacja jest podpisana; wszystko bez ważnego podpisu jest ignorowane.</string>
-    <string name="setup_updates_status">Silnik: %1$s · Ustawienia: nr %2$d · Ostatnie sprawdzenie: %3$s</string>
+    <string name="setup_updates_help">Nowe wersje silnika przychodzą prosto z GitHuba projektu, bez ponownej instalacji APK. Każda aktualizacja jest podpisana; wszystko bez ważnego podpisu jest ignorowane. Ustawienia sieci i dane gry sieciowej są w Konto GeneralsOnline.</string>
+    <string name="setup_updates_status">Silnik: %1$s · Ostatnie sprawdzenie: %2$s</string>
     <string name="setup_updates_engine_bundled">wbudowany, wersja %1$d</string>
     <string name="setup_updates_engine_updated">zaktualizowany, wersja %1$d</string>
     <string name="setup_updates_never">nigdy</string>
@@ -309,7 +309,6 @@
     <string name="setup_updates_none">Wszystko jest aktualne.</string>
     <string name="setup_updates_engine_ready">Pobrano nowszy silnik (wersja %1$d). Zostanie użyty przy następnym uruchomieniu gry.</string>
     <string name="setup_updates_engine_needs_apk">Nowszy silnik (wersja %1$d) wymaga nowego APK. Pobierz je ze strony projektu.</string>
-    <string name="setup_updates_config_updated">Zaktualizowano ustawienia serwerów.</string>
     <string name="setup_updates_failed">Nie udało się sprawdzić: %1$s</string>
     <string name="setup_updates_not_published">Nie opublikowano jeszcze żadnych aktualizacji.</string>
     <string name="setup_updates_offline">Brak połączenia z internetem. Launcher i gra działają offline; aktualizacje zostaną sprawdzone następnym razem.</string>
@@ -320,5 +319,7 @@
     <string name="online_datapacks_update_available">Zainstalowano wersję %1$s. Jest nowa wersja: %2$s.</string>
     <string name="online_datapacks_update_for_crc">Zainstalowano wersję %1$s. Zaktualizuj raz, aby urządzenie obliczyło z niej sumę kontrolną klienta PC.</string>
     <string name="online_datapacks_up_to_date">Zainstalowano wersję %1$s, najnowszą.</string>
+    <string name="online_network_settings">Ustawienia sieci (serwery, zgodność z PC): nr %1$d, aktualizowane automatycznie z GitHuba projektu i podpisane.</string>
+    <string name="online_network_settings_builtin">Ustawienia sieci (serwery, zgodność z PC): wbudowane w tę wersję; nowsze przyjdą automatycznie z GitHuba projektu.</string>
     <string name="online_datapacks_chip_update">Dostępna aktualizacja</string>
 </resources>

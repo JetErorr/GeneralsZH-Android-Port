@@ -297,8 +297,8 @@
     <string name="setup_switch_logging">جمع السجلات</string>
     <string name="setup_switch_logging_desc">تسجيل سجلات اللعبة والأعطال والشبكة على الجهاز. أوقفه كي لا يُحفظ شيء في الخلفية حتى تعيد تشغيله. مطلوب للإبلاغ عن الأخطاء.</string>
     <string name="setup_card_updates">التحديثات</string>
-    <string name="setup_updates_help">تصل إعدادات الخوادم وإصدارات المحرك الأحدث مباشرة من GitHub الخاص بالمشروع دون إعادة تثبيت APK. كل تحديث موقّع؛ ويُتجاهل كل ما ليس له توقيع صحيح.</string>
-    <string name="setup_updates_status">المحرك: %1$s · الإعدادات: رقم %2$d · آخر فحص: %3$s</string>
+    <string name="setup_updates_help">تصل إصدارات المحرك الأحدث مباشرةً من GitHub المشروع دون إعادة تثبيت APK. كل تحديث موقّع، ويُتجاهل كل ما ليس له توقيع صحيح. إعدادات الشبكة وبيانات اللعب عبر الإنترنت موجودة في حساب GeneralsOnline.</string>
+    <string name="setup_updates_status">المحرك: %1$s · آخر فحص: %2$s</string>
     <string name="setup_updates_engine_bundled">مدمج، إصدار %1$d</string>
     <string name="setup_updates_engine_updated">محدَّث، إصدار %1$d</string>
     <string name="setup_updates_never">لم يحدث بعد</string>
@@ -309,7 +309,6 @@
     <string name="setup_updates_none">كل شيء محدَّث.</string>
     <string name="setup_updates_engine_ready">تم تنزيل محرك أحدث (إصدار %1$d). سيُستخدم عند تشغيل اللعبة في المرة القادمة.</string>
     <string name="setup_updates_engine_needs_apk">المحرك الأحدث (إصدار %1$d) يحتاج إلى APK جديد. نزّله من صفحة المشروع.</string>
-    <string name="setup_updates_config_updated">تم تحديث إعدادات الخوادم.</string>
     <string name="setup_updates_failed">تعذّر البحث عن تحديثات: %1$s</string>
     <string name="setup_updates_not_published">لم يُنشر أي تحديث بعد.</string>
     <string name="setup_updates_offline">لا يوجد اتصال بالإنترنت. يعمل المشغّل واللعبة دون اتصال، وسيتم البحث عن التحديثات في المرة القادمة.</string>
@@ -320,5 +319,7 @@
     <string name="online_datapacks_update_available">المثبت: الإصدار %1$s. صدر إصدار جديد: %2$s.</string>
     <string name="online_datapacks_update_for_crc">المثبت: الإصدار %1$s. حدّث مرة واحدة ليحسب هذا الجهاز منه المجموع الاختباري لعميل الحاسوب.</string>
     <string name="online_datapacks_up_to_date">المثبت: الإصدار %1$s، وهو الأحدث.</string>
+    <string name="online_network_settings">إعدادات الشبكة (الخوادم، التوافق مع الحاسوب): رقم %1$d، تُحدَّث تلقائيًا من GitHub المشروع وموقّعة.</string>
+    <string name="online_network_settings_builtin">إعدادات الشبكة (الخوادم، التوافق مع الحاسوب): مدمجة في هذا الإصدار؛ ستصل الأحدث تلقائيًا من GitHub المشروع.</string>
     <string name="online_datapacks_chip_update">يتوفر تحديث</string>
 </resources>

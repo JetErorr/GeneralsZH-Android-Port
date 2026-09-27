@@ -1,7 +1,9 @@
 # Publishing an update without a new APK
 
-The launcher checks the repository's `updates` branch (on start, and from **Home → Updates →
-Check for updates**) and takes two kinds of update from it:
+The launcher checks the repository's `updates` branch -- from **Home → Updates** (on start and
+with **Check for updates**) and when the **GeneralsOnline account** screen opens -- and takes two
+kinds of update from it. The settings are applied by either check and shown on the account
+screen; the engine is downloaded only by the Home check.
 
 - **Settings** (`update/config.json` in the main tree): values the engine reads at startup. Today
   the STUN and TURN server lists (`stun_servers`, `turn_servers`), the PC client checksum for

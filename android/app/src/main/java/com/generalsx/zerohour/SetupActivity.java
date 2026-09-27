@@ -453,7 +453,8 @@ public class SetupActivity extends Activity {
     // ------------------------------------------------------------ Updates
 
     // GeneralsX @feature Android port 27/09/2026 Signed updates from the repository without a new
-    // APK: server settings and, when one is published, a newer engine. See UpdateManager.
+    // APK: a newer engine, when one is published. The network settings from the same signed
+    // manifest are applied by the same check but shown on the multiplayer screen. See UpdateManager.
     private TextView updatesStatusView;
     private View updatesOpenOnlineButton;
     private boolean updateCheckRunning;
@@ -492,8 +493,7 @@ public class SetupActivity extends Activity {
             ? android.text.format.DateFormat.getDateFormat(this).format(new java.util.Date(last)) + " "
               + android.text.format.DateFormat.getTimeFormat(this).format(new java.util.Date(last))
             : getString(R.string.setup_updates_never);
-        String status = getString(R.string.setup_updates_status,
-            engine, UpdateManager.acceptedSerial(this), when);
+        String status = getString(R.string.setup_updates_status, engine, when);
         final boolean newerData = UpdateManager.datapackNewerAvailable(this);
         if (newerData) {
             status += "\n" + getString(R.string.setup_updates_datapack_line_new,
@@ -516,7 +516,7 @@ public class SetupActivity extends Activity {
         }
         new Thread(() -> {
             final android.content.Context app = getApplicationContext();
-            final UpdateManager.Result r = UpdateManager.check(app);
+            final UpdateManager.Result r = UpdateManager.check(app, true);
             runOnUiThread(() -> {
                 updateCheckRunning = false;
                 refreshUpdatesStatus();
@@ -537,8 +537,6 @@ public class SetupActivity extends Activity {
                     toast(getString(R.string.setup_updates_engine_ready, r.engineSeq));
                 } else if (r.engineIncompatible) {
                     toast(getString(R.string.setup_updates_engine_needs_apk, r.engineSeq));
-                } else if (r.configUpdated) {
-                    toast(getString(R.string.setup_updates_config_updated));
                 } else if (userAsked) {
                     toast(getString(R.string.setup_updates_none));
                 }
