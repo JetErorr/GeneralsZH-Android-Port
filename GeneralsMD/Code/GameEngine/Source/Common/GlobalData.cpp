@@ -31,6 +31,7 @@
 
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
+#include "Common/GXRemoteConfig.h"
 
 #include "ww3d.h"
 #include "texturefilter.h"
@@ -1209,7 +1210,16 @@ void GlobalData::init()
 		// The file may name a checksum to claim; empty means "the stock PC
 		// GeneralsOnline client", which is what it is for.
 		char buf[64] = { 0 };
-		unsigned long claimed = 3118172181UL;
+		// GeneralsX @bugfix Android port 27/09/2026 The PC client's checksum changes with every
+		// PC release (GeneralsOnline 092226_QFE1 moved it from 3118172181 to 524577083), and a
+		// stale number turns every PC lobby away. So it comes from the signed update settings
+		// (pc_exe_crc, GXRemoteConfig.h) first; the number below is only the one this build
+		// knew. scripts/update/pc-exe-crc.py computes it from a new PC executable.
+		unsigned long claimed = strtoul(GXRemoteConfig::get("pc_exe_crc", "524577083").c_str(), nullptr, 10);
+		if (claimed == 0)
+		{
+			claimed = 524577083UL;
+		}
 		if (fgets(buf, sizeof(buf), marker) != nullptr)
 		{
 			const unsigned long parsed = strtoul(buf, nullptr, 10);

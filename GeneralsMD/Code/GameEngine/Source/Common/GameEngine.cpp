@@ -27,6 +27,7 @@
 // Author: Michael S. Booth, April 2001
 
 #include "PreRTS.h"	// This must go first in EVERY cpp file in the GameEngine
+#include "Common/GXRemoteConfig.h"
 #if defined(__ANDROID__) || defined(__linux__) || defined(__APPLE__)
 #include <dlfcn.h>
 #include <sys/stat.h>
@@ -846,9 +847,9 @@ void GameEngine::init()
 		// carries it: the PC client hashes its own Windows binary, this port hashes
 		// a version number and the .scb scripts, and no arrangement of game files
 		// will ever make those agree.
-		fprintf(stderr, "[GX-CRC] ini_crc=%u exe_crc=%u  (vanilla ini=%u, PC GeneralsOnline ini=2180732466, PC exe=3118172181)\n",
+		fprintf(stderr, "[GX-CRC] ini_crc=%u exe_crc=%u  (vanilla ini=%u, PC GeneralsOnline ini=2180732466, PC exe=%s from update settings)\n",
 			(unsigned)TheGlobalData->m_iniCRC, (unsigned)TheGlobalData->m_exeCRC,
-			(unsigned)VANILLA_INI_CRC);
+			(unsigned)VANILLA_INI_CRC, GXRemoteConfig::get("pc_exe_crc", "524577083").c_str());
 		fflush(stderr);
 
 		// GeneralsX @feature Android port 13/09/2026 State which simulation
