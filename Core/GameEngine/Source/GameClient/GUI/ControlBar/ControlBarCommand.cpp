@@ -516,11 +516,25 @@ void ControlBar::populateCommand( Object *obj )
 	object, or on a passenger its container lets fire out (a garrisoned building, an Overlord
 	bunker, a Humvee with infantry in it). */
 //-------------------------------------------------------------------------------------------------
+static Bool hasForceAttackWeapon( const Object *obj )
+{
+	// Object::hasAnyDamageWeapon() counts DAMAGE_DISARM, which is what a USA dozer clears mines
+	// with; a force-attack button on it was still seen on a device (27/09/2026). Game logic
+	// relies on that answer, so the UI walks the slots itself.
+	for( Int slot = PRIMARY_WEAPON; slot < WEAPONSLOT_COUNT; ++slot )
+	{
+		const Weapon *weapon = obj->getWeaponInWeaponSlot( (WeaponSlotType)slot );
+		if( weapon && weapon->isDamageWeapon() && weapon->getDamageType() != DAMAGE_DISARM )
+			return TRUE;
+	}
+	return FALSE;
+}
+
 static Bool canBeOrderedToForceAttack( const Object *obj )
 {
 	if( !obj->isAbleToAttack() )
 		return FALSE;
-	if( obj->hasAnyDamageWeapon() )
+	if( hasForceAttackWeapon( obj ) )
 		return TRUE;
 
 	const ContainModuleInterface *contain = obj->getContain();
@@ -532,7 +546,7 @@ static Bool canBeOrderedToForceAttack( const Object *obj )
 	for( ContainedItemsList::const_iterator it = passengers->begin(); it != passengers->end(); ++it )
 	{
 		const Object *passenger = *it;
-		if( passenger && passenger->hasAnyDamageWeapon() && contain->isPassengerAllowedToFire( passenger->getID() ) )
+		if( passenger && hasForceAttackWeapon( passenger ) && contain->isPassengerAllowedToFire( passenger->getID() ) )
 			return TRUE;
 	}
 	return FALSE;
@@ -558,6 +572,19 @@ void ControlBar::addTouchModeButtons( const CommandSet *commandSet )
 		return;
 	if( m_touchForceAttackButton == nullptr && m_touchWaypointButton == nullptr )
 		return;
+
+	// A builder's bar (dozer, worker, their fake-building page) is a palette of structures; an
+	// order button in one of its gaps sits among the buildings and reads as one of them. It
+	// keeps the bar exactly as the stock game lays it out.
+	if( commandSet != nullptr )
+	{
+		for( Int i = 0; i < MAX_COMMANDS_PER_SET; ++i )
+		{
+			const CommandButton *button = commandSet->getCommandButton( i );
+			if( button && button->getCommandType() == GUI_COMMAND_DOZER_CONSTRUCT )
+				return;
+		}
+	}
 
 	// Which of the two the selection can use at all. Only the local player's own objects
 	// count: an order is only ever given to those.

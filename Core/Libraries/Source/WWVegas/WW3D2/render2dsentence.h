@@ -201,6 +201,11 @@ public:
 	// recycle pool (see render2dsentence.cpp). Call on device reset/shutdown --
 	// the pool intentionally outlives individual sentence objects.
 	static void		Flush_Recycled_Textures ();
+
+	// GeneralsX @feature Android port 27/09/2026 TRUE when the text is laid out right to left
+	// (it contains an Arabic/Persian/Hebrew letter). Callers that place a left-aligned sentence
+	// inside a box use this to right-align it instead, as RTL text reads from the right edge.
+	static bool		Is_RTL_Text (const WCHAR *text);
 	virtual	void	Reset ();
 	void				Reset_Polys ();
 

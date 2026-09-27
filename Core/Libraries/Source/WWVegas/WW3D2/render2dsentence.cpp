@@ -1189,6 +1189,19 @@ Render2DSentenceClass::Note_Chunk_Char (WCHAR ch)
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
+//	Is_RTL_Text
+//
+// GeneralsX @feature Android port 27/09/2026 Same test Build_Sentence uses to decide whether a
+// sentence is shaped and mirrored, so a caller's alignment always agrees with the layout.
+////////////////////////////////////////////////////////////////////////////////////
+bool
+Render2DSentenceClass::Is_RTL_Text (const WCHAR *text)
+{
+	return text != nullptr && Contains_RTL (text);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+//
 //	Mirror_RTL_Lines
 //
 // GeneralsX @feature Android port 27/09/2026 Reverses the word order of every laid-out line of

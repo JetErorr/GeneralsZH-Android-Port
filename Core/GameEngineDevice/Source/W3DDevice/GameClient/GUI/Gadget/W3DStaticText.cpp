@@ -119,6 +119,14 @@ static void drawStaticTextText( GameWindow *window, WinInstanceData *instData,
 	{
 		textPos.x = origin.x + (size.x / 2) - (textWidth / 2);
 	}
+	else if( Render2DSentenceClass::Is_RTL_Text( text->getText().str() ) )
+	{
+		// GeneralsX @feature Android port 27/09/2026 Arabic/Persian text reads from the right, so a
+		// left-aligned field is right-aligned for it. Left-aligned, every line of a tooltip started
+		// at the box's left edge while the lines themselves were right-aligned only to the widest
+		// one, so the name, cost and description of one tooltip ended at different places.
+		textPos.x = origin.x + size.x - tData->leftMargin - textWidth;
+	}
 	else
 	{
 		textPos.x = origin.x + tData->leftMargin;
