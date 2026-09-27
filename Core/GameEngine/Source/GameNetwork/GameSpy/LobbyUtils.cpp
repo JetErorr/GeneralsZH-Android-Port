@@ -384,7 +384,8 @@ static void gameTooltip(GameWindow* window,
 
 #if defined(GENERALS_ONLINE)
 	// GO already has the full map info, don't need the cache
-	mapName.translate(lobbyEntry.map_name.c_str());
+	// GeneralsX @bugfix Android port 27/09/2026 UTF-8, as the game list column reads it below.
+	mapName = UnicodeString(from_utf8(lobbyEntry.map_name).c_str());
 #else
 	const MapMetaData *md = TheMapCache->findMap(room->getMap());
 	if (md)

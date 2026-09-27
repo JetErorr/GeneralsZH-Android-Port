@@ -49,7 +49,7 @@ UnicodeString NGMP_OnlineServices_LobbyInterface::GetCurrentLobbyMapDisplayName(
 
 	if (IsInLobby())
 	{
-		strDisplayName.format(L"%hs", m_CurrentLobby.map_name.c_str());
+		strDisplayName = UnicodeString(from_utf8(m_CurrentLobby.map_name).c_str());
 	}
 
 	return strDisplayName;
@@ -90,38 +90,6 @@ enum class ELobbyUpdateField
 	JOINABILITY = 18
 };
 
-// GeneralsX @bugfix Android port 27/09/2026 The map name a lobby shows to everyone. The game hands
-// over the map's *localized* display name, and the lobby service takes it through an 8-bit
-// AsciiString: a Russian install hosting "Турнир" listed its game on every PC as `"C@=8@`, each
-// letter with its high byte cut off. The PC clients in the lobby are overwhelmingly English and
-// send the English name; a name this install cannot send as ASCII becomes the map's file name,
-// which is the same on every install ("Tournament Desert" rather than a translation).
-static AsciiString LobbyMapNameForService(const AsciiString &strMapNameIn, const UnicodeString &strDisplayName, const AsciiString &strMapPath)
-{
-	Bool isAscii = TRUE;
-	for (Int i = 0; i < strDisplayName.getLength(); ++i)
-	{
-		if (strDisplayName.getCharAt(i) > 0x7F)
-		{
-			isAscii = FALSE;
-			break;
-		}
-	}
-	if (isAscii)
-		return strMapNameIn;
-
-	AsciiString fileName = strMapPath;
-	const char *slash = fileName.reverseFind('\\');
-	if (slash == nullptr)
-		slash = fileName.reverseFind('/');
-	if (slash != nullptr)
-		fileName = slash + 1;
-	const char *dot = fileName.reverseFind('.');
-	if (dot != nullptr)
-		fileName.truncateTo((Int)(dot - fileName.str()));
-	return fileName.isEmpty() ? strMapNameIn : fileName;
-}
-
 void NGMP_OnlineServices_LobbyInterface::UpdateCurrentLobby_Map(UnicodeString strMap, AsciiString strMapPath, bool bIsOfficial, int newMaxPlayers)
 {
 	// reset autostart if host changes anything (because ready flag will reset too)
@@ -141,11 +109,13 @@ void NGMP_OnlineServices_LobbyInterface::UpdateCurrentLobby_Map(UnicodeString st
 		sanitizedMapPath = sanitizedMapPath.reverseFind('\\') + 1;
 	}
 
-	AsciiString strMapAscii;
-	strMapAscii.translate(strMap);
+	// GeneralsX @bugfix Android port 27/09/2026 The map name goes out as UTF-8, as the PC client's
+	// CreateLobby sends it and every client's game list reads it (LobbyUtils, from_utf8). Taken
+	// through an 8-bit AsciiString instead, a Russian install listed "Турнир Б" on every PC as
+	// `"C@=8@ (4)` -- each letter with its high byte cut off.
 	nlohmann::json j;
 	j["field"] = ELobbyUpdateField::LOBBY_MAP;
-	j["map"] = LobbyMapNameForService(strMapAscii, strMap, strMapPath).str();
+	j["map"] = to_utf8(strMap.str());
 	j["map_path"] = sanitizedMapPath.str();
 	j["map_official"] = bIsOfficial;
 	j["max_players"] = newMaxPlayers;
@@ -1418,9 +1388,8 @@ void NGMP_OnlineServices_LobbyInterface::CreateLobby(UnicodeString strLobbyName,
 			std::map<std::string, std::string> mapHeaders;
 
 			// convert
-			AsciiString strMapName = AsciiString();
-			strMapName.translate(strInitialMapName);
-			strMapName = LobbyMapNameForService(strMapName, strInitialMapName, strInitialMapPath);
+			// UTF-8, as the PC client sends it (see UpdateCurrentLobby_Map).
+			std::string strMapName = to_utf8(strInitialMapName.str());
 
 			// sanitize map path
 			// we need to parse out the map name for custom maps... its an absolute path
@@ -1433,7 +1402,7 @@ void NGMP_OnlineServices_LobbyInterface::CreateLobby(UnicodeString strLobbyName,
 
 			nlohmann::json j;
 			j["name"] = to_utf8(strLobbyName.str());
-			j["map_name"] = strMapName.str();
+			j["map_name"] = strMapName;
 			j["map_path"] = sanitizedMapPath.str();
 			j["map_official"] = bIsOfficial;
 			j["max_players"] = initialMaxSize;
@@ -1456,7 +1425,7 @@ void NGMP_OnlineServices_LobbyInterface::CreateLobby(UnicodeString strLobbyName,
 			j["anticheat_id"] = AnticheatPlugInterface::GetAnticheatIdentifier();
 
 			NetworkLog(ELogVerbosity::LOG_RELEASE, "[NGMP] CreateLobby request: name='%s' map_name='%s' map_path='%s' max_players=%d exe_crc=%u ini_crc=%u anticheat_id=%d",
-				to_utf8(strLobbyName.str()).c_str(), strMapName.str(), sanitizedMapPath.str(), initialMaxSize,
+				to_utf8(strLobbyName.str()).c_str(), strMapName.c_str(), sanitizedMapPath.str(), initialMaxSize,
 				TheGlobalData->m_exeCRC, TheGlobalData->m_iniCRC, AnticheatPlugInterface::GetAnticheatIdentifier());
 
 			std::string strPostData = j.dump();
@@ -1513,7 +1482,7 @@ void NGMP_OnlineServices_LobbyInterface::CreateLobby(UnicodeString strLobbyName,
 							AsciiString strName = AsciiString();
 
 							m_CurrentLobby.name = to_utf8(strLobbyName.str());
-							m_CurrentLobby.map_name = std::string(strMapName.str());
+							m_CurrentLobby.map_name = strMapName;
 							m_CurrentLobby.map_path = std::string(sanitizedMapPath.str());
 							m_CurrentLobby.current_players = 1;
 							m_CurrentLobby.max_players = initialMaxSize;
