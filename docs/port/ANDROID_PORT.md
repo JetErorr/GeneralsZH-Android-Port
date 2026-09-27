@@ -164,6 +164,18 @@ its own press/drag/release state machine), and the selection box. The window
 manager gets first refusal on every battlefield tap, so a tap on a panel
 cannot fall through to the map underneath.
 
+Lists (map list, replays, lobby lists, combo-box drop-downs) scroll by dragging a finger
+through them. A touch on anything that is not a push button starts unclassified, and in that
+phase nothing reaches the window manager, so the list could never see a drag; the touch layer
+(`SDL3GameEngine.cpp`) instead remembers the list under the finger at touch-down and, once the
+drag passes the dead zone, enters `LIST_SCROLL` and drives the list directly
+(`GadgetListBoxTouchScroll*`). The release after a scroll selects nothing; a tap still selects.
+
+On builders (dozers, workers), the touch order buttons live on a second page of the command bar,
+opened with the cyan arrow in the bottom-right slot, so they never sit among the structures
+(`ControlBar::addBuilderPageButtons`; the arrows are drawn at startup by
+`registerBuilderPageImages`).
+
 Screen-edge scrolling is off on touch: it is defined by a pointer resting
 near an edge and ends only when a later pointer event reports a position back
 inside the safe zone, which cannot happen without a pointer.
@@ -287,6 +299,13 @@ single `generalszh-logs.zip` so you don't need to attach several files.
 in-app viewer can't show (an OS-level tombstone needs adb + often root;
 `crash.log` is the no-root substitute for the common case).
 
+**Setup → Diagnostics → Collect logs** (on by default) is the master switch. Off, it drops
+`logging_off` into the app's own files directory, and nothing is logged in the background: the
+engine does not mirror stderr into `generals-stderr.log`, the crash handler does not write
+`crash.log`, `GeneralsOnline.log` is not written, and the launcher's network trace stops
+(`Common/GXLogging.h`). Logs already on the device are kept until cleared. Turn it back on
+before reproducing a bug for a report.
+
 ### Diagnostic marker files (opt-in extra logging)
 
 None of these are on by default — a plain log from a fresh install is small
@@ -312,6 +331,26 @@ a file manager to create them by hand.
 
 **→ For sharing this section directly:
 [docs/port/ANDROID_PORT.md#diagnostic-marker-files-opt-in-extra-logging](docs/port/ANDROID_PORT.md#diagnostic-marker-files-opt-in-extra-logging)**
+
+## 4a. Updates without a new APK
+
+**Setup → Home → Updates.** The launcher reads a signed manifest from the repository's
+`updates` branch, at launcher start (switchable) and on **Check for updates**:
+
+- **Settings** (`update/config.json`): written to `files/update/remote_config.ini`, read by the
+  engine through `Common/GXRemoteConfig.h`. Today the STUN and TURN lists.
+- **Engine**: a newer `libmain.so`/`libmain60.so`, downloaded to the app's private storage and
+  loaded by `GeneralsZHActivity.loadLibraries()` instead of the APK's, from the next game start.
+
+The manifest is signed (ECDSA P-256; the public key is in `UpdateManager.PUBLIC_KEY_B64`, the
+private key is kept outside the repository). Its `serial` may never go down, engine files are
+checked against the signed SHA-256, and a downloaded engine runs only when its build number
+(`assets/engine_build.txt`, the commit count) is higher than the APK's and every other native
+library matches the one it was built against -- otherwise the launcher asks for a new APK. An
+engine that twice fails to reach the main menu is dropped (`files/update/boot_pending`, cleared
+by `MainMenuInit`). Everything works offline: the last verified update stays in use.
+
+How to publish: [`docs/HOWTO/PUBLISH_UPDATE.md`](../HOWTO/PUBLISH_UPDATE.md).
 
 ## 5. Verification checklist for first device bring-up
 
