@@ -324,13 +324,19 @@ void LANAPI::handleRequestJoin( LANMessage *msg, UnsignedInt senderIP )
 			if (TheGlobalData->m_netMinPlayers > 0) {
 #endif
 // TheSuperHackers @todo Enable CRC checks!
-#if !RTS_ZEROHOUR
+// GeneralsX @bugfix Android LAN desync guard: enabled on Linux/Android, where it was
+// off for Zero Hour -- any build with any game data could join and desync mid-match.
+// Joins are now denied up front (the lobby shows its version-mismatch message).
+#if !RTS_ZEROHOUR || defined(__linux__)
 			if (msg->GameToJoin.iniCRC != TheGlobalData->m_iniCRC ||
-					msg->GameToJoin.exeCRC != TheGlobalData->m_exeCRC)
+					msg->GameToJoin.exeCRC != getLANExeCRC())
 			{
 				DEBUG_LOG(("LANAPI::handleRequestJoin - join denied because of CRC mismatch. CRCs are them/us INI:%X/%X exe:%X/%X",
 					msg->GameToJoin.iniCRC, TheGlobalData->m_iniCRC,
-					msg->GameToJoin.exeCRC, TheGlobalData->m_exeCRC));
+					msg->GameToJoin.exeCRC, getLANExeCRC()));
+				fprintf(stderr, "[GX-NET] LAN join denied: build/data mismatch (INI them/us %08X/%08X, build %08X/%08X)\n",
+					(unsigned)msg->GameToJoin.iniCRC, (unsigned)TheGlobalData->m_iniCRC,
+					(unsigned)msg->GameToJoin.exeCRC, (unsigned)getLANExeCRC());
 				reply.messageType = LANMessage::MSG_JOIN_DENY;
 				reply.GameNotJoined.reason = LANAPIInterface::RET_CRC_MISMATCH;
 				reply.GameNotJoined.gameIP = m_localIP;

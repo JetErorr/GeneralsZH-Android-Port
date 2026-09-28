@@ -291,6 +291,8 @@ public:
 	LANAPI();
 	virtual ~LANAPI() override;
 
+	static UnsignedInt getLANExeCRC();	///< Build checksum exchanged when joining a LAN game
+
 	virtual void init() override;															///< Initialize or re-initialize the instance
 	virtual void reset() override;															///< reset the logic system
 	virtual void update() override;														///< update the world

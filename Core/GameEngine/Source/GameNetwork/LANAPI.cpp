@@ -27,6 +27,7 @@
 #define WIN32_LEAN_AND_MEAN  // only bare bones windows stuff wanted
 
 #include "Common/crc.h"
+#include "Common/version.h"
 #include "Common/GameState.h"
 #include "Common/Registry.h"
 #include "GameNetwork/LANAPI.h"
@@ -87,6 +88,26 @@ LANAPI::LANAPI() : m_transport(nullptr)
 	m_lastUpdate = 0;
 	m_transport = new Transport;
 	m_isActive = TRUE;
+}
+
+// GeneralsX @bugfix Android LAN desync guard: on Linux/Android the exe CRC hashes no
+// binary, only the game version shared by every build of the port, so APKs with
+// different simulation code (e.g. 1.2.2 vs 1.3.0) looked identical and desynced
+// mid-match. For LAN joins, also mix in the build's git commit time so only identical
+// builds play together. Kept out of TheGlobalData->m_exeCRC on purpose: that value
+// also goes to the GeneralsOnline servers and into replays.
+UnsignedInt LANAPI::getLANExeCRC()
+{
+#if defined(__linux__)
+	CRC crc;
+	const UnsignedInt exeCRC = TheGlobalData->m_exeCRC;
+	const Int64 commitTime = (Int64)Version::getGitCommitTime();
+	crc.computeCRC(&exeCRC, sizeof(exeCRC));
+	crc.computeCRC(&commitTime, sizeof(commitTime));
+	return crc.get();
+#else
+	return TheGlobalData->m_exeCRC;
+#endif
 }
 
 LANAPI::~LANAPI()
@@ -637,7 +658,7 @@ void LANAPI::RequestGameJoin( LANGameInfo *game, UnsignedInt ip /* = 0 */ )
 	msg.messageType = LANMessage::MSG_REQUEST_JOIN;
 	fillInLANMessage( &msg );
 	msg.GameToJoin.gameIP = game->getSlot(0)->getIP();
-	msg.GameToJoin.exeCRC = TheGlobalData->m_exeCRC;
+	msg.GameToJoin.exeCRC = getLANExeCRC();
 	msg.GameToJoin.iniCRC = TheGlobalData->m_iniCRC;
 
 	AsciiString s;
